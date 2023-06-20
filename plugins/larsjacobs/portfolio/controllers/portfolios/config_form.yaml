@@ -1,0 +1,10 @@
+name: Portfolios
+form: $/larsjacobs/portfolio/models/portfolio/fields.yaml
+modelClass: LarsJacobs\Portfolio\Models\Portfolio
+defaultRedirect: larsjacobs/portfolio/portfolios
+create:
+    redirect: 'larsjacobs/portfolio/portfolios/update/:id'
+    redirectClose: larsjacobs/portfolio/portfolios
+update:
+    redirect: larsjacobs/portfolio/portfolios
+    redirectClose: larsjacobs/portfolio/portfolios

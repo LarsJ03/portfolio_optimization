@@ -1,0 +1,10 @@
+name: Stocks
+form: $/larsjacobs/stocks/models/stock/fields.yaml
+modelClass: LarsJacobs\Stocks\Models\Stock
+defaultRedirect: larsjacobs/stocks/stocks
+create:
+    redirect: 'larsjacobs/stocks/stocks/update/:id'
+    redirectClose: larsjacobs/stocks/stocks
+update:
+    redirect: larsjacobs/stocks/stocks
+    redirectClose: larsjacobs/stocks/stocks

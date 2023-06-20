@@ -1,0 +1,16 @@
+fields:
+    stock_name:
+        label: 'Stock Name'
+        span: auto
+        required: 1
+        type: text
+    stock_symbol:
+        label: 'Stock Symbol'
+        span: auto
+        required: 1
+        type: text
+    stock_price:
+        label: 'Stock Price'
+        span: auto
+        required: 1
+        type: number

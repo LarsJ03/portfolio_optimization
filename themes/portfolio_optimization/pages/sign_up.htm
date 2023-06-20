@@ -1,0 +1,55 @@
+url = "/sign_up"
+layout = "default"
+title = "sign_up"
+
+[accountHandler]
+
+[account]
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+==
+<?php
+function onStart()
+{
+    $this['user'] = \RainLab\User\Models\User::with('portfolios.stocks')->find($this->param('id'));
+    dd($this['user']);
+}
+?>
+==
+{% if not user %}
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <h3>Sign in</h3>
+            {% partial account ~ '::signin' %}
+        </div>
+
+        <div class="col-md-6">
+            {% partial account ~ '::register' %}
+        </div>
+
+    </div>
+
+{% else %}
+
+    {% partial account ~ '::activation_check' %}
+
+    {% partial account ~ '::update' %}
+
+    {% partial account ~ '::deactivate_link' %}
+
+{% endif %}
+
+<div>
+Hello
+{% for portfolio in user.portfolios %}
+    <h2>{{ portfolio.name }}</h2>
+    <ul>
+        {% for stock in portfolio.stocks %}
+            <li>{{ stock.stock_name }}</li>
+        {% endfor %}
+    </ul>
+{% endfor %}
+</div>
