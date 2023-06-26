@@ -1,0 +1,32 @@
+v1.0.1:
+    - 'Initialize plugin'
+v1.0.2:
+    - 'Created table larsjacobs_portfoliomanager_portfolio_users'
+    - builder_table_create_larsjacobs_portfoliomanager_portfolio_users.php
+v1.0.3:
+    - 'Created table larsjacobs_portfoliomanager_portfolio_users'
+    - builder_table_create_larsjacobs_portfoliomanager_portfolio_users_2.php
+v1.0.4:
+    - 'Created table larsjacobs_portfoliomanager_stock_portfolio'
+    - builder_table_create_larsjacobs_portfoliomanager_stock_portfolio.php
+v1.0.5:
+    - 'Created table larsjacobs_portfoliomanager_portfolio_details'
+    - builder_table_create_larsjacobs_portfoliomanager_portfolio_details.php
+v1.0.6:
+    - 'Created table larsjacobs_portfoliomanager_stocks'
+    - builder_table_create_larsjacobs_portfoliomanager_stocks.php
+v1.0.7:
+    - 'Updated table larsjacobs_portfoliomanager_stocks'
+    - builder_table_update_larsjacobs_portfoliomanager_stocks.php
+v1.0.8:
+    - 'Updated table larsjacobs_portfoliomanager_portfolio_details'
+    - builder_table_update_larsjacobs_portfoliomanager_portfolio_details.php
+v1.0.9:
+    - 'Updated table larsjacobs_portfoliomanager_stock_portfolio'
+    - builder_table_update_larsjacobs_portfoliomanager_stock_portfolio.php
+v1.0.10:
+    - 'Updated table larsjacobs_portfoliomanager_stock_portfolio'
+    - builder_table_update_larsjacobs_portfoliomanager_stock_portfolio_2.php
+v1.0.11:
+    - 'Updated table larsjacobs_portfoliomanager_stocks'
+    - builder_table_update_larsjacobs_portfoliomanager_stocks_2.php

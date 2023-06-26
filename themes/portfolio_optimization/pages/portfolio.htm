@@ -1,0 +1,25 @@
+title = "portfolio"
+layout = "default"
+url = "/portfolio"
+==
+<?php
+function onOptimizePortfolio()
+{
+    // Define the command
+    $command = escapeshellcmd('python C:\portfolio_optimization\optimize.py');
+
+    // Execute the command
+    $output = shell_exec($command);
+
+    // Return the output
+    return $output;
+}
+?>
+==
+<button id="optimize-button" class="btn btn-primary">Optimize Portfolio</button>
+<div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+    <span class="sr-only">Loading...</span>
+</div>
+{% put scripts %}
+    {{ this.addJs('assets/js/optimize.js') }}
+{% endput %}

@@ -10,6 +10,8 @@ use Illuminate\Foundation\AliasLoader;
 use RainLab\User\Classes\UserRedirector;
 use RainLab\User\Models\MailBlocker;
 use RainLab\Notify\Classes\Notifier;
+use RainLab\User\Models\User as UserModel;
+use LarsJacobs\PortfolioManager\Models\Portfolio;
 
 /**
  * Plugin base class
@@ -29,32 +31,6 @@ class Plugin extends PluginBase
             'homepage' => 'https://github.com/rainlab/user-plugin'
         ];
     }
-
-    public function boot()
-{
-    Event::listen('backend.form.extendFields', function($widget) {
-
-        // Only for the User controller
-        if (!$widget->getControllers
-        () instanceof \RainLab\User\Controllers\Users) {
-            return;
-        }
-
-        // Only for the User model
-        if (!$widget->model instanceof \RainLab\User\Models\User) {
-            return;
-        }
-
-        $widget->addTabFields([
-            'portfolios' => [
-                'tab'   => 'Portfolios',
-                'label' => 'Portfolios',
-                'type'  => 'relation',
-                'span'  => 'full'
-            ]
-        ]);
-    });
-}
 
     /**
      * register
@@ -237,4 +213,18 @@ class Plugin extends PluginBase
             ]);
         });
     }
+
+    public function boot()
+    {
+        UserModel::extend(function($model) {
+            $model->belongsToMany['portfolios'] = [
+                'LarsJacobs\PortfolioManager\Models\Portfolio',
+                'table' => 'larsjacobs_portfoliomanager_portfolio_users', // pivot table name
+                'key' => 'user_id', // key on the pivot table pointing to the user
+                'otherKey' => 'portfolio_id' // key on the pivot table pointing to the portfolio
+            ];
+        });
+    }
+
+
 }

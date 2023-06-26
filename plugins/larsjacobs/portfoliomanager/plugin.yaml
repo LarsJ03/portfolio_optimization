@@ -1,0 +1,24 @@
+plugin:
+    name: 'larsjacobs.portfoliomanager::lang.plugin.name'
+    description: 'larsjacobs.portfoliomanager::lang.plugin.description'
+    author: 'Lars Jacobs'
+    icon: oc-icon-briefcase
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: 'Portfolio Optimization'
+        url: larsjacobs/portfoliomanager/portfolioscontroller
+        icon: icon-briefcase
+        sideMenu:
+            side-menu-item:
+                label: Portfolio
+                url: larsjacobs/portfoliomanager/portfolioscontroller
+                icon: icon-briefcase
+            side-menu-item2:
+                label: 'Portfolio Details'
+                url: larsjacobs/portfoliomanager/portfoliodetailscontroller
+                icon: icon-user-plus
+            side-menu-item3:
+                label: Stocks
+                url: larsjacobs/portfoliomanager/stockscontroller
+                icon: icon-bank

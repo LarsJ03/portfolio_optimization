@@ -1,0 +1,11 @@
+fields:
+    portfolio_id:
+        label: 'Portfolio ID'
+        span: auto
+        required: 1
+        type: number
+    description:
+        label: Description
+        span: auto
+        required: 0
+        type: text

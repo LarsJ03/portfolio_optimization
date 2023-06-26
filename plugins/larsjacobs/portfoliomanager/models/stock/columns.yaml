@@ -1,0 +1,21 @@
+columns:
+    stock_id:
+        label: 'Stock ID'
+        type: number
+        searchable: true
+        sortable: true
+    stock_name:
+        label: 'Stock Name'
+        type: text
+        searchable: true
+        sortable: true
+    stock_symbol:
+        label: 'Stock Symbol'
+        type: text
+        searchable: true
+        sortable: true
+    stock_price:
+        label: 'Stock Price'
+        type: number
+        searchable: true
+        sortable: true

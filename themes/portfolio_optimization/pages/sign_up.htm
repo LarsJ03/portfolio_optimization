@@ -13,7 +13,6 @@ requirePassword = 0
 function onStart()
 {
     $this['user'] = \RainLab\User\Models\User::with('portfolios.stocks')->find($this->param('id'));
-    dd($this['user']);
 }
 ?>
 ==
@@ -41,15 +40,3 @@ function onStart()
     {% partial account ~ '::deactivate_link' %}
 
 {% endif %}
-
-<div>
-Hello
-{% for portfolio in user.portfolios %}
-    <h2>{{ portfolio.name }}</h2>
-    <ul>
-        {% for stock in portfolio.stocks %}
-            <li>{{ stock.stock_name }}</li>
-        {% endfor %}
-    </ul>
-{% endfor %}
-</div>

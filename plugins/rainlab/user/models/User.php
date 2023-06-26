@@ -10,7 +10,9 @@ use October\Rain\Auth\Models\User as UserBase;
 use RainLab\User\Models\Settings as UserSettings;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use October\Rain\Auth\AuthException;
-
+use System\Classes\PluginBase;
+use RainLab\User\Models\User as UserModel;
+use LarsJacobs\PortfolioManager\Models\PortfolioStock;
 
 class User extends UserBase
 {
@@ -566,8 +568,4 @@ class User extends UserBase
     }
 
 
-    public $hasOne = [
-        'portfolio' => ['LarsJacobs\Portfolio\Models\Portfolio']
-    ];
-    
 }
