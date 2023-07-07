@@ -1,14 +1,10 @@
-<?php 
-
-namespace LarsJacobs\Portfoliomanager\Controllers;
+<?php namespace LarsJacobs\Dashboard\Controllers;
 
 use Backend;
 use BackendMenu;
 use Backend\Classes\Controller;
-use Illuminate\Support\Facades\Auth; // Include the Auth facade
-use LarsJacobs\Portfoliomanager\Models\Portfolio; // Include the Portfolio model
 
-class PortfoliosController extends Controller
+class DashboardController extends Controller
 {
     public $implement = [
         \Backend\Behaviors\FormController::class,
@@ -21,10 +17,7 @@ class PortfoliosController extends Controller
     public function __construct()
     {
         parent::__construct();
-        BackendMenu::setContext('LarsJacobs.Portfoliomanager', 'main-menu-item', 'side-menu-item');
+        BackendMenu::setContext('LarsJacobs.Dashboard', 'main-menu-item');
     }
 
-    
-
 }
-

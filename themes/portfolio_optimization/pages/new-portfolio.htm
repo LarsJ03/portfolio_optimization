@@ -1,0 +1,92 @@
+url = "/new-portfolio"
+layout = "default"
+title = "New Portfolio"
+
+[session]
+security = "user"
+redirect = "sign_up"
+checkToken = 0
+==
+<?php
+function onOptimizePortfolio()
+{
+    // Get the current user
+    $user = Auth::getUser();  
+    
+    // Get the input from the form
+    $portfolioName = post('portfolio_name');
+    $portfolioDescription = post('portfolio_description');
+    $investmentStyle = post('investment_style');
+    $userId = $user->id;
+    $portfolioId = DB::table('larsjacobs_portfoliomanager_portfolio_users')->insertGetId([
+        'user_id' => $user->id
+    ]);
+
+    Log::info("portfolio_id: " . $portfolioId);
+
+    // Check if portfolio_name is provided
+    if (empty($portfolioName)) {
+        // Stop execution and return an error message
+        throw new ApplicationException('Portfolio Name must be filled out');
+    }
+
+    // Check if investment_style is provided, otherwise default to 'normal'
+    if (empty($investmentStyle)) {
+        $investmentStyle = 'normal';
+    }
+
+    Log::info("user_id = "  . $user->id);
+
+    // Define the command
+    $portfolioName = addslashes($portfolioName);
+    $portfolioDescription = addslashes($portfolioDescription);
+    $command = escapeshellcmd('python C:\\portfolio_optimization\\optimize.py --investment_style ' . $investmentStyle . ' --user_id ' . $userId . ' --portfolio_name "' . $portfolioName . '" --portfolio_description "' . $portfolioDescription . '" 2>&1');
+
+
+    // Execute the command
+    $output = shell_exec($command);
+
+    // Log the raw output from the Python script
+    Log::info("Raw output from Python script: " . $output);
+
+      
+    // Return a success message
+    return $portfolioId;
+}
+?>
+==
+{% component 'session' %}
+<form id="optimize-portfolio-form">
+    <div class="form-group">
+        <label for="portfolio-name">Portfolio Name:</label>
+        <input type="text" id="portfolio-name" name="portfolio_name" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="portfolio-description">Portfolio Description:</label>
+        <textarea id="portfolio-description" name="portfolio_description" class="form-control"></textarea>
+    </div>
+
+    <!-- Investment Style -->
+    <div class="form-group">
+        <label for="investment-style">Investment Style:</label>
+        <input type="range" id="investment-style" name="investment_style" min="1" max="3" step="1" class="w-100">
+        <ul id="investment-labels" class="list-unstyled d-flex justify-content-between mt-1">
+            <li>Defensive</li>
+            <li>Normal</li>
+            <li>Aggressive</li>
+        </ul>
+    </div>
+
+    <div class="d-flex align-items-center">
+        <button
+            id="optimize-button"
+            data-request="onOptimizePortfolio"
+            data-request-loading="#loading-spinner"
+            class="btn btn-primary">
+            Optimize Portfolio
+        </button>
+        <div id="loading-spinner" class="spinner-border text-primary ml-3" role="status" style="display: none;">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</form>

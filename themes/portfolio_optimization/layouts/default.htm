@@ -22,7 +22,7 @@
 
     <!-- Page Content -->
     <main class="container py-4" style="width: 70%; margin: auto;">
-    {% page %}
+        {% page %}
     </main>
 
     <!-- Footer -->
@@ -31,11 +31,10 @@
     </footer>
 
     {% framework extras %}
-
-    {% put scripts %}
-        <script src="{{ 'assets/js/optimize.js'|theme }}"></script>
-    {% endput %}
     {% scripts %}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 </body>
 </html>

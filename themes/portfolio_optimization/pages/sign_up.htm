@@ -8,6 +8,11 @@ title = "sign_up"
 paramCode = "code"
 forceSecure = 0
 requirePassword = 0
+
+[session]
+security = "guest"
+redirect = "my-account"
+checkToken = 0
 ==
 <?php
 function onStart()
@@ -16,8 +21,7 @@ function onStart()
 }
 ?>
 ==
-{% if not user %}
-
+{% component 'session' %}
     <div class="row">
 
         <div class="col-md-6">
@@ -30,13 +34,3 @@ function onStart()
         </div>
 
     </div>
-
-{% else %}
-
-    {% partial account ~ '::activation_check' %}
-
-    {% partial account ~ '::update' %}
-
-    {% partial account ~ '::deactivate_link' %}
-
-{% endif %}

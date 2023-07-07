@@ -20,6 +20,10 @@ class Portfolio extends Model
     public $rules = [
     ];
 
+    public $hasOne = [
+        'details' => 'LarsJacobs\PortfolioManager\Models\PortfolioDetail'
+    ];
+
     public $belongsToMany = [
         'users' => [
             'RainLab\User\Models\User',
@@ -34,6 +38,10 @@ class Portfolio extends Model
             'otherKey' => 'stock_id', // key on the pivot table pointing to the stock
             'pivot' => ['quantity'] // quantity is also included in the pivot table
         ]
+    ];
+
+    public $hasMany = [
+        'efficientFrontier' => ['LarsJacobs\Portfoliomanager\Models\EfficientFrontier']
     ];
 
     

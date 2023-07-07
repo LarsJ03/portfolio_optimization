@@ -1,6 +1,11 @@
-title = "homepage"
-layout = "default"
 url = "/"
+layout = "default"
+title = "homepage"
+
+[session]
+security = "all"
+checkToken = 0
 ==
+{% component 'session' %}
 <h2>Welcome to My Portfolio Analyzer</h2>
 <p>Track and analyze your investments in real time.</p>
