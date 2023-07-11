@@ -1,0 +1,10 @@
+fields:
+    name:
+        label: 'examify.exams::lang.exams.questiontypes.type'
+        span: left
+        type: text
+    description:
+        label: 'examify.exams::lang.exams.general.description'
+        size: ''
+        span: left
+        type: textarea

@@ -1,0 +1,51 @@
+[staticMenu MyAccountMenu]
+code="accountmenu"
+
+==
+<?php
+
+	use Examify\Exams\Models\Users as Users;
+	
+	function onStart()
+	{
+		$this['user'] = $user = Users::getUser();
+	}
+?>
+==
+{% if user %}
+<ul class="navbar-nav mr-auto d-lg-none mt-3">
+	{% for item in MyAccountMenu.menuItems %}
+	<li class="nav-item {% if item.isActive %} active {% endif %}">
+    <a class="nav-link px-3" href="{{ item.url }}" >{{ item.title }}
+      {% if item.isActive %}
+      <span class="sr-only">(current)</span>
+      {% endif %}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+<ul class="navbar-nav ml-auto nav-flex-icons d-none d-lg-block">
+	{% if user %}
+  <li class="nav-item dropdown">
+    <a class="nav-link " id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      {{ user.name }} {{ user.surname }}
+    </a>
+		<div class="dropdown-menu dropdown-menu-lg-right dropdown-primary"
+		  aria-labelledby="navbarDropdownMenuLink-55">
+		  {% for item in MyAccountMenu.menuItems %}
+				<a class="dropdown-item {% if item.isActive %} active {% endif %}" href="{{ item.url }}"> 
+					{{ item.title }}
+				</a>
+		  {% endfor %}
+		</div>
+	</li>
+	{% else %}
+	<li class="nav-item" >
+		<a class="nav-link waves-effect waves-light px-3" href="/login">
+			Inloggen
+		</a>
+	</li>
+	{% endif %}
+</ul>

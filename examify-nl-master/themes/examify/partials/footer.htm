@@ -1,0 +1,84 @@
+description = "Footer"
+
+[staticMenu MyAccountMenu]
+code="accountmenu"
+==
+<?php
+    public function onStart()
+    {
+        $schoolyear = $this->param('year', \Examify\Exams\Models\Classes::getCurrentYear());
+        $this['NavbarItemsMain'] = \Examify\Exams\Models\NavbarManager::getNavbarItemsMain($schoolyear);
+    }
+?>
+==
+<footer >
+    <div class="container">
+        <div class="row" >
+            <div class="col-12">
+                <div class="mt-5 w-100" ></div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-primary my-footer-placeholder">
+        <div class="container px-0 text-white">
+            <div class="container">
+                <div class="row d-flex justify-content-center ">
+                    <div class="col-sm-3 my-5">
+                        <div class="footer-title mb-3" >
+                            Examify.nl
+                        </div>
+                        <ul class="list-unstyled">
+                            <li><div class="divide-nav mt-0"></div></li>
+                            <li>KvK: 77415159</li>
+                            <li>contact@examify.nl</li>
+                            <li>scholen@examify.nl</li>
+                        </ul>
+                        <div class="d-flex flex-row align-items-center" >
+                            <a class="mr-1" href="https://www.instagram.com/examify.nl/" target="_blank" ><img src="{{ 'assets/img/icons/glyph-logo_May2016-2.png' | theme }}" width="42px" /></a>
+                            <a class="ml-2" href="https://nl.linkedin.com/company/examify-nl" target="_blank" ><img src="{{ 'assets/img/icons/LI-In-Bug.png' | theme }}" width="48px" /></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 my-5">
+                        <div class="footer-title mb-3" >
+                            Navigeren
+                        </div>
+                        <ul class="list-unstyled">
+                            <li><div class="divide-nav mt-0"></div></li>
+                            {% for item in NavbarItemsMain if item.show %}
+                            <li><a href="{{ item.url }}" >{{ item.name }}</a></li>
+                            {% endfor %}
+                            <li><div class="divide-nav"></div></li>
+                            <li><a href="/login" >Inloggen</a></li>
+                            {% for item in MyAccountMenu.menuItems %}
+                            <li><a href="{{ item.url }}" >{{ item.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-sm-3 my-5">
+                        <div class="footer-title mb-3" >
+                            Aanbod
+                        </div>
+                        <ul class="list-unstyled">
+                            <li><div class="divide-nav mt-0"></div></li>
+                            <li>Engels (havo &amp; vwo)</li>
+                            <li>Duits (havo &amp; vwo)</li>
+                            <li>Frans (havo &amp; vwo)</li>
+                            <li>Spaans (havo &amp; vwo)</li>
+                            <li>Nederlands (havo &amp; vwo)</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3 my-5">
+                        <div class="footer-title mb-3" >
+                            Privacy en voorwaarden
+                        </div>
+                        <ul class="list-unstyled">
+                            <li><div class="divide-nav mt-0"></div></li>
+                            <li><a href="/privacyverklaring" >Privacy</a></li>
+                            <li><a href="/voorwaarden" >Voorwaarden</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,50 @@
+.dashboard-container {
+	@include flexbox;
+
+	@include mobile {
+		@include flex-wrap(wrap);
+	}
+
+	.navbar-column, .content-column {
+		@include mobile {
+			@include flex-basis(100%);
+			@include flex-shrink(0);
+			@include flex-grow(0);
+		}
+
+	}
+	.navbar-column {
+
+		@include tablet {
+			max-width: 300px;
+		}
+	}
+
+	.content-column {
+		@include flex-grow(1);
+
+		.content-inside {
+			@include flex-grow(0);
+			@include flex-shrink(0);
+			@include flex-basis(100%);
+		}
+	}
+}
+
+.graph-card {
+	border-radius: 32px;
+}
+.graph-card-content {
+	border-bottom-left-radius: 32px;
+	border-bottom-right-radius: 32px;
+}
+
+.graph-card-title {
+	border-top-left-radius: 32px;
+	border-top-right-radius: 32px;
+}
+
+.ps-row {
+	// practice session id
+	color: $gray-900;
+}

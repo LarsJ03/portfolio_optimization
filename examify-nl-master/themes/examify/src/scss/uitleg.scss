@@ -1,0 +1,82 @@
+.uitleg-icon {
+
+	height: 100px;
+
+	img {
+		max-width: 250px;
+		max-height: 100%;
+	}
+}
+
+// limit the horizontal lines in mobile
+hr {
+	@include mobile {
+		max-width: 250px;
+	}
+}
+
+.border-card {
+	border: 4px solid #efefef;
+}
+
+.background-table-grey {
+	background-color: #fafafa;
+}
+.background-table-white {
+	background-color: #ffffff;
+}
+
+.herkennen {
+	p:not(:first-child) 
+	{
+		background-color: #eee;
+		border-radius: .25rem!important;
+		padding: 1rem;
+	}
+}
+
+.aanpak {
+	p {
+		padding: 1rem;
+		background-color: #e3f2fd;
+	}
+	> ol {
+	    display: block;
+	    padding: 0 0 0 2.5rem;
+	    list-style: none;
+	    overflow: hidden;
+	    counter-reset: numList;
+	}
+	> ol > li {
+	    float: left;
+	    position: relative;
+	    margin-bottom: 1.5rem;
+	}
+	> ol > li:before {
+	    counter-increment: numList;
+	    content: counter(numList);
+	    
+	    float: left;
+	    position: absolute;
+	    left: -2.5rem;
+	    
+	    font: bold 12px sans-serif;
+	    text-align: center;
+	    color: #fff;
+	    line-height: 1.5rem;
+	    
+	    width: 1.5rem; height: 1.5rem;
+	    
+	    -moz-border-radius: 999px;
+	    border-radius: 999px;
+
+	    @extend .bg-primary;
+	}
+}
+/*
+.container.main-line {
+	@include desktop {
+		border-left: 10px solid #43c3f7;
+	}
+}
+*/

@@ -1,0 +1,92 @@
+[staticPage]
+useContent = 1
+default = 0
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = false %}
+
+<div class="container main-line pt-5 pb-2">
+
+  <section class="team-section text-center"  >
+
+    <div class="row" >
+      <div class="col-12" >
+        <!-- Section heading -->
+        <h3 class="pb-2 mb-4">Een optimale voorbereiding.</h3>
+        <!-- Section description -->
+        <p class="text-muted w-responsive mx-auto mb-5">
+          {variable name="over_ons_intro" label="Tekst intro" tab="Intro" type="textarea" }{/variable}
+          {{ over_ons_intro | nl2br }}</p>
+      </div>
+    </div>
+
+    {repeater name="our_team" prompt="Voeg teamlid toe" tab="Team"}
+      {variable name="name" label="Naam" tab="Team" type="text" }{/variable}
+      {variable name="role" label="Functie" tab="Team" type="text" }{/variable}
+      {variable name="desc" label="Beschrijving" tab="Team" type="textarea" }{/variable}
+      {variable name="image" label="Foto" tab="Team" type="mediafinder" }{/variable}
+    {/repeater}
+
+    <!-- Grid row -->
+    <div class="row text-center">
+      <div class="col-12" >
+        <hr class="small" >
+        <!-- Section heading -->
+        <h3 class="pb-2 mb-5 mt-5">Het team van Examify.</h3>
+      </div>
+
+      {% for member in our_team %}
+        <!-- Grid column -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="avatar mx-auto">
+          <img src="{{ member.image | media }}" class="rounded-circle z-depth-1"
+            alt="Sample avatar">
+        </div>
+        <h5 class="mt-4 mb-3">{{ member.name }}</h5>
+        <p class="text-uppercase blue-text"><strong>{{ member.role }}</strong></p>
+        <p class="grey-text">{{ member.desc }}</p>
+      </div>
+      <!-- Grid column -->
+      {% endfor %}
+
+    </div>
+    <!-- Grid row -->
+
+  </section>
+  <!--Section: Content-->
+
+  <!--Section: Content-->
+  <section class="dark-grey-text">
+
+    <!-- Section heading -->
+    <hr class="small" />
+    <h2 class="text-center mb-4 mt-5 pb-2">Een doordachte methode.</h2>
+    <!-- Section description -->
+
+    {variable name="methode_text" label="Methode" tab="Methode" type="textarea" }{/variable}
+    <div class="row" >
+      <div class="col-12" >
+        <div class="mx-auto w-responsive mb-5" style="max-width: 800px;">
+          {{ methode_text }}
+        </div>
+      </div>
+    </div>
+    {repeater name="bullet_points" prompt="Voeg punt toe" tab="Methode"}
+      {variable name="desc" label="Omschrijving" tab="Methode" type="text" }{/variable}
+    {/repeater}
+    <div class="row" >
+      <div class="col-12 d-flex align-items-center justify-content-center" >
+        <div class="list-group-flush " style="max-width: 650px;" >
+          {% for point in bullet_points %}
+          <div class="list-group-item d-flex align-items-center" >
+            <i class="fas fa-check fa-2x mr-4 blue p-3 white-text rounded " aria-hidden="true"></i><div>{{ point.desc }}</div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+</section>
+</div>
+
+{% partial 'page-end' %}

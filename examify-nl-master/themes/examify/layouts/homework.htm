@@ -1,0 +1,94 @@
+[ExamifyPracticeSessionSelector]
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\Exams as Exams;
+  use Examify\Exams\Models\Courses as Courses;
+  use Examify\Exams\Models\PracticeSessions as PracticeSessions;
+  use Carbon\Carbon as Carbon;
+
+  function onStart()
+  {
+  	// check the user is logged in
+  	$this['user'] = $user = Users::getUser();
+
+  	if($user)
+  	{
+  		$this['homework'] = $homework = $user->getHomeworkSessions();
+
+  		// split the homework in future and past
+  		$this['homework_open'] = $homework_open 		= $homework->where('finished', false)->sortBy('due_date');
+  		$this['homework_done'] = $homework_done 		= $homework->where('finished', true)->sortByDesc('due_date');
+
+  	}
+
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+<div class="container exam-questions">
+	<div class="row my-3">
+    
+	  <div class="col-12">
+	    <h1 >Mijn huiswerk </h1>
+	    {% if not user %}
+	    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+	      Je moet ingelogd zijn om je huiswerkopdrachten te kunnen bekijken. Inloggen kan <a href="/login" >hier</a>.
+	    </div>
+	    {% else %}
+	    <div class="d-flex" >
+			Hoi {{ user.name }}. Goed je hier te zien. Op deze pagina staat een overzicht van al je gemaakte en openstaande huiswerkopdrachten. Succes met je huiswerk en vergeet niet dat dit allemaal helpt om straks je examens goed af te sluiten!
+			</div>
+	    {% endif %}
+	  </div>
+
+	</div>
+
+	{% if user %}
+	{# in case the user has no school coupled, put here the form to couple the licence as well #}
+	<div class="row" >
+		<div class="col-md-12 mt-3">
+			Openstaand huiswerk
+			<hr />
+		</div>
+	</div>
+	{% for mySession in homework_open %}
+  	{% partial 'examifyHelpers/practiceSessionCard' mySession=mySession hidehomework=true %}
+  {% else %}
+	<div class="row">
+		<div class="col-12 d-flex">
+	  	<!-- geen oefensessies gevonden -->
+	    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+	      Je hebt geen openstaande huiswerkopdrachten. Je kunt natuurlijk ook nog altijd zelf oefensessies aanmaken! Ga hiervoor naar <a href="/oefenen" >Oefenen</a>.
+	    </div>
+	  </div>
+	</div>
+  {% endfor %}
+	
+	<div class="row" >
+		<div class="col-md-12 mt-4">
+			Afgerond huiswerk
+			<hr />
+		</div>
+	</div>
+  {% for mySession in homework_done %}
+  	{% partial 'examifyHelpers/practiceSessionCard' mySession=mySession hidehomework=true %}
+  {% else %}
+	<div class="row">
+		<div class="col-12 d-flex">
+	  	<!-- geen oefensessies gevonden -->
+	    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+	      Je hebt nog geen huiswerkopdracht afgerond.
+	    </div>
+	  </div>
+	</div>
+  {% endfor %}
+  {% endif %}
+  
+</div>
+
+{% partial 'page-end' %}

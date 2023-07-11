@@ -1,0 +1,386 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table examify_exams_questions'
+    - builder_table_create_examify_exams_questions.php
+1.0.3:
+    - 'Created table examify_exams_courses'
+    - builder_table_create_examify_exams_courses.php
+1.0.4:
+    - 'Created table examify_exams_question_types'
+    - builder_table_create_examify_exams_question_types.php
+1.0.5:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions.php
+1.0.6:
+    - 'Created table examify_exams_exams'
+    - builder_table_create_examify_exams_exams.php
+1.0.7:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams.php
+1.0.8:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_2.php
+1.0.9:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_2.php
+1.0.10:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_3.php
+1.0.11:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_4.php
+1.0.12:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_5.php
+1.0.13:
+    - 'Created table examify_exams_answers'
+    - builder_table_create_examify_exams_answers.php
+1.0.14:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_6.php
+1.0.15:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_7.php
+1.0.16:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_8.php
+1.0.17:
+    - 'Updated table examify_exams_answers'
+    - builder_table_update_examify_exams_answers.php
+1.0.18:
+    - 'Updated table examify_exams_answers'
+    - builder_table_update_examify_exams_answers_2.php
+1.0.19:
+    - 'Updated table examify_exams_answers'
+    - builder_table_update_examify_exams_answers_3.php
+1.0.20:
+    - 'Updated table examify_exams_answers'
+    - builder_table_update_examify_exams_answers_4.php
+1.0.21:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_3.php
+1.0.22:
+    - 'Created table examify_exams_questions_answers_logs'
+    - builder_table_create_examify_exams_questions_answers_logs.php
+1.0.23:
+    - 'Updated table examify_exams_questions_answers_logs'
+    - builder_table_update_examify_exams_questions_answers_logs.php
+1.0.24:
+    - 'Created table examify_exams_texts'
+    - builder_table_create_examify_exams_texts.php
+1.0.25:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_4.php
+1.0.26:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_5.php
+1.0.27:
+    - 'Updated table examify_exams_texts'
+    - builder_table_update_examify_exams_texts.php
+1.0.28:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_9.php
+1.0.29:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_10.php
+1.0.30:
+    - 'Updated table examify_exams_answers'
+    - builder_table_update_examify_exams_answers_5.php
+1.0.31:
+    - 'Created table examify_exams_practice_sessions'
+    - builder_table_create_examify_exams_practice_sessions.php
+1.0.32:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_6.php
+1.0.33:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_7.php
+1.0.34:
+    - 'Created table examify_exams_users_subscriptions'
+    - builder_table_create_examify_exams_users_subscriptions.php
+1.0.35:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_8.php
+1.0.36:
+    - 'Created table examify_exams_users_settings'
+    - builder_table_create_examify_exams_users_settings.php
+1.0.37:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions.php
+1.0.38:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_2.php
+1.0.39:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_3.php
+1.0.40:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_9.php
+1.0.41:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_4.php
+1.0.42:
+    - 'Created table examify_exams_practice_sessions_results_log'
+    - builder_table_create_examify_exams_practice_sessions_results_log.php
+1.0.43:
+    - 'Updated table examify_exams_practice_sessions_results_log'
+    - builder_table_update_examify_exams_practice_sessions_results_logs.php
+1.0.44:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_11.php
+1.0.45:
+    - 'Updated table examify_exams_practice_sessions_results_logs'
+    - builder_table_update_examify_exams_practice_sessions_results_logs_2.php
+1.0.46:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_10.php
+1.0.47:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_11.php
+1.0.48:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_5.php
+1.0.49:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_6.php
+1.0.50:
+    - 'Created table examify_exams_question_types_explanations'
+    - builder_table_create_examify_exams_question_types_explanations.php
+1.0.51:
+    - 'Updated table examify_exams_question_types_explanations'
+    - builder_table_update_examify_exams_question_types_explanations.php
+1.0.52:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_12.php
+1.0.53:
+    - 'Created table examify_exams_schools'
+    - builder_table_create_examify_exams_schools.php
+1.0.54:
+    - 'Created table examify_exams_classes'
+    - builder_table_create_examify_exams_classes.php
+1.0.55:
+    - 'Created table examify_exams_licenses'
+    - builder_table_create_examify_exams_licenses.php
+1.0.56:
+    - 'Updated table examify_exams_licenses'
+    - builder_table_update_examify_exams_licenses.php
+1.0.57:
+    - 'Created table examify_exams_schools_users'
+    - builder_table_create_examify_exams_schools_users.php
+1.0.58:
+    - 'Updated table examify_exams_schools_users'
+    - builder_table_update_examify_exams_schools_users.php
+1.0.59:
+    - 'Updated table examify_exams_schools_users'
+    - builder_table_update_examify_exams_schools_users_2.php
+1.0.60:
+    - 'Updated table examify_exams_licenses'
+    - builder_table_update_examify_exams_licenses_2.php
+1.0.61:
+    - 'Updated table examify_exams_licenses'
+    - builder_table_update_examify_exams_licenses_3.php
+1.0.62:
+    - 'Updated table examify_exams_schools_users'
+    - builder_table_update_examify_exams_schools_users_3.php
+1.0.63:
+    - 'Created table examify_exams_classes_users'
+    - builder_table_create_examify_exams_classes_users.php
+1.0.64:
+    - 'Created table examify_exams_schoolyears'
+    - builder_table_create_examify_exams_schoolyears.php
+1.0.65:
+    - 'Updated table examify_exams_classes'
+    - builder_table_update_examify_exams_classes.php
+1.0.66:
+    - 'Drop table examify_exams_schoolyears'
+    - builder_table_delete_examify_exams_schoolyears.php
+1.0.67:
+    - 'Updated table examify_exams_classes'
+    - builder_table_update_examify_exams_classes_2.php
+1.0.68:
+    - 'Updated table examify_exams_classes'
+    - builder_table_update_examify_exams_classes_3.php
+1.0.69:
+    - 'Updated table examify_exams_classes_users'
+    - builder_table_update_examify_exams_classes_users.php
+1.0.70:
+    - 'Updated table examify_exams_licenses'
+    - builder_table_update_examify_exams_licenses_4.php
+1.0.71:
+    - 'Updated table examify_exams_schools_users'
+    - builder_table_update_examify_exams_schools_users_4.php
+1.0.72:
+    - 'Updated table examify_exams_practice_sessions_results_logs'
+    - builder_table_update_examify_exams_practice_sessions_results_logs_3.php
+1.0.73:
+    - 'Updated table examify_exams_practice_sessions_results_logs'
+    - builder_table_update_examify_exams_practice_sessions_results_logs_4.php
+1.0.74:
+    - 'Updated table examify_exams_practice_sessions_results_logs'
+    - builder_table_update_examify_exams_practice_sessions_results_logs_5.php
+1.0.75:
+    - 'Updated table examify_exams_practice_sessions_results_logs'
+    - builder_table_update_examify_exams_practice_sessions_results_logs_6.php
+1.0.76:
+    - 'Created table examify_exams_homework'
+    - builder_table_create_examify_exams_homework.php
+1.0.77:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_7.php
+1.0.78:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_8.php
+1.0.79:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework.php
+1.0.80:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_9.php
+1.0.81:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_2.php
+1.0.82:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_3.php
+1.0.83:
+    - 'Updated table examify_exams_texts'
+    - builder_table_update_examify_exams_texts_2.php
+1.0.84:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_13.php
+1.0.85:
+    - 'Updated table examify_exams_texts'
+    - builder_table_update_examify_exams_texts_3.php
+1.0.86:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_14.php
+1.0.87:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_10.php
+1.0.88:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_4.php
+1.0.89:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_15.php
+1.0.90:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_16.php
+1.0.91:
+    - 'Updated table examify_exams_questions'
+    - builder_table_update_examify_exams_questions_17.php
+1.0.92:
+    - 'Created table examify_exams_shoppingcart'
+    - 2020_12_22_100842_create_shoppingcart_table.php
+1.0.93:
+    - 'Updated table examify_exams_courses'
+    - builder_table_update_examify_exams_courses.php
+1.0.94:
+    - 'Created table examify_exams_orders'
+    - builder_table_create_examify_exams_orders.php
+1.0.95:
+    - 'Updated table examify_exams_orders'
+    - builder_table_update_examify_exams_orders.php
+1.0.96:
+    - 'Updated table examify_exams_orders'
+    - builder_table_update_examify_exams_orders_2.php
+1.0.97:
+    - 'Updated table examify_exams_orders'
+    - builder_table_update_examify_exams_orders_3.php
+1.0.98:
+    - 'Updated table examify_exams_licenses'
+    - builder_table_update_examify_exams_licenses_5.php
+1.0.99:
+    - 'Updated table examify_exams_orders'
+    - builder_table_update_examify_exams_orders_4.php
+1.0.100:
+    - 'Created table examify_exams_vouchers'
+    - builder_table_create_examify_exams_vouchers.php
+1.0.101:
+    - 'Updated table examify_exams_vouchers'
+    - builder_table_update_examify_exams_vouchers.php
+1.0.102:
+    - 'Updated table examify_exams_orders'
+    - builder_table_update_examify_exams_orders_5.php
+1.0.103:
+    - 'Updated table examify_exams_orders'
+    - builder_table_update_examify_exams_orders_6.php
+1.0.104:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_5.php
+1.0.105:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_11.php
+1.0.106:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_12.php
+1.0.107:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_13.php
+1.0.108:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_14.php
+1.0.109:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_15.php
+1.0.110:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_16.php
+1.0.111:
+    - 'Updated table examify_exams_exams'
+    - builder_table_update_examify_exams_exams_12.php
+1.0.112:
+    - 'Created table examify_exams_question_types_trials'
+    - builder_table_create_examify_exams_question_types_trials.php
+1.0.113:
+    - 'Updated table examify_exams_question_types_trials'
+    - builder_table_update_examify_exams_question_types_trials.php
+1.0.114:
+    - 'Updated table examify_exams_question_types_trials'
+    - builder_table_update_examify_exams_question_types_trials_2.php
+1.0.115:
+    - 'Updated table examify_exams_question_types_trials'
+    - builder_table_update_examify_exams_question_types_trials_3.php
+1.0.116:
+    - 'Updated table examify_exams_question_types_trials'
+    - builder_table_update_examify_exams_question_types_trials_4.php
+1.0.117:
+    - 'Updated table examify_exams_question_types_trials'
+    - builder_table_update_examify_exams_question_types_trials_5.php
+1.0.118:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_17.php
+1.0.119:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_18.php
+1.0.120:
+    - 'Updated table examify_exams_schools_users'
+    - builder_table_update_examify_exams_schools_users_5.php
+1.0.121:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_19.php
+1.0.122:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_6.php
+1.0.123:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_7.php
+1.0.124:
+    - 'Updated table examify_exams_practice_sessions'
+    - builder_table_update_examify_exams_practice_sessions_20.php
+1.0.125:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_8.php
+1.0.126:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_9.php
+1.0.127:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_10.php
+1.0.128:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_11.php
+1.0.129:
+    - 'Updated table examify_exams_homework'
+    - builder_table_update_examify_exams_homework_12.php

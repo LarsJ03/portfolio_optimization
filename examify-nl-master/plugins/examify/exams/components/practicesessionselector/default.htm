@@ -1,0 +1,303 @@
+	<h2 class="small font-weight-light mt-3">Start met oefenen</h2>
+	{% for course in lics %}
+	<a class="collapseme collapsed d-flex flex-column mt-1" type="button" data-toggle="collapse" data-target="#collapse-course-{{ course.id }}" aria-expanded="false" aria-controls="collapse-course-{{ course.id }}">
+    <div class="d-flex flex-row align-items-center p-3 grey lighten-4 " >
+    	{% set flagpath = 'assets/img/flags/' ~ course.getFlagUrl() %}
+    	<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+    	<span>{{ course.name }} [{{ course.level }}]</span>
+			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+		</div>
+  </a>
+  <div class="collapse grey lighten-4" id="collapse-course-{{ course.id }}">
+  	<div class="p-3" >
+  		<a class="collapseme collapsed d-flex flex-column mt-1" type="button" data-toggle="collapse" data-target="#collapse-course-trials-{{ course.id }}" aria-expanded="false" aria-controls="collapse-course-trials-{{ course.id }}">
+		    <div class="d-flex flex-row align-items-center p-3 grey lighten-4 " >
+		    	<span>Vraagtypen oefenen</span>
+					<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+				</div>
+		  </a>
+		  <div class="collapse grey lighten-4" id="collapse-course-trials-{{ course.id }}">
+		  	<div class="p-3" >
+	  		{% set alltrials = course.getQuestionTypesTrialsGroupedByType() %}
+				{% for qtype_id, trials in alltrials %}
+					{% set qtype = course.getQuestionTypeById(qtype_id) %}
+					<div class="d-flex flex-column" >
+						<span>{{ qtype.name }}</span>
+						{% for trial in trials %}
+							{% set hasone = false %}
+							{% for mySession in practiceSessionsPerCourse[course.id] if mySession.question_types_trials_id == trial.id %}
+								{% partial 'examifyHelpers/questionTypesCard' mySession=mySession trial=trial selector=true %}
+								{% set hasone = true %}
+							{% endfor %}
+							{% if not hasone %}
+								{% partial 'examifyHelpers/questionTypesCardInactive' course=course trial=trial %}
+							{% endif %}
+						{% endfor %}
+						</div>
+				{%  else  %}
+					<div class="row">
+						<div class="col-12 d-flex">
+					  	<!-- geen oefensessies gevonden -->
+					    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+					      Er zijn helaas nog geen sets van oefenvragen beschikbaar voor dit vak.
+					    </div>
+					  </div>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+			<a class="collapseme collapsed d-flex flex-column mt-1" type="button" data-toggle="collapse" data-target="#collapse-course-exams-{{ course.id }}" aria-expanded="false" aria-controls="collapse-course-exams-{{ course.id }}">
+		    <div class="d-flex flex-row align-items-center p-3 grey lighten-4 " >
+		    	<span>Volledige examens oefenen</span>
+					<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+				</div>
+		  </a>
+		  <div class="collapse grey lighten-4" id="collapse-course-exams-{{ course.id }}">
+		  	<div class="p-3" >
+		  		{# loop over the exams #}
+		  		{% for exam in course.getExams() %}
+		  			{% set hasone = false %}
+						{% for mySession in practiceSessionsPerCourse[course.id] if mySession.exam_id == exam.id %}
+							{% partial 'examifyHelpers/practiceSessionCard' mySession=mySession selector=true exam=exam %}
+							{% set hasone = true %}
+						{% endfor %}
+						{% if not hasone %}
+							{% partial 'examifyHelpers/practiceSessionCardInactive' course=course exam=exam %}
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% else %}
+	<div class="row">
+		<div class="col-12 d-flex">
+	  	<!-- geen oefensessies gevonden -->
+	    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+	      Er zijn geen vakken gevonden waarvoor je een licentie hebt.
+	    </div>
+	  </div>
+	</div>
+	{% endfor %}
+
+
+	<h2 class="small font-weight-light mt-4">Vakken zonder licentie</h2>
+	{% for course in ulics %}
+		<div class="d-flex flex-row align-items-center px-3 py-2 grey lighten-4 my-1 " >
+    	{% set flagpath = 'assets/img/flags/' ~ course.getFlagUrl() %}
+    	<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+    	<span>{{ course.name }} [{{ course.level }}]</span>
+			<a href="/#kies-je-pakket" class="btn btn-outline-primary ml-auto shadow-none mr-0 py-1 px-2" >Licentie aanschaffen</a>
+		</div>
+	{% else %}
+		<div class="practice_session_entry alert-success alert flex-grow-1" >
+	      Er zijn geen vakken gevonden waarvoor je geen licentie hebt.
+    </div>
+	{% endfor %}
+
+	{#
+
+<div class="row">
+    
+  <div class="col-12 d-flex align-items-center">
+    <h2 class="small"> Mijn oefensessies </h2>
+    
+    <a data-toggle="collapse" data-target="#form-add-new-practice-session" class="mr-0 ml-auto" ><button class="shadow-none btn btn-floating blue shadow-none"  ><i class="fas fa-plus primary-color" ></i></button></a>
+  </div>
+</div>
+<div class="row helper" ></div>
+
+<div class="row collapse " id="form-add-new-practice-session" >
+  <div class="col-12 mb-5 mt-2 ">
+    <div class="border border-grey p-4 p-sm-5 rounded-2" >
+      {% if user %}
+					<ul class="stepper linear my-0 py-0" id="stepper-practice-session-selector" >
+					  <li class="step active">
+					    <div class="step-title waves-effect waves-dark">Hoe wil je oefenen?</div>
+					    <div class="collapse show">
+						    <div class="step-new-content d-block">
+						    	{{ form_open({ request: 'onSelectPracticeMode' }) }}
+						      <div class="row">
+						        <div class="md-form mt-0 col-12 ml-auto">
+
+											<div class="invalid-feedback bigger" ></div>
+
+						        	<div class="mt-0">
+											  <input type="radio" class="form-check-input" id="leermodus" name="practice_mode" value="leermodus" >
+											  <label class="form-check-label" for="leermodus" >Leermodus <span class="badge badge-primary shadow-none">Premium</span>
+													<div class="small font-italic" >Met leermodus kun je examenvragen oefenen met een complete toelichting per vraag. De toelichting maakt duidelijk waarom een antwoord goed is en hoe je dit in de tekst kunt vinden.</div>
+												</label>
+											</div>
+
+											<div class="mt-2">
+											  <input type="radio" class="form-check-input" id="examenmodus" name="practice_mode" value="examenmodus" >
+											  <label class="form-check-label" for="examenmodus">Examenmodus
+													<p class="font-italic"><small>
+														Met examenmodus maak je een examen net zoals in het echt. Aan het einde zie je welk punt je hebt gehaald en krijg je feedback over je antwoorden.</small>
+													</p>
+											  </label>
+											</div>
+
+						        </div>
+						      </div>
+						      <div class="step-actions">
+						        <button class="shadow-none waves-effect waves-dark btn btn-sm btn-primary" onclick="return selectPracticeMode($(this));">Volgende</button>
+						      </div>
+					      	{{ form_close() }}
+					      </div>
+					    </div>
+					  </li>
+					  <li class="step">
+					    <div class="step-title waves-effect waves-dark">Welk vak?</div>
+					    <div class="collapse">
+						    <div class="step-new-content d-block">
+						    	{{ form_open({ request: 'onSelectCourse' }) }}
+						    	<input type="hidden" name="practice_mode" />
+						    	<div class="invalid-feedback bigger" ></div>
+						      <div class="row">
+						        <div class="md-form my-0 col-12 ml-auto select-placeholder">
+
+						        </div>
+						      </div>
+						      <div class="step-actions d-flex flex-row flex-wrap">
+						        <button class="shadow-none waves-effect waves-dark btn btn-sm btn-outline-primary next-step" onclick="return showPrevNextStep($(this), false); ">Vorige</button>
+						        <button class="shadow-none waves-effect waves-dark btn btn-sm btn-primary previous-step" onclick="return selectCourse($(this));">Volgende</button>
+						      </div>
+						     {{ form_close() }}
+						    </div>
+						   </div>
+					  </li>
+					  <li class="step">
+					    <div class="step-title waves-effect waves-dark">Welk examen?</div>
+					    <div class="collapse">
+						    <div class="step-new-content d-block">
+						    	<div class="explanation-color-codes" >
+						    		<div class="row">
+						    			<div class="col-12">
+						    				<div class="d-flex flex-row align-items-center">
+						    					<img src="{{ 'assets/img/icons/done.png' | theme }}" width="16px" height="16px" class="rounded-circle mr-3" />
+						    					<span>Voltooid</span>
+						    				</div>
+						    			</div>
+						    		</div>
+						    		<div class="row" id="requires-licence">
+						    			<div class="col-12">
+						    				<div class="d-flex flex-row align-items-center">
+						    					<img src="{{ 'assets/img/icons/gold.png' | theme }}" width="16px" height="16px" class="rounded-circle mr-3" />
+						    					<span>Licentie nodig</span>
+						    				</div>
+						    			</div>
+						    		</div>
+						    		<div class="row" id="has-explanation-available">
+						    			<div class="col-12">
+						    				<div class="d-flex flex-row align-items-center">
+						    					<img src="{{ 'assets/img/icons/purple.png' | theme }}" width="16px" height="16px" class="rounded-circle mr-3" />
+						    					<span>Uitleg beschikbaar</span>
+						    				</div>
+						    			</div>
+						    		</div>
+						    		<div class="row">
+						    			<div class="col-sm mb-3"></div>
+						    		</div>
+						    	</div>
+						    	{{ form_open({ request: 'onSelectExam' }) }}
+						    	<input type="hidden" name="practice_mode" />
+						    	<div class="invalid-feedback bigger" ></div>
+						      <div class="row">
+						        <div class="md-form my-0 col-12 ml-auto select-placeholder ">
+						          
+						        </div>
+						      </div>
+						      <div class="step-actions d-flex flex-row flex-wrap">
+						        <button class="shadow-none waves-effect waves-dark btn btn-sm btn-outline-primary next-step" onclick="return showPrevNextStep($(this), false); ">Vorige</button>
+						        <button class="shadow-none waves-effect waves-dark btn btn-sm btn-primary previous-step" onclick="return selectExam($(this));">Volgende</button>
+						      </div>
+						      <div class="info-feedback mt-3" >
+						      	
+						      </div>
+						     {{ form_close() }}
+						    </div>
+						   </div>
+					  </li>
+					  <li class="step">
+					    <div class="step-title waves-effect waves-dark">Hoe wil je deze sessie noemen?</div>
+					    <div class="collapse">
+						    <div class="step-new-content d-block">
+						    	{{ form_open({ request: 'onSelectExam' }) }}
+						    	<input type="hidden" name="practice_mode" />
+						    	<input type="hidden" name="exam_id" />
+						    	<input type="hidden" name="createNew" value="1" />
+						    	<p>
+							      	Geef deze oefensessie een naam zodat je deze later makkelijk terug kunt vinden in het overzicht!
+									</p>
+						    	<div class="invalid-feedback bigger" ></div>
+						      <div class="md-form">
+									  <input type="text" id="oefensessie-naam" name="practice-session-name" class="form-control">
+									  <label for="oefensessie-naam" class="examify-open-question">Naam voor oefensessie</label>
+									</div>
+						      <div class="step-actions d-flex flex-row flex-wrap">
+						        <button class="shadow-none waves-effect waves-dark btn btn-sm btn-outline-primary next-step" onclick="return showPrevNextStep($(this), false); ">Vorige</button>
+						        <button class="shadow-none waves-effect waves-dark btn btn-sm btn-primary previous-step" onclick="return startSession($(this));">Starten</button>
+						      </div>
+						      <div class="info-feedback mt-3" >
+						      	
+						      </div>
+						     {{ form_close() }}
+						    </div>
+						   </div>
+					  </li>
+					</ul>
+      {% else %}
+      <div class="row">
+        <div class="col-sm-12">
+            Je moet ingelogd zijn om een oefensessie te kunnen starten. Heb je nog geen account? Stel via de homepage je eigen pakket samen en registreer je om direct aan de slag te gaan.
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-sm-12 d-flex flex-wrap">
+          <a class="btn btn-rounded btn-outline-primary shadow-none waves-effect" href="/login" >
+            Inloggen
+          </a>
+          <a class="btn btn-rounded btn-outline-dark-green shadow-none waves-effect" href="/#kies-je-pakket" >
+            Pakket samenstellen
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<hr class="mt-2 mb-3" />
+{% if hasPracticeSessions %}
+
+	{% for course in courses %}
+	<a class="collapseme collapsed d-flex flex-column mt-1" type="button" data-toggle="collapse" data-target="#collapse-course-{{ course.id }}" aria-expanded="false" aria-controls="collapse-course-{{ course.id }}">
+    <div class="d-flex flex-row align-items-center p-3 grey lighten-4 " >
+    	{% set flagpath = 'assets/img/flags/' ~ course.getFlagUrl() %}
+    	<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+    	<span>{{ course.name }} [{{ course.level }}]</span>
+			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+		</div>
+  </a>
+  <div class="collapse grey lighten-4" id="collapse-course-{{ course.id }}">
+  	<div class="p-3" >
+			{% set thisKey = loop.index0 %}
+
+			{% for mySession in practiceSessionsPerCourse[thisKey] %}
+				{% partial 'examifyHelpers/practiceSessionCard' mySession=mySession %}
+			{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+{% else %}
+<div class="row">
+	<div class="col-12 d-flex">
+  	<!-- geen oefensessies gevonden -->
+    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+      Er zijn geen oefensessies gevonden. Start een nieuwe oefensessie en deze zal hier automatisch weergegeven worden.
+    </div>
+  </div>
+</div>
+{% endif %}
+
+#}

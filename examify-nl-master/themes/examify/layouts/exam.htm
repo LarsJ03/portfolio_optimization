@@ -1,0 +1,89 @@
+[ExamifyQuestion]
+[ExamifyCheckPracticeSession]
+[ExamifyCharts]
+[ExamifyTimeLimit]
+==
+<?php
+  use Examify\Exams\Models\Exams as Exams;
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\PracticeSessions as PracticeSessions;
+  use Carbon\Carbon as Carbon;
+
+  function onStart(){
+
+    // make sure the user is logged in
+    if(!$user = Users::getUser()){
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    $practice_session_id = intval(preg_replace("/[^0-9]/", '', $this->param('practiceid')));
+
+    if(!$practice_session_id){
+      $this['isvalid'] = false;
+      return;
+    }
+
+    // check if it is of this user, or in case the user is a superadmin, it is fine as well
+    if($user->isSuperAdmin())
+    {
+      $mySession = PracticeSessions::where('id', $practice_session_id)
+                                  ->with('exam')
+                                  ->first();
+    }
+    else {
+      $mySession = PracticeSessions::where('id', $practice_session_id)
+                                  ->where('user_id', $user->id)
+                                  ->with('exam')
+                                  ->first();
+    }
+
+    // mark the page as valid if exactly 1 session is found
+    $this['isvalid'] = $valid = !!$mySession;
+
+    if(!$valid)
+    {
+      return redirect('/oefenen');
+    }
+
+    // update the cached answers property
+    $mySession->generateCachedAnswersProperty(true);
+    $mySession->generateCachedPointsProperty(true);
+
+    // mark the session as started
+    if(!$mySession->time_limit_mins && !$mySession->started)
+    {
+      $mySession->started = true;
+      $mySession->start_time = Carbon::now();
+      $mySession->save();
+    }
+
+    $this['thisSession'] = $mySession;
+
+    $this['user'] = $user;
+
+    // include the timer in case the time limit is defined
+
+  }
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+{# in case the session is not started, it means that there is a time limit on this. Then show the time limit session #}
+{% if not thisSession.started %}
+  {% component 'ExamifyTimeLimit' practice_session_id=thisSession.id %}
+{% elseif thisSession.isExpired() %}
+  <div class="container exam-questions" id="placeholder-full-session" >
+    {% partial 'examifyHelpers/expiredSession' practiceSession=thisSession %}
+  </div>
+{% else %}
+  <div class="container exam-questions" id="placeholder-full-session" >
+    {% partial 'examifyHelpers/fullExamScroll' practiceSession=thisSession %}
+  </div>
+
+  {% if thisSession.time_limit_mins and not thisSession.finished %}
+    {% partial 'examifyHelpers/practice-session-timer' psid=thisSession.id %}
+  {% endif %}
+{% endif %}
+
+{% partial 'page-end' %}

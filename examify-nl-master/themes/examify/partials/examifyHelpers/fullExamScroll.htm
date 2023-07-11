@@ -1,0 +1,208 @@
+==
+<?php
+	use \Examify\Exams\Models\Questions as Questions;
+	use \Examify\Exams\Models\Texts as Texts;
+
+	function onStart()
+	{
+
+		// get the texts in this exam ordered
+		$PracticeSession = $this['practiceSession'];
+
+		if(!$PracticeSession){
+			return;
+		}
+
+		// get the texts that do belong to these questions
+		$questionIDs = $PracticeSession->question_id;
+		$myQuestions = Questions::with('text', 'text.exam')->find($questionIDs);
+
+		$this['examtexts'] = [];
+
+		if(!$myQuestions)
+		{
+			return;
+		}
+
+		// get the unique exam texts belonging to the questions. Order it by exam_id and then in ascending order of text orderyp
+		$examTexts = $myQuestions->pluck('text');
+		$sortarray = [];
+		foreach($examTexts as $t){
+			$sortarray[$t->id] = $t->exam->year * 1e9 + $t->exam->tijdvak * 1e8 + $t->exam->course_id * 1e3 + $t->myorder;
+		}
+		asort($sortarray);
+		$examTexts = Texts::find(array_keys($sortarray));
+
+		if(!$examTexts){
+			return;
+		}
+
+		// get the exam texts that has questions associated for this session
+		$this['allQuestions'] = $myQuestions;
+
+		// for each exam text, set the questions that are only included for this practice session ID
+		foreach($examTexts as $key => $examText)
+		{
+			$examTexts[$key]['questions'] = $examText->questions->whereIn('id', $questionIDs);
+
+			// check if this exam text has unlocked questions
+			$examTexts[$key]['hasunlocked'] = $PracticeSession->hasUnlockedQuestionsByText($examText);
+		}
+
+		$this['examtexts'] = $examTexts;
+
+
+
+	}
+?>
+==
+
+{% if practiceSession.finished %}
+
+	{# show the finished elements on top #}
+
+{% endif %}
+
+	{% if practiceSession and practiceSession.finished and not practiceSession.leermodus %}
+	<div class="row">
+		<div class="col-md-12 mb-3">
+			<h2>Resultaat</h2>
+			<hr />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4 d-flex justify-content-start flex-column align-items-center">
+			<div id="testprogressbar" style="width: 125px; height: 125px; position: relative;"></div>
+			<div class="text p-3 text-center" >
+				{% if practiceSession.exam_id %}
+				<strong>Eindscore</strong><br />(max 10.0)
+				{% else %}
+				<strong>Punten behaald</strong><br />(max 100%)
+				{% endif %}
+			</div>
+			{{ form_open({ request: 'onGetPracticeSessionDataFinalMark' }) }}
+				<input type="hidden" name="progressbar_form" value="#testprogressbar" />
+				<input type="hidden" name="format" value="Circle" />
+				<input type="hidden" name="psid" value={{ practiceSession.id }} />
+				<input type="hidden" name="delay" value="0" />
+			{{ form_close() }}
+		</div>
+		<div class="col-sm-4 d-flex justify-content-start flex-column align-items-center">
+			<div id="myprogressbar" style="width: 125px; height: 125px; position: relative;"></div>
+			<div class="text p-3 text-center" >
+				<strong>Punten behaald</strong><br />(max {{ practiceSession.totalpointsavailable }})
+			</div>
+			{{ form_open({ request: 'onGetPracticeSessionDataPointsAchieved' }) }}
+				<input type="hidden" name="progressbar_form" value="#myprogressbar" />
+				<input type="hidden" name="format" value="Circle" />
+				<input type="hidden" name="psid" value={{ practiceSession.id }} />
+				<input type="hidden" name="delay" value="1000" />
+			{{ form_close() }}
+		</div>
+		<div class="col-sm-4 d-flex justify-content-start flex-column align-items-center">
+			<div id="testprogressbar2" style="width: 125px; height: 125px; position: relative;"></div>
+			<div class="text p-3 text-center" >
+				<strong>Vragen beantwoord</strong> <br />
+				(max {{ practiceSession.questions.count() }})
+			</div>
+			{{ form_open({ request: 'onGetPracticeSessionQuestionsAnswered' }) }}
+				<input type="hidden" name="progressbar_form" value="#testprogressbar2" />
+				<input type="hidden" name="format" value="Circle" />
+				<input type="hidden" name="psid" value={{ practiceSession.id }} />
+				<input type="hidden" name="delay" value="2000" />
+			{{ form_close() }}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<hr class="mt-4 mb-5" />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 mb-3">
+			<h2>Overzicht van score per vraagtype</h2>
+			<hr />
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="chart-container" >
+				<canvas id="questionTypesChart"></canvas>
+			</div>
+			<hr class="mt-4 mb-5"  />
+		</div>
+		{{ form_open({ request: 'onGetPracticeSessionDataQuestionTypes' }) }}
+			<input type="hidden" name="chart_form" value="#questionTypesChart" />
+			<input type="hidden" name="psid" value={{ practiceSession.id }} />
+		{{ form_close() }}
+	</div>
+	{% endif %}
+
+	{# show the switch for the pagination if it is valid #}
+	{% if practiceSession %}
+		<div class="row">
+			<div class="col-md-12 mb-3 mt-2">
+				<h2 class="text-center text-left-sm">Vragen</h2>
+				<hr />
+			</div>
+		</div>
+	  <div class="row mt-1 mb-3">
+	    <div class="col-md-12">
+	      <div class="switch text-center" id="toggle-pagination-mode">
+	        <label {% if practiceSession.leermodus %} class="d-none" {% endif %}>
+	          Onder elkaar
+	          <input type="checkbox" checked >
+	          <span class="lever"></span> Per tekst
+	        </label>
+	        <input type="hidden" name="activePageToSet" value="{% if activePageToSet %}{{ activePageToSet }}{% else %}1{% endif %}" />
+	      </div>
+	    </div>
+	  </div>
+	{% endif %}
+
+  <div class="row mt-1">
+    <div class="col-md-12">
+
+    	{% if practiceSession %}
+
+				<nav aria-label="Page navigation example" class="mb-5" id="pagination-nav-texts">
+				  <ul class="pagination pg-blue justify-content-center my-examify-pagination-ul flex-wrap">
+				    
+				  </ul>
+				</nav>
+
+				<!-- show all exam texts -->
+				{% for examtext in examtexts %}
+					{% partial 'examifyHelpers/examText' examtext=examtext textcount=loop.index psid=practiceSession.id %}
+				{% endfor %}
+
+				<nav aria-label="Page navigation example" class="mt-5" id="pagination-nav-texts">
+				  <ul class="pagination pg-blue justify-content-center my-examify-pagination-ul flex-wrap mb-5">
+				    
+				  </ul>
+				</nav>
+
+
+				{# include the partial if it is not yet finished #}
+				{% if not practiceSession.finished and not practiceSession.leermodus %}
+					{% partial 'examifyHelpers/checkPracticeSessionDefault' %}
+				{% endif %}
+
+			{% else %}
+            <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+              Deze oefensessie is niet gevonden in ons systeem. Klik <a href="/oefenen" >hier</a> voor een overzicht van al je oefensessies.
+            </div>
+			{% endif %}
+			
+			<hr class="mt-4 mb-5"  />
+		</div>
+	</div>
+
+{#
+
+<li class="page-item active">
+      <a class="page-link">2 <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="page-item"><a class="page-link">3</a></li>
+
+#}

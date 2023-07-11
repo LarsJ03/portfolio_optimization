@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-dark navbar_style">
+      <div class="container">
+        <a class="navbar-brand" href="#">Company X</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ 'homepage'|page }}">Home</a>
+            </li>
+            {% if not user %}
+            <li class="nav-item">
+              <a class="nav-link" href="register">Sign Up</a>
+            </li>
+            {% endif %}
+
+            <li class="nav-item">
+              <a class="nav-link" href="#">About Us</a>
+            </li>
+           
+            <li class="nav-item">
+              <a class="nav-link" href="{{ 'news'|page }}">News</a>
+            </li>
+
+       
+          </ul>
+          {% if user %}
+          
+           <a class="nav-link" data-request="onLogout" href="/">Sign Out</a>
+          
+          {%else%}
+          <a class="nav-link" href="login">Login</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>

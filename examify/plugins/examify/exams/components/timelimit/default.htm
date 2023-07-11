@@ -1,0 +1,16 @@
+<div class="container exam-questions" >
+  <div class="d-flex flex-column align-items-center" >
+  	<div>
+  		<img width="128" height="128" class="mt-5" src="{{ 'assets/img/icons/stopwatch.png' | theme }}" />
+  	</div>
+    <h2 class="mt-5" >Tijdslimiet</h2>
+    <p class="text-center">Er geldt een tijdslimiet voor deze vragen. Je krijgt <strong>{{ thisSession.time_limit_mins }} minuten</strong> om de opgaven te maken en in te leveren. Door op op de startknop te drukken begin je aan de opgaven en gaat de tijd in. Let op: je kunt niet halverwege pauzeren. Op deze manier proberen we een echt examen te simuleren.</p>
+
+    {{ form_open({ request: 'onStartSession', 'class' : 'text-center' }) }}
+    	<input type="hidden" name="psid" value="{{ psid }}" />
+      <button class="btn shadow-none btn-rounded mt-3 mb-5 align-self-center btn-primary" onclick="return customAjaxClick($(this));" >Starten!</button>
+      <div class="invalid-feedback" ></div>
+    {{ form_close() }}
+
+  </div>
+</div>

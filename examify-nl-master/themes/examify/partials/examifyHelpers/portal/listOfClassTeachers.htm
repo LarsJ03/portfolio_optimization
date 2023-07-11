@@ -1,0 +1,24 @@
+<div class="row">
+	<div class="col-12 mt-3">
+		{% for teacher in teachers %}
+		<div class="d-flex justify-content-between align-items-center flex-wrap alert blue lighten-4" >
+			<div class="username">
+				{{ teacher.name }} {{ teacher.surname }} ({{ teacher.email }})
+			</div>
+			{% if user.isAdminForSchool(class.school_id) %}
+			{% if form_enabled %}
+			{{ form_open({ request: 'onRemoveTeacher' }) }}
+			<input type="hidden" name="teacher_id" value="{{ teacher.id }}" />
+			<input type="hidden" name="class_id" value="{{ class.id }}" />
+			<button class="btn btn-outline-primary shadow-none" type="submit" onclick="return customAjaxClick($(this)); " >Ontkoppel</button>
+			{{ form_close() }}
+			{% endif %}
+			{% endif %}
+		</div>
+		{% else %}
+			<div class="alert alert-secondary" >
+				Er zijn nog geen docenten aan deze klas gekoppeld
+			</div>
+		{% endfor %}
+	</div>
+</div>

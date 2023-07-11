@@ -1,0 +1,59 @@
+<div class="d-flex flex-row mb-2" >
+  {% partial __SELF__~"::question_indicator" %}
+  <div class="label text-left d-flex flex-column mb-4">
+    {% partial __SELF__~"::label_text" %}
+
+    <!-- Section Description -->
+    <div class="d-flex flex-column grey lighten-3 p-3 my-3" >
+      <div class="radio-per-row">
+        {# loop over the answers #}
+        {% for answer in question.answers %}
+          {% set myAnswerNumber = loop.index %}
+
+          {# check if the answer is cached #}
+          {% if cached_answer[answer.id] is not empty %}
+            {% set isCached = true %}
+            {% set cachedValue = cached_answer[answer.id] %}
+          {% else %}
+            {% set isCached = false %}
+          {% endif %}
+          <div class="entry">
+            <div class="answer-placeholder" >{{ answer.name }}</div>
+            <form data-request="onSubmitAnswerTrueFalse" class="interactive-question-form d-flex" >
+              <!-- specify the relevant ids -->
+              <input type="hidden" name="qid" value="{{ question.id }}" />
+              <input type="hidden" name="psid" value="{{ psid }}" />
+              <input type="hidden" name="aid" value="{{ answer.id }}" />
+              <div class="btn-group examify-question {% if practice_session_is_finished %} show-answer {% endif %} btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-mc-answer text-center form-check-label {% if answer.points %} correct-answer {% endif %}
+                  {% if isCached and cachedValue == 1 %}
+                  active
+                  {% endif %}
+                " {% if practice_session_is_finished %} disabled {% endif %}  >
+                  <input class="form-check-input" type="radio" name="points" value="1" autocomplete="off"
+                  {% if isCached and cachedValue == 1 %}
+                    checked 
+                  {% endif %}
+                 >
+                  Wel
+                </label>
+                <label class="btn btn-mc-answer text-center form-check-label {% if not answer.points %} correct-answer {% endif %}
+                  {% if isCached and cachedValue == 0 %}
+                  active
+                  {% endif %}
+                " {% if practice_session_is_finished %} disabled {% endif %}>
+                  <input class="form-check-input" type="radio" name="points" value="0" autocomplete="off"
+                  {% if isCached and cachedValue == 0 %}
+                    checked 
+                  {% endif %}
+                  >Niet
+                </label>
+              </div>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% partial __SELF__~"::examify_uitleg" %}
+  </div>
+</div>

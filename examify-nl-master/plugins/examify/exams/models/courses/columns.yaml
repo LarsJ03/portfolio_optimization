@@ -1,0 +1,16 @@
+columns:
+    id:
+        label: id
+        type: number
+    name:
+        label: 'examify.exams::lang.exams.courses.name'
+        type: text
+    level:
+        label: 'examify.exams::lang.exams.courses.level'
+        type: text
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime

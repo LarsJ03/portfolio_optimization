@@ -1,0 +1,42 @@
+<a href="/portal/homework/{{ homework.id }}" class="d-flex align-items-start flex-wrap alert 
+{% if homework.isOverDueDate() %}
+blue
+{% else %}
+green
+{% endif %} {{ class }} text-dark" >
+	<div class="d-flex flex-column align-items-center" >
+		<strong class="mr-3" >{{ homework.due_date|date('d/m') }}</strong>
+		<span class="mr-3" >{{ homework.due_date|date('H:i') }}</span>
+	</div>
+	<div class="username">
+		{% if homework.question_types_trials_id %}
+		<span>{{ homework.getQuestionTypesTrial().name }}</span>
+		<br />
+		<small class="font-italic font-weight-lighter" >{{ homework.nquestions }} vragen</small>
+
+		{% else %}
+		{{ homework.name }} <br />
+		<small class="font-italic font-weight-lighter" >{{ homework.ntexts }}{% if homework.ntexts > 1 %} teksten{% else %} tekst{% endif %}, {{ homework.nquestions }}{% if homework.nquestions > 1 %} vragen {% else %} vraag {% endif %}</small>
+		{# loop over the texts #}
+		<div class="d-flex flex-column mt-3" >
+		{% for exam in homework.getTextsGroupedByExam() %}
+			{# use the first one to get the exam #}
+			{% set e = exam[0].exam %}
+			<span class="small">{{ e.course.level }} / {{ e.year }}T{{ e.tijdvak }}</span>
+			{% for text in exam %}
+			<span class="small font-weight-lighter" >Tekst {{ text.myorder }} - {{ text.name }}</span>
+			
+			{% endfor %}
+		{% endfor %}
+		</div>
+
+		{% endif %}
+	</div>
+	{% if not hidedeletebutton %}
+	<div class="placeholder-delete ml-auto d-flex flex-column" id="placeholder-delete-homework-{{ homework.id }}" >
+		{% if not homework.isOverDueDate() %}
+		{% partial 'examifyHelpers/portal/deleteHomeworkForm' homework=homework %}
+		{% endif %}
+	</div>
+	{% endif %}
+</a>

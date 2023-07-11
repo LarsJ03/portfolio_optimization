@@ -1,0 +1,23 @@
+columns:
+    id:
+        label: id
+        type: number
+    course_id:
+        label: course_id
+        type: text
+        relation: course
+        valueFrom: CourseLevel
+    school_id:
+        label: school_id
+        type: text
+        relation: school
+        valueFrom: name
+    name:
+        label: name
+        type: text
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime

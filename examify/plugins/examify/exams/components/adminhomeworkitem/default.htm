@@ -1,0 +1,214 @@
+{% if homework.parent_id == 0 and homework.split_exam %}
+	{% set is_split = true %}
+{% else %}
+	{% set is_split = false %}
+{% endif %}
+{% if editmode %}
+<div class="d-flex flex-column align-items-center" >
+		<div style="max-width: 640px;" >
+		{% endif %}
+		{% if show_homework %}
+		<div class="d-flex flex-row justify-content-between" >
+			{% if not editmode %}
+			<a href="{{ url_back }}" class="text-dark"  ><i class="fa fa-arrow-left" aria-hidden="true"></i> Terug naar huiswerkoverzicht</a>
+			<a href="/portal/homework/{{ homework.id }}/edit" class="text-dark"  ><i class="fa fa-cog mr-2" aria-hidden="true"></i>Bewerken</a>
+			{% else %}
+			<a href="/portal/homework/{{ homework.id }}" class="text-dark"  ><i class="fa fa-arrow-left" aria-hidden="true"></i> Terug naar huiswerkopdracht</a>
+			{% endif %}
+		</div>
+
+		{# perform edit mode #}
+		{% if editmode %}
+		{{ form_open({ request: 'onEditHomework', class: 'text-center form-validation-js' }) }}
+			<input type="hidden" name="homework_id" value="{{ homework.id }}" />
+			<div class="row" >
+				<div class="col-md-12">
+					<div class="md-form">
+					  <input type="text" id="name" name="name" value="{{ homework.name }}" class="form-control">
+					  <label for="name">Naam opdracht</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+			  <div class="col-md-6">
+			    <div class="md-form">
+					  <input placeholder="Selecteer datum" name="date" type="text" id="date-picker-example" class="form-control datepicker active" value="{{ homework.due_date | date('d-m-Y') }}">
+					  <label for="date-picker-example" class="active">Voor welke datum?</label>
+					</div>
+			  </div>
+			  <div class="col-md-6">
+			    <div class="md-form">
+					  <input placeholder="Selecteer tijd" name="time" type="text" class="timepicker form-control timepicker active" value="{{ homework.due_date | date('H:i') }}">
+					  <label for="input_starttime" class="active">En welke tijd?</label>
+					</div>
+			  </div>
+			</div>
+			<div class="row" >
+				<div class="col-md-12">
+					<div class="md-form" >
+						<p class="text-left" >Het is mogelijk een maximale tijd in te stellen. De leerling dient dan binnen die ingestelde tijd - gemeten vanaf het starten van de opdracht - het gemaakte huiswerk in te leveren. Geef de tijd op in minuten. Laat het veld leeg indien er geen limiet ingesteld dient te worden.</p>
+					</div>
+					<div class="md-form">
+					  <input type="text" id="time_limit_mins" name="time_limit_mins" value="{{ homework.time_limit_mins }}" class="form-control">
+					  <label for="time_limit_mins">Maximale tijdsduur (in minuten)</label>
+					</div>
+				</div>
+			</div>
+			<div class="row" >
+				<div class="col-md-12">
+					<div class="md-form" >
+						<div class="invalid-feedback text-left"></div>
+						<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Opslaan</button><div class="success-feedback" >Wijzigingen opgeslagen!</div>
+					</div>
+				</div>
+			</div>
+			{# select all the students for this clas #}
+		{{ form_close() }}
+		{% if not is_split %}
+			<div class="row" >
+				<div class="col-md-12" >
+					<h3>Leerlingen</h3>
+					Selecteer hieronder voor welke leerlingen deze huiswerkopdracht opgegeven dient te worden. Indien een leerling de huiswerkopdracht al ingeleverd heeft kan de selectie niet meer ongedaan gemaakt worden.
+					<hr />
+				</div>
+			</div>
+			{{ form_open({ request: 'onEditStudents', class: 'text-center form-validation-js' }) }}
+			{% for u in homework.class.getStudents() %}
+			<div class="row" >
+				<div class="col-md-12" >
+					<div class="form-check text-left mt-2">
+						{% set ps = homework.getSessionForUserID(u.id) %}
+					    <input type="checkbox" class="form-check-input" name="include_user[{{ u.id }}]" id="materialClass-{{ u.id }}" value="1" {% if ps.finished %}disabled{% endif %} {% if ps and not ps.deleted %}checked{% endif %}>
+					    <label class="form-check-label" for="materialClass-{{ u.id }}">{{ u.name }} {{ u.surname }} ({{ u.email }})</label>
+					    {# required since disabled things are not send with it #} 
+					    {% if ps.finished %}
+					    <input type="hidden" name="include_user[{{ u.id }}]" value="1" />
+					    {% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			<input type="hidden" name="homework_id" value="{{ homework.id }}" />
+			<div class="row" >
+				<div class="col-md-12">
+					<div class="md-form" >
+						<div class="invalid-feedback text-left"></div>
+						<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Opslaan</button><div class="success-feedback" >Wijzigingen opgeslagen!</div>
+					</div>
+				</div>
+			</div>
+			{{ form_close() }}
+		{% endif %}
+		{% endif %}
+
+		{% if not editmode %}
+		<div class="row">
+			<div class="col-md-12">
+				<div class="graph-card border mt-5 white" >
+					<h2 class="small text-center p-3 border-bottom mb-0" >Score (punten) per vraagtype</h2>
+					<div class="card graph-card-content p-5 shadow-none rounded-top" >
+						<div class="chart-container" >
+							<canvas id="questionTypesChart"></canvas>
+							<div id="placeholder-chart-question-types" class="text-center d-none" >
+								Geen data om weer te geven
+							</div>
+						</div>
+						{{ form_open({ request: 'onGetQuestionTypesOverview' }) }}
+							<input type="hidden" name="chart_form" value="#questionTypesChart" />
+						{{ form_close() }}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="graph-card border mt-5 white" >
+					<h2 class="small text-center p-3 border-bottom mb-0" >Score (punten) per vraag</h2>
+					<div class="card graph-card-content p-5 shadow-none rounded-top" >
+						<div class="chart-container" >
+							{% if not listofquestions %}
+							<div id="placeholder-chart-question-types" class="text-center" >
+								Geen data om weer te geven
+							</div>
+							{% else %}
+								{% partial 'examifyHelpers/portal/listOfHomeworkQuestionsFilter' filters=available_filters hideNames=hideNames %}
+								<div id="list-of-homework-questions-output" >
+									{% partial 'examifyHelpers/portal/listOfHomeworkQuestions' listofquestions=listofquestions %}
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="graph-card border mt-5 white" >
+					<h2 class="small text-center p-3 border-bottom mb-0" >
+						{% if isfullexam %}
+							Examenpunt per student (N-term = {{ nterm }})
+						{% else %}
+							Score (punten) per student
+						{% endif %}
+					</h2>
+					<div class="card graph-card-content p-5 shadow-none rounded-top" >
+						<div class="chart-container" >
+							<div id="studentPointsChart"></div>
+							<div id="placeholder-chart-points" class="text-center d-none" >
+								Geen data om weer te geven
+							</div>
+						</div>
+						{{ form_open({ request: 'onGetPointsPerStudent' }) }}
+							<input type="hidden" name="data_form" value="#studentPointsChart" />
+						{{ form_close() }}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% if not is_split %}
+		<div class="row">
+			<div class="col-md-12">
+				<div class="graph-card border mt-5 white" >
+					<h2 class="small text-center p-3 border-bottom mb-0" >Studenten die nog bezig zijn</h2>
+					<div class="card graph-card-content p-5 shadow-none rounded-top" >
+						<div class="chart-container" >
+							<canvas id="studentProgressChart"></canvas>
+							<div id="placeholder-chart-progress" class="text-center d-none" >
+								Geen data om weer te geven
+							</div>
+						</div>
+						{{ form_open({ request: 'onGetProgressPerStudent' }) }}
+							<input type="hidden" name="chart_form" value="#studentProgressChart" />
+						{{ form_close() }}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% else %}
+		<div class="row">
+			<div class="col-md-12">
+				<div class="graph-card border mt-5 white" >
+					<h2 class="small text-center p-3 border-bottom mb-0" >Studenten die nog bezig zijn</h2>
+					<div class="card graph-card-content p-5 shadow-none rounded-top" >
+						<div class="chart-container d-flex justify-content-center" >
+							<div class="d-flex flex-column flex-grow-1" style="max-width: 800px;" >
+								<div id="placeholder-chart-progress" class="text-center mb-2" >
+									Deze huiswerkopdracht is opgesplitst in de volgende delen:
+								</div>
+								{% for hw in homework.getChildren(false) %}
+								{% partial 'examifyHelpers/portal/homeworkCard.htm' homework=hw class="lighten-5" hidedeletebutton=true %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+		{% endif %}
+		{% endif %}
+
+	{% if editmode %}
+	</div>
+</div>
+{% endif %}

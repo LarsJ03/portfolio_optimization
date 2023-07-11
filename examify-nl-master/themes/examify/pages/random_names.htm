@@ -1,0 +1,93 @@
+title = "Custom query for admin"
+url = "/random_names/:value"
+is_hidden = 0
+==
+<?php
+	use \Examify\Exams\Models\Users as Users;
+	use \Examify\Exams\Models\Questions as Questions;
+	use \Examify\Exams\Models\QuestionsAnswersLogs as QAL;
+	use \Examify\Exams\Models\PracticeSessions as PS;
+	use \Examify\Exams\Models\PracticeSessionsResultsLogs as PSRL;
+	use DB;
+
+	// loop over the practice sessions that are finished
+	public function onStart()
+	{
+
+		$user = Users::getUser();
+
+		$user->setUserSetting('RandomNames', $this->param('value'));
+		dd($user->getUserSetting('RandomNames'));
+	}
+
+		// check for all question if the text is available
+
+		/*
+		$allps = PS::where('finished', true)
+								->where('id', '>=', $this->param('start'))
+								->where('id', '<=', $this->param('end'))
+								->get();
+
+		foreach($allps as $ps)
+		{
+			// change everywhere the is_final to 0 such that the saveCachedAnswer can do its job
+			$allqal = QAL::where('practice_session_id', $ps->id)->get();
+			foreach($allqal as $qal)
+			{
+				$qal->is_final = false;
+				$qal->save();
+			}
+
+			// first restore all the multiple choice
+			$allpsrl = PSRL::where('practice_session_id', $ps->id)->get();
+
+			foreach($allpsrl as $psrl)
+			{
+				// get the question
+				$q = $psrl->question;
+				
+				// check if it is an multiple choice question
+				if($q->answer_type == 'multiplechoice_single' || $q->answer_type == 'open')
+				{
+					// just save the last entry
+					$myAnswer = QAL::where('practice_session_id', $ps->id)
+                    ->where('question_id', $q->id)
+                    ->orderByDesc('id')
+                    ->limit(1)->first();
+
+          if($myAnswer)
+          {
+          	$myAnswer->is_final = true;
+          	$myAnswer->save();
+          }
+				}
+
+				// in case of true false, follow different approach
+				if($q->answer_type == 'truefalse')
+				{
+						// loop over all the entries and see if there is something cached
+            $relatedanswers = $q->answers();
+
+            $resultarray = [];
+            foreach($q->answers as $answer){
+                $myLog = QAL::where('practice_session_id', $ps->id)
+                    ->where('question_id', $q->id)
+                    ->where('answer_id', $answer->id)
+                    ->orderByDesc('id')
+                    ->limit(1)->first();
+
+                if(!$myLog){
+                    continue;
+                }
+
+                $myLog->is_final = true;
+                $myLog->save();
+            }
+				}
+
+				// the points scored are apparently already correct
+			}
+		}
+		*/
+?>
+==

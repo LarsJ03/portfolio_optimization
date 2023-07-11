@@ -1,0 +1,54 @@
+{{ form_open({ request: 'onConfirmStudents', class: 'text-center form-validation-js' }) }}
+<input type="hidden" name="school_id" value={{ schoolid }} />
+<div class="row">
+	<div class="col-md-4 align-self-center">
+		{% if students %}
+			<input type="hidden" name="has_students" value="1" />
+			<select class="mdb-select md-form" searchable="Zoeken..." name="studentids[]" multiple >
+				<option value="" disabled selected>Selecteer studenten</option>
+				{% for student in students %}
+					<option value="{{ student.id }}"  >{{ student.name }} {{ student.surname }}</option>
+				{% endfor %}
+			</select>
+		{% else %}
+			<input type="hidden" name="has_classes" value="1" />
+			{{ nclasses }} klassen geselecteerd
+		{% endif %}
+	</div>
+	<div class="col-md-4 align-self-center">
+	{% if classes %}
+		{% for class in classes %}
+		<div class="form-check text-left">
+		    <input type="checkbox" class="form-check-input" name="fakeclassids[]" id="materialClass={{ class.id }}" value="{{ class.id }}" disabled checked>
+		    <label class="form-check-label" for="materialClass-{{ class.id }}">{{ class.name }}</label>
+		    <input type="hidden" name="classids" value="{{ classids }}" />
+		    {# required since disabled things are not send with it #} 
+		</div>
+		{% endfor %}
+	{% elseif students %}
+		<div class="form-check text-left">
+		    <input type="checkbox" class="form-check-input" name="level_mavo" value="1" id="materialMavo" {% if class.course.level == 'mavo' %} checked disabled {% endif %}>
+		    <label class="form-check-label" for="materialMavo">mavo</label>
+		</div>
+		<div class="form-check text-left">
+		    <input type="checkbox" class="form-check-input" name="level_havo" value="1" id="materialHavo" {% if class.course.level == 'havo' %} checked disabled {% endif %}>
+		    <label class="form-check-label" for="materialHavo">havo</label>
+		</div>
+		<div class="form-check text-left">
+		    <input type="checkbox" class="form-check-input" name="level_vwo" value="1"  id="materialVwo" {% if class.course.level == 'vwo' %} checked disabled {% endif %}>
+		    <label class="form-check-label" for="materialVwo">vwo</label>
+		</div>
+		<input type="hidden" name="class_id" value="{{ class.id }}" />
+	{% endif %}
+	</div>
+	<div id="generate-{{ school.id }}" class="col-md-4 align-self-center">
+		<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Bevestig</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-12">
+		<div class="invalid-feedback text-left">
+			            </div>
+	</div>
+</div>
+{{ form_close() }}

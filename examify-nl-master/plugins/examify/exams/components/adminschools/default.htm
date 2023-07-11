@@ -1,0 +1,33 @@
+{% if user and user.isAdmin %}
+<div class="row mt-5" >
+	<div class="col-12"><h2>Scholen</h2></div>
+</div>
+<div class="row">
+	<div class="col-12">
+	{{ form_open({ request: 'onAdd', 'class' : 'text-center form-validation-js' }) }}
+		<div class="row">
+			<div class="col-md-12">
+				<div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormSchoolName" class="form-control on-change-submit" name="schoolname">
+            <label for="materialRegisterFormSchoolName">School naam</label>
+        </div>
+        <div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormSchoolPlace" class="form-control on-change-submit" name="place">
+            <label for="materialRegisterFormSchoolPlace">Plaats</label>
+        </div>
+        <div class="invalid-feedback text-left">
+            </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 d-flex">
+				<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Voeg toe</button>
+			</div>
+		</div>
+		{{ form_close() }}
+	</div>
+</div>
+<div id="list-of-schools" class="mt-5" >
+{% partial 'examifyHelpers/portal/listOfSchools' MySchools=MySchools %}
+</div>
+{% endif %}

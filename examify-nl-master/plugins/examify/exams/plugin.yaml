@@ -1,0 +1,68 @@
+plugin:
+    name: 'examify.exams::lang.plugin.name'
+    description: 'examify.exams::lang.plugin.description'
+    author: Examify
+    icon: oc-icon-archive
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: 'examify.exams::lang.plugin.name'
+        url: examify/exams/courses
+        icon: icon-archive
+        permissions:
+            - exams.exams
+        sideMenu:
+            side-menu-item:
+                label: 'examify.exams::lang.exams.general.courses'
+                url: examify/exams/courses
+                icon: icon-book
+                permissions:
+                    - exams.exams
+            side-menu-item2:
+                label: 'examify.exams::lang.exams.general.exams'
+                url: examify/exams/exams
+                icon: icon-file-text-o
+                permissions:
+                    - exams.exams
+            side-menu-item4:
+                label: 'examify.exams::lang.exams.questiontypes.type'
+                url: examify/exams/questiontypes
+                icon: icon-question
+            side-menu-item3:
+                label: 'examify.exams::lang.exams.general.questions'
+                url: examify/exams/questions
+                icon: icon-list
+                permissions:
+                    - exams.exams
+            side-menu-item5:
+                label: 'Vraagtype uitleg'
+                url: /examify/exams/questiontypesexplanations
+                icon: icon-align-left
+            side-menu-item6:
+                label: 'examify.exams::lang.exams.questiontypestrials.questiontypestrials'
+                url: /examify/exams/questiontypestrials
+                icon: icon-area-chart
+                permissions:
+                    - exams.exams
+            schools:
+                label: Scholen
+                url: examify/exams/schools
+                icon: icon-simplybuilt
+            schoolclass:
+                label: Klassen
+                url: examify/exams/classes
+                icon: icon-group
+            licenses:
+                label: Licenties
+                url: examify/exams/licenses
+                icon: icon-key
+    main-menu-item2:
+        label: Oefensessies
+        url: examify/exams/practicesessions
+        icon: icon-list
+        permissions:
+            - exams.exams
+permissions:
+    exams.exams:
+        tab: 'examify.exams::lang.plugin.name'
+        label: 'examify.exams::lang.plugin.name'

@@ -1,0 +1,137 @@
+[staticPage]
+useContent = 1
+default = 0
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = false %}
+
+<div class="container main-line pt-5 pb-2">
+
+
+    <!--Section: Content-->
+    <section class="dark-grey-text">
+
+      <!-- Section heading -->
+      <h2 class="text-center font-weight-bold mb-4 pb-2">Theorie</h2>
+      <!-- Section description -->
+
+      {variable name="uitleg_introduction" label="Uitleg intro" tab="Uitleg" type="textarea" }{/variable}
+      <p class="text-center mx-auto w-responsive mb-5">{{ uitleg_introduction }}</p>
+  </section>
+</div>
+<section class="dark-grey-text" >
+  <div class="container my-3" >
+
+    {repeater name="language_items" prompt="Voeg taal toe" tab="Uitleg"}
+      {variable name="language" label="Taal" tab="Uitleg" type="text" }{/variable}
+      {variable name="flag" label="Vlag" tab="Uitleg" type="mediafinder" mode="image" }{/variable}
+    {/repeater}
+
+    <!-- Grid row -->
+    <div class="row">
+      <div class="col-12 text-center">
+        Selecteer een taal
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center flex-row flex-wrap">
+
+
+    {% for item in language_items %}
+
+      <!-- Grid column -->
+      <a href="/theorie/{{ item.language | lower }}/aanpak-vraagtypen">
+        <div class="col-md-3 flag-placeholder">
+
+          <!-- Featured image -->
+          <div class="d-flex flex-column justify-content-center" >
+            <div class="view overlay rounded my-4 shadow-none cursor-pointer">
+              <img class="img-fluid" src="{{ item.flag | media }}" alt="Sample image">
+              <div class="mask rgba-white-slight"></div>
+            </div>
+            <div class="language-desc text-center" ><h2 class="small dark-grey-text" >{{ item.language }}</h2></div>
+          </div>
+
+        </div>
+      </a>
+
+    {% endfor %}
+
+    </div>
+    
+  </section>
+<div style="background-color: #efefef; " class="py-5 px-3 px-sm-0 mt-5">
+  <section class="dark-grey-text py-3" >
+      <div class="container">
+        {repeater name="explanation_items" prompt="Voeg sectie toe" tab="Uitleg"}
+          {variable name="icon" label="Icon" tab="Uitleg" type="mediafinder" mode="image" }{/variable}
+          {variable name="title" label="Titel" tab="Uitleg" type="text" }{/variable}
+          {variable name="description" label="Beschrijving" tab="Uitleg" type="textarea" }{/variable}
+        {/repeater}
+        <div class="row text-center d-flex justify-content-center align-items-stretch">
+
+        {% for eitem in explanation_items %}
+        <div class="col-lg-4 mb-lg-0 d-flex align-items-stretch
+          {% if not loop.last %}
+          mb-5 
+          {% endif %}
+        ">
+          <div class="p-4 white">
+            <div class="uitleg-icon d-flex align-items-end justify-content-center mb-4" >
+              <img src="{{ eitem.icon | media }}" />
+            </div>
+            <h2 class="mb-4 small">{{ eitem.title }}</h2>
+            <p class="text-muted px-2 mb-lg-0">
+              {{ eitem.description }}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>
+<section class="dark-grey-text" >
+  <div class="container my-3" >
+
+    {repeater name="language_items" prompt="Voeg taal toe" tab="Uitleg"}
+      {variable name="language" label="Taal" tab="Uitleg" type="text" }{/variable}
+      {variable name="flag" label="Vlag" tab="Uitleg" type="mediafinder" mode="image" }{/variable}
+    {/repeater}
+
+    <!-- Grid row -->
+    <div class="row">
+      <div class="col-12 text-center mt-5">
+        Selecteer een taal
+      </div>
+    </div>
+    <div class="row d-flex justify-content-center flex-row flex-wrap">
+
+
+    {% for item in language_items %}
+
+      <!-- Grid column -->
+      <a href="/theorie/{{ item.language | lower }}/aanpak-vraagtypen">
+        <div class="col-md-3 flag-placeholder">
+
+          <!-- Featured image -->
+          <div class="d-flex flex-column justify-content-center" >
+            <div class="view overlay rounded my-4 shadow-none cursor-pointer">
+              <img class="img-fluid" src="{{ item.flag | media }}" alt="Sample image">
+              <div class="mask rgba-white-slight"></div>
+            </div>
+            <div class="language-desc text-center" ><h2 class="small dark-grey-text" >{{ item.language }}</h2></div>
+          </div>
+
+        </div>
+      </a>
+
+    {% endfor %}
+
+    </div>
+    
+  </section>
+  
+
+  <!--Section: Content-->
+
+{% partial 'page-end' %}

@@ -1,0 +1,43 @@
+{{ form_open({ request: 'onConfirmLicences', class: 'text-center form-validation-js' }) }}
+<input type="hidden" name="school_id" value={{ school.id }} />
+<input type="hidden" name="studentstobelicenced" value="{{ studentstobelicenced }}" />
+
+<div class="row">
+	<div class="col-md-12 align-self-center text-left">
+		<hr />
+		<div class="d-flex flex-column" >
+		{# loop over the courses #}
+		{% if nlics == 0 %}
+		<p>Er zijn geen nieuwe licenties nodig voor deze selectie.</p>
+		{% else %}
+			{% if nlics > 1 %}
+			<p>Er zijn in totaal <strong>{{ nlics }} nieuwe licenties</strong> nodig voor deze selectie.</p>
+			{% else %}
+			<p>Er is in totaal <strong>1 nieuwe licentie</strong> nodig voor deze selectie.</p>
+			{% endif %}
+			{% for course in mycourses %}
+			<div class="d-flex flex-row justify-content-between" style="max-width: 300px;" >
+				<span>{{ course.name }} ({{ course.level }})</span><span><strong>{{ nlicspercourse[loop.index0] }} licentie(s)</strong></span>
+			</div>
+			{% endfor %}
+		{% endif %}
+		</div>
+	</div>
+</div>
+{% if nlics > 0 %}
+<div class="row" >
+	<div class="col-12 text-left" >
+		<button class="btn btn-success shadow-none text-md-right ml-0 mt-3" type="submit" onclick="return customAjaxClick($(this));"  id="confirm-button-{{ school.id }}">{{ nlics }} Licenties aanschaffen</button> 
+		<div class="alert alert-success d-none mt-3" id="success-message-{{ school.id }}" >Licenties succesvol aangeschaft en gekoppeld!</div>
+	</div>
+</div>
+{% endif %}
+<div class="row">
+	<div class="col-12">
+		<div class="invalid-feedback text-left">
+			            </div>
+		<div class="info-feedback text-left">
+			            </div>
+	</div>
+</div>
+{{ form_close() }}

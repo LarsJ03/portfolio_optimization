@@ -1,0 +1,165 @@
+[ExamifyAccount]
+redirect = "home"
+paramCode = "code"
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+
+  function onStart(){
+    $this->addJs('assets/js/form-validation.js');
+
+    // make sure the user is logged in
+    if(!$user = Users::getUser()){
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    $this['user'] = $user;
+    $this['isSuperAdmin'] = $user->isSuperAdmin();
+    $this['isRandom'] = $user->getUserSetting('RandomNames');
+  }
+
+  function onValidate()
+  {
+
+    // in case it is update of the user, validate it
+    $update_user = input('update_user', false);
+    if($update_user){
+    Users::validateUpdate();
+    }
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+
+
+<div class="container exam-questions">
+
+  <div class="row my-3">
+    
+    <div class="col-12 mb-3">
+      <h1 >Mijn account </h1>
+      <hr />
+    </div>
+  </div>
+
+  {{ form_open({ request: 'onUpdate', 'class': 'text-center form-validation-js' }) }}
+  <div class="row my-0">
+    <div class="col-sm-6">
+      <div class="md-form">
+          <input autocomplete="off" type="email" id="materialRegisterFormEmail" class="form-control on-change-submit" name="email" value="{{ user.email }}">
+          <label class="active" for="materialRegisterFormEmail">E-mail</label>
+          <div class="invalid-feedback text-left"></div>
+          <div class="valid-feedback text-left" ></div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-0">
+    <div class="col-sm-6">
+      <div class="md-form">
+          <input autocomplete="off" type="text" id="materialRegisterFormName" class="form-control on-change-submit" name="name" value="{{ user.name }}">
+          <label class="active" for="materialRegisterFormName">Naam</label>
+          <div class="invalid-feedback text-left"></div>
+          <div class="valid-feedback text-left" ></div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="md-form">
+          <input autocomplete="off" type="text" id="materialRegisterFormSurname" class="form-control on-change-submit" name="surname" value="{{ user.surname }}">
+          <label class="active" for="materialRegisterFormSurname">Achternaam</label>
+          <div class="invalid-feedback text-left"></div>
+          <div class="valid-feedback text-left" ></div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-0">
+    <div class="col-sm-6">
+      <div class="md-form">
+          <input autocomplete="off" type="password" id="materialRegisterFormPassword" class="form-control on-change-submit" name="password" aria-describedby="materialRegisterFormPasswordHelpBlock">
+          <label for="materialRegisterFormPassword">Nieuw wachtwoord</label>
+          <div class="invalid-feedback text-left" ></div>
+          <div class="valid-feedback text-left" ></div>
+
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <!-- Password -->
+      <div class="md-form">
+          <input autocomplete="off" type="password" id="materialRegisterFormPasswordConfirm" class="form-control on-change-submit" name="password_confirmation" aria-describedby="materialRegisterFormPasswordConfirmHelpBlock">
+          <label for="materialRegisterFormPasswordConfirm">Bevestig wachtwoord</label>
+          <div class="invalid-feedback text-left" ></div>
+          <div class="valid-feedback text-left" ></div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row my-0">
+    <div class="col-sm-6">
+      <div class="md-form">
+          <input autocomplete="off" type="password" id="materialRegisterFormPasswordCurrent" class="form-control on-change-submit" name="password_current" aria-describedby="materialRegisterFormPasswordCurrentHelpBlock">
+          <label for="materialRegisterFormPasswordCurrent">Huidig wachtwoord</label>
+          <div class="invalid-feedback text-left" ></div>
+          <div class="valid-feedback text-left" ></div>
+          <small id="emailHelp2" class="form-text text-muted text-left">Je moet altijd je huidige wachtwoord invullen om andere gegevens te wijzigen. Op deze manier willen we voorkomen dat iemand anders je gegevens wijzigt!</small>
+
+      </div>
+    </div>
+  </div>
+  <div class="row my-0">
+    <div class="col-sm-12">
+      <!-- Sign up button -->
+      <button class="btn btn-outline-primary btn-rounded my-4 waves-effect z-depth-0" type="submit">Wijzigingen opslaan</button>
+      <input type="hidden" name="update_user" value="1" />
+    </div>
+  </div>
+  {{ form_close() }}
+
+  <div class="row my-3">
+    
+    <div class="col-12 mb-3">
+      <h1 >Mijn bestellingen </h1>
+      <hr />
+    </div>
+  </div>
+
+  <div id="licence-overview" >
+  {% partial 'userHelpers/orders' %}
+  </div>
+
+   <div class="row my-3">
+    
+    <div class="col-12 mb-3">
+      <h1 >Mijn licenties </h1>
+      <hr />
+    </div>
+  </div>
+
+  <div id="licence-overview" >
+  {% partial 'userHelpers/licences' %}
+  </div>
+
+  {{ form_open({ request: 'onLicense', 'class': 'text-center form-validation-js' }) }}
+  <div class="row my-0">
+    <div class="col-12">
+      <div class="md-form">
+          <input autocomplete="off" type="text" id="materialRegisterLicence" class="form-control on-change-submit" name="licence_key" value="">
+          <label class="active" for="materialRegisterLicence">Licentiecode</label>
+          <div class="invalid-feedback text-left"></div>
+          <div class="valid-feedback text-left" ></div>
+      </div>
+    </div>
+  </div>
+  <div class="row my-0">
+    <div class="col-sm-12">
+      <!-- Sign up button -->
+      <button class="btn btn-outline-primary btn-rounded my-4 waves-effect z-depth-0" type="submit">Licentie toevoegen</button>
+    </div>
+  </div>
+  {{ form_close() }}
+
+</div>
+
+{% partial 'page-end' %}

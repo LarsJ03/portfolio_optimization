@@ -1,0 +1,25 @@
+title:
+    label: Title
+    type: text
+    span: full
+
+entries:
+    label: Rij
+    type: repeater
+    prompt: Voeg nieuwe rij toe
+    form:
+        fields:
+            word:
+                label: Woord
+                type: text
+                span: full
+
+            explanation:
+                label: Uitleg
+                type: text
+                span: full
+
+            example:
+                label: Voorbeeld
+                type: text
+                span: full

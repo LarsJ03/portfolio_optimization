@@ -1,0 +1,16 @@
+fields:
+    name:
+        label: Klasnaam
+        span: auto
+        type: text
+    course:
+        label: 'examify.exams::lang.exams.courses.name'
+        showSearch: true
+        span: left
+        type: dropdown
+    school:
+        label: School
+        nameFrom: name
+        descriptionFrom: description
+        span: left
+        type: relation

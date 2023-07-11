@@ -1,0 +1,10 @@
+columns:
+    description:
+        label: Description
+        type: text
+        searchable: true
+        sortable: true
+    portfolio_id:
+        label: 'Portfolio ID'
+        type: number
+        searchable: true

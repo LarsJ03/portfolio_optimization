@@ -1,0 +1,21 @@
+subject = "Examify account aangemaakt"
+description = "Een Examify account aangemaakt."
+==
+Beste {{ name }}, 
+
+We hebben zojuist in opdracht van {{ schoolname }} een Examify account voor je aangemaakt dat gekoppeld is aan dit e-mailadres ({{ email }}). 
+
+{{ schoolname }} en Examify gaan ervoor zorgen dat jij je optimaal kunt voorbereiden voor de eindexamens.
+
+Activeer via de volgende link je account en stel een nieuw wachtwoord in:
+{% partial 'button' url=link type='positive' body %}
+Activeer & stel wachtwoord in
+{% endpartial %}
+
+Veel succes bij de eindexamens!
+
+Team Examify
+
+{% partial 'subcopy' body %}
+	**Dit is een automatisch bericht. Je kunt hier niet op reageren.**
+{% endpartial %}

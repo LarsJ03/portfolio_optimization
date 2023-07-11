@@ -1,0 +1,23 @@
+<div class="d-flex flex-column align-items-center mt-5" >
+    <div class="w-100" style="background-color: #efefef; height: 4px;" ></div>
+    <i class="fas fa-caret-down text-center fa-5x" style="color: #efefef;" ></i>
+    <h3 class="text-uppercase text-center mt-3" >Welke bank?</h3>
+    <p style="max-width: 640px;" class="text-center mt-3" >
+        Selecteer met welke bank je via iDEAL wilt betalen.
+    </p>
+    <div class="d-flex text-center" >
+         {{ form_open({ request: 'onSelectBank' }) }}
+            {% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+            <div class="md-form">
+              <select class="mdb-select" name="bank_id" >
+                <option value="" disabled selected>Selecteer een bank</option>
+                {% for bank in issuers %}
+                    <option value="{{ bank.id }}">{{ bank.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="invalid-feedback text-left" ></div>
+            </div>
+            <button class="btn shadow-none btn-rounded btn-primary" onclick="return customAjaxClick($(this));" >Betalen</button>
+        {{ form_close() }}
+    </div>
+</div>

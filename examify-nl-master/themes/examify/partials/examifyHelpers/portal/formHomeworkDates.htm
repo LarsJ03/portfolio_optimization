@@ -1,0 +1,34 @@
+{% if not removeTime %}
+<div class="row">
+  <div class="col-md-1" >
+  	<span class="font-weight-bold" >{{ ndates }}</span>
+  </div>
+  <div class="col-md-5">
+    <div class="md-form">
+		  <input placeholder="Selecteer datum" name="date[]" type="text" id="date-picker-example" class="form-control datepicker active">
+		  <label for="date-picker-example" class="active">Voor welke datum?</label>
+		</div>
+  </div>
+  <div class="col-md-5">
+    <div class="md-form">
+		  <input placeholder="Selecteer tijd" name="time[]" type="text" class="timepicker form-control timepicker active">
+		  <label for="input_starttime" class="active">En welke tijd?</label>
+		</div>
+  </div>
+</div>
+<div id="control-dates-{{ ndates + 1 }}" >
+{% endif %}
+	<div class="row" >
+		<div class="col-md-12 d-flex flex-row align-items-center justify-content-center" >
+			<input type="hidden" name="ndates" value="{{ ndates }}" />
+			{% if ndates < 4 %}
+			<button class="btn shadow-none btn-primary px-3 py-2" onclick="return customAjaxClick($(this), { 'addTime': true });" >Datum toevoegen</button>
+			{% endif %}
+			{% if ndates > 1 %}
+			<button class="btn shadow-none btn-warning px-3 py-2" onclick="return customAjaxClick($(this), { 'addTime': false })">Datum verwijderen</button>
+			{% endif %}
+		</div>
+	</div>
+{% if not removeTime %}
+</div>
+{% endif %}

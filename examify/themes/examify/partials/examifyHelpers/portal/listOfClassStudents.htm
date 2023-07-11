@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-12 mt-3">
+		{% for student in students %}
+		{% set ps = student.getLastHomeworkPracticeSessionForClass(class.id) %}
+		<div class="d-flex justify-content-between align-items-center flex-wrap alert green lighten-4" >
+			{% if ps %}
+			<a class="username" href="/portal/session/{{ ps.id }}" target="_blank">
+				{{ student.name }} {{ student.surname }} ({{ student.email }})
+			</a>
+			{% else %}
+			<div class="username" >
+				{{ student.name }} {{ student.surname }} ({{ student.email }})
+			</div>
+			{% endif %}
+			{% if form_enabled %}
+			{{ form_open({ request: 'onRemoveStudent' }) }}
+			<input type="hidden" name="student_id" value="{{ student.id }}" />
+			<input type="hidden" name="class_id" value="{{ class.id }}" />
+			<button class="btn shadow-none" type="submit" onclick="return customAjaxClick($(this)); " ><i class="fas fa-trash"></i></button>
+			{{ form_close() }}
+			{% endif %}
+		</div>
+		{% else %}
+			<div class="alert alert-secondary" >
+				Er zijn nog geen leerlingen aan deze klas gekoppeld
+			</div>
+		{% endfor %}
+	</div>
+</div>

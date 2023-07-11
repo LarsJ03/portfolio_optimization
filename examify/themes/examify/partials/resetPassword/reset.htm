@@ -1,0 +1,23 @@
+<p class="lead mt-5">
+    Je kunt nu je nieuwe wachtwoord instellen.
+</p>
+
+<form
+    data-request="{{ __SELF__ }}::onResetPassword"
+    data-request-update="'{{ __SELF__ }}::complete': '#partialUserResetForm'">
+    <div class="md-form">
+        <input autocomplete="off" type="text" id="resetCode" class="form-control" name="code" value="{{ __SELF__.code }}">
+        <label for="resetCode">Activatiecode</label>
+        <div class="invalid-feedback text-left">
+        </div>
+    </div>
+    <div class="md-form">
+        <input autocomplete="off" type="password" id="materialRegisterFormPassword" class="form-control" name="password" aria-describedby="materialRegisterFormPasswordHelpBlock">
+        <label for="materialRegisterFormPassword">Nieuw wachtwoord</label>
+        <div class="invalid-feedback text-left" ></div>
+        <div class="valid-feedback text-left" ></div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-rounded shadow-none">Reset wachtwoord</button>
+</form>

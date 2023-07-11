@@ -1,0 +1,12 @@
+<div class="row mt-3">
+	<div class="col-12 ml-2">
+		<strong>Let op:</strong> je hebt nog niet alle vragen {% if not leermodus %}van <strong>alle teksten</strong> {% endif %}beantwoord. Als je toch inlevert, kun je niet later nog verder gaan. 
+	</div>
+</div>
+<div class="row mt-3">
+	<div class="col-12">
+		<button type="button" class="btn btn-dark-green shadow-none" onclick="return customAjaxClick($(this), {'continuePracticeSession': true });" >Opdrachten verder afmaken</button>
+		<button type="button" class="btn btn-danger shadow-none" onclick="return customAjaxClick($(this), {'forceHandIn': true });" >Toch inleveren</button>
+	</div>
+</div>
+

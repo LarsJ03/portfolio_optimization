@@ -1,0 +1,53 @@
+[ExamifyAccount]
+redirect = "home"
+paramCode = "code"
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+
+  function onStart(){
+    $this->addJs('assets/js/form-validation.js');
+  }
+
+  function onValidate(){
+
+    return Users::validateRegistration();
+    
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+<div class="container exam-questions">
+
+  <!-- the switch for the pagination -->
+  <div class="row mt-3 mb-3 d-flex justify-content-center ">
+    <div class="col-sm-8">
+      <!-- Material form register -->
+      <div class="card shadow-none">
+
+          <h5 class="card-header primary-color white-text text-center py-4">
+              <strong>Registreren</strong>
+          </h5>
+
+          <!--Card content-->
+          <div class="card-body px-lg-5 pt-0 border-bottom border-right border-left border-light">
+
+              {% partial 'examifyHelpers/register' requestFunction='onRegister' %}
+              <!-- Form -->
+
+          </div>
+
+      </div>
+      <!-- Material form register -->
+    </div>
+  </div>
+
+<!-- /.Vertical Steppers -->
+
+</div>
+
+{% partial 'page-end' %}

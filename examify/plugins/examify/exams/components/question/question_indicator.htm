@@ -1,0 +1,11 @@
+<div class="d-flex flex-column align-items-center mr-2" >
+  <div class="question-indicator" >
+    <span class="q-circle flex-shrink-0 mr-0 bg-primary ">{{ question.question_nr }}</span>
+  </div>
+  {% if not leermodus %}
+    <div class="n-points text-dark mt-2" >{{ question.points }}p</div>
+  {% endif %}
+  	<div class="d-flex flex-column flex-grow-1 mt-2" style="width: 0.2rem; background-color: #efefef;" >
+
+  	</div>
+</div>

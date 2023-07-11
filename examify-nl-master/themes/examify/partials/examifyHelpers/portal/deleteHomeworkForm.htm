@@ -1,0 +1,4 @@
+{{ form_open({ request: 'onDeleteHomework', class: 'text-center form-validation-js' }) }}
+	<input type="hidden" name="homework_id" value="{{ homework.id }}" >
+	<button class="btn shadow-none px-3 py-2" style="position: relative;" onclick="return customAjaxClick($(this));" ><i class="fas fa-trash" aria-hidden="true"></i></button>
+{{ form_close() }}

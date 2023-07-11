@@ -1,0 +1,53 @@
+<div class="mb-0" >
+
+				<div class="row">
+					<div class="col-12 d-flex">
+						<div class="practice_session_entry
+							alert 
+							alert-secondary
+							flex-grow-1 d-flex flex-column rounded-lg
+							p-0" 
+							>
+
+							<!-- info -->
+							<a class="collapseme collapsed d-flex py-2 px-3 " 
+							type="button" data-toggle="collapse" data-target="#collapse-exam-{{ exam.id }}" aria-expanded="false" aria-controls="collapse-exam-{{ exam.id }}"
+							> 
+								<div class="d-flex flex-column flex-grow-1" >
+									{# in case it is homework, the name comes from the classname #}
+						    		<div class="session-name d-flex flex-grow-1 justify-content-start align-items-center" >  
+						    			{% set flagpath = 'assets/img/flags/' ~ course.getFlagUrl() %}
+						    			<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+						    			<span class="mr-3" >{{ exam.year }} / Tijdvak {{ exam.tijdvak }}</span>
+						    			{% if exam.practice_mode_available %}
+						    			<span class="badge badge-primary shadow-none align-self-center">met uitleg</span>
+						    			{% endif %}
+						    			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+						    		</div>
+					    		</div>
+					    	</a>
+						    <div class="collapse" id="collapse-exam-{{ exam.id }}">
+						    	<div class="px-3 pb-2 pt-1 d-flex flex-row flex-wrap" >
+						    		<button class="btn py-2 px-3 shadow-none ml-0" style="background-color: #cccccc;"
+						    			href="#" 
+						    			target="_blank" disabled >
+						    			Bekijk oefensessie
+						    		</button>
+						    		{{ form_open({ url: 'practice-start' }) }}
+						    			<input type="hidden" name="exam_id" value="{{ exam.id }}" />
+						    			<input type="hidden" name="leermodus" value="0" />
+						    			<button class="btn btn-primary py-2 px-3 shadow-none" >Start examenmodus</button>
+						    		{{ form_close() }}
+						    		{{ form_open({ url: 'practice-start' }) }}
+						    			<input type="hidden" name="exam_id" value="{{ exam.id }}" />
+						    			<input type="hidden" name="leermodus" value="1" />
+						    			<button class="btn {% if exam.practice_mode_available %} btn-primary{% endif %} py-2 px-3 shadow-none"
+						    				{% if not exam.practice_mode_available %} disabled style="background-color: #cccccc;" {% endif %}
+						    			 >Start leermodus</button>
+						    		{{ form_close() }}
+						    	</div>
+						    </div>
+					    </div>
+					</div>
+				</div>
+			</div>

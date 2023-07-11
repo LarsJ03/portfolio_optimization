@@ -1,0 +1,58 @@
+
+==
+<?php
+
+	// get the licenses
+	use Examify\Exams\Models\Users as Users;
+	use Examify\Exams\Models\Licenses as Licenses;
+
+	function onStart()
+	{
+			$myUser = Users::getUser();
+
+			if(!$myUser)
+			{
+				return;
+			}
+
+			// get the licences
+			$this['licences'] = $qq = $myUser->licences()->with('school')->get();
+
+	}
+?>
+==
+{% for licence in licences %}
+
+	<div class="row">
+		<div class="col-12 d-flex">
+	  	<!-- geen oefensessies gevonden -->
+	    <div class="practice_session_entry alert-success alert flex-grow-1 d-flex flex-column" >
+	    	<div class="course-details" >
+	    		{% if not licence.course_id %}
+						{% if licence.is_teacher %}
+							{{ licence.school.name }} (Docentenlicentie {{ licence.schoolyear }})
+						{% else %}
+							{{ licence.school.name }} (Leerlinglicentie {{ licence.schoolyear }})
+						{% endif %}
+					{% else %}
+						{{ licence.course.name }} ({{ licence.course.level }} {{ licence.schoolyear }})
+					{% endif %}
+	    	</div>
+	    	<div class="key text-break" >
+	    		<small>{{ licence.key }}</small>
+	    	</div>
+	    </div>
+	  </div>
+	</div>
+
+{% else %}
+	<div class="row">
+		<div class="col-12 d-flex">
+	  	<!-- geen oefensessies gevonden -->
+	    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+	      Er zijn geen actieve licenties gevonden.
+	    </div>
+	  </div>
+	</div>
+
+{% endfor %}

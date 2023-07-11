@@ -1,0 +1,23 @@
+<div class="badges d-flex flex-row align-items-center" >
+	{% if mySession.exam.practice_mode_available %}
+	<span class="badge badge-primary shadow-none mr-1 ">met uitleg</span>
+	{% endif %}
+	{% if mySession.homework_id and not hidehomework %}
+		<span class="badge bg-info shadow-none ">Huiswerk</span>
+	{% endif %}
+	{% if not mySession.homework_id and not mySession.question_types_trials_id %}
+		{% if not mySession.leermodus %}
+		<span class="badge badge-light badge-light-white shadow-none ">examenmodus</span>
+		{% else %}
+		<span class="badge badge-light badge-light-white shadow-none ">leermodus</span>
+		{% endif %}
+	{% endif %}
+	{#
+	{% if not mySession.finished and mySession.started %}
+		<span class="badge badge-primary shadow-none ">bezig</span>
+	{% endif %}
+	#}
+	{% if mySession.homework_id and mySession.finished %}
+		<span class="badge badge-success shadow-none " >afgerond</span>
+	{% endif %}
+</div>

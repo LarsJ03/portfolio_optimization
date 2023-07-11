@@ -1,0 +1,54 @@
+{% if user %}
+<div class="pb-3" >
+	<a class="collapseme {% if not user.hasSchoolSelected() %}collapsed{% endif %} d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-show-classes-{{ school.id }}" aria-expanded="false" aria-controls="collapse-show-classes-{{ school.id }}">
+		<div class="d-flex flex-row align-items-center grey lighten-5 p-3 " >
+	  	<h2 class="mb-0 small">{{ school.name }}</h2>
+			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+		</div>
+	</a>
+	<div class="collapse {% if user.hasSchoolSelected() %}show{% endif %}" id="collapse-show-classes-{{ school.id }}" >
+		<div class="grey lighten-5 mb-5 p-1 p-lg-3 d-flex flex-column" >
+			<div>
+			{# only add classes if the year is lower #}
+			{% if not isSchoolAdmin %}
+			<div class="pb-2" >Dit is een overzicht van klassen waar je docent van bent. Klik op een van de klassen om voor die klas huiswerk op te geven, of om de samenstelling van de klas te wijzigen.</div>
+			{% endif %}
+			{% if currentyear <= schoolyear and isSchoolAdmin %}
+			{{ form_open({ request: 'onAdd', 'class' : 'text-center form-validation-js' }) }}
+				{# set the school id #}
+				<input type="hidden" name="school_id" value="{{ school.id }}" />
+				<div class="row">
+					<div class="col-md-3 align-self-center ">
+						<div class="md-form">
+		            <input autocomplete="off" type="text" id="materialRegisterFormClassName-{{ school.id }}" class="form-control on-change-submit" name="classname">
+		            <label for="materialRegisterFormClassName-{{ school.id }}">Klasnaam</label>
+		        </div>
+					</div>
+					<div class="col-md-3 align-self-center " >
+						<select class="mdb-select md-form" searchable="Zoeken..." name="course_id" >
+						  <option value="" disabled selected>Selecteer vak</option>
+						  {% for course in courses %}
+						  <option value="{{ course.id }}">{{ course.name }} - {{ course.level }}</option>
+						  {% endfor %}
+						</select>
+					</div>
+					<div class="col-md-6 align-self-center text-left">
+						<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Voeg toe</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="invalid-feedback text-center">
+		            </div>
+					</div>
+				</div>
+				{{ form_close() }}
+			{% endif %}
+			</div>
+			<div id="list-of-classes-{{ school.id }}"  >
+			{% partial 'examifyHelpers/portal/listOfClasses' isadmin=is %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

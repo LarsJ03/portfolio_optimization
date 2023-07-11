@@ -1,0 +1,45 @@
+columns:
+    id:
+        label: id
+        type: number
+        sortable: true
+    course_id:
+        label: vak
+        type: number
+        relation: course
+        valueFrom: name
+    level:
+        label: level
+        type: number
+        relation: course
+        valueFrom: level
+    question_type_id:
+        label: vraagtype
+        type: number
+        relation: question_type
+        valueFrom: name
+    name:
+        label: name
+        type: text
+        searchable: true
+        sortable: true
+    question_ids:
+        label: question_ids
+        type: text
+        invisible: true
+    question_type_id:
+        label: question_type_id
+        type: number
+        invisible: true
+    visible:
+        label: visible
+        type: number
+        sortable: true
+    created_at:
+        label: created_at
+        type: datetime
+        sortable: true
+    updated_at:
+        label: updated_at
+        type: datetime
+        sortable: true

@@ -1,0 +1,62 @@
+url = "/mijn-account"
+layout = "default"
+title = "Mijn Account"
+
+[session]
+security = "user"
+redirect = "homepage"
+
+[account]
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+==
+{% component 'session' %}
+<main>
+		<div class="bg-wrapper pagetitle">
+			<div class="container-wrapper">
+				<div class="row">
+					<div class="col-xs-12">
+						<h1>Mijn account</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- kruiwagen -->
+		<!-- kruiwagen -->
+		<div class="bg-wrapper white">
+		    <div class="container-wrapper">
+		    	<div class="row kruiwagen-row form-row mijn-account-row">
+		    		<div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
+						<h1>Opgeslagen looproutes</h1>
+
+<div id="looproutes-list" >
+<div class="alert alert-grey">
+	U heeft nog geen opgeslagen looproutes
+</div>
+</div>
+		    		</div>
+		    		<div class="col-xs-12 col-sm-5 col-md-5 col-lg-4 kruiwagen-login">
+		    			
+    
+<h1>Gegevens wijzigen</h1>
+<div class="login">
+
+
+
+    {% partial account ~ '::activation_check' %}
+
+    {% partial account ~ '::update' %}
+
+    {% partial account ~ '::deactivate_link' %}
+
+
+
+</div>
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+			
+	</main>

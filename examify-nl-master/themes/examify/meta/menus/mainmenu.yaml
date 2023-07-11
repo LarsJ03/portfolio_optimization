@@ -1,0 +1,28 @@
+items:
+    -
+        title: Home
+        nesting: null
+        type: url
+        url: /
+        code: ''
+        reference: null
+        cmsPage: null
+        replace: null
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: Oefenen
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: practice
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+name: MainMenu

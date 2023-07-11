@@ -1,0 +1,34 @@
+    {% if orderinformation %}    
+        {% for tempcourse in orderinformation.courses %}
+        <input type="hidden" name="courseids[]" value="{{ tempcourse.id }}" />
+        {% endfor %}
+        {% if orderinformation.phase %}
+        <input type="hidden" name="phase" value="{{ orderinformation.phase + 1 }}" />
+        {% endif %}
+        {% if orderinformation.yearsToOrder %}
+            {% for thisyear in orderinformation.yearsToOrder %}
+                <input type="hidden" name="yearsToOrder[]" value="{{ thisyear }}" />
+            {% endfor %}
+        {% endif %}
+        {% if orderinformation.street %}
+        <input type="hidden" name="street" value="{{ orderinformation.street }}" />
+        {% endif %}
+        {% if orderinformation.zipcode %}
+        <input type="hidden" name="zipcode" value="{{ orderinformation.zipcode }}" />
+        {% endif %}
+        {% if orderinformation.city %}
+        <input type="hidden" name="city" value="{{ orderinformation.city }}" />
+        {% endif %}
+        {% if orderinformation.country %}
+        <input type="hidden" name="country" value="{{ orderinformation.country }}" />
+        {% endif %}
+        {% if orderinformation.topay %}
+        <input type="hidden" name="topay" value="{{ orderinformation.topay.value }}" />
+        {% endif %}
+        {% if orderinformation.voucherid %}
+        <input type="hidden" name="voucherid" value="{{ orderinformation.voucherid }}" />
+        {% endif %}
+        {% if orderinformation.voucher_code %}
+        <input type="hidden" name="voucher_code" value="{{ orderinformation.voucher_code }}" />
+        {% endif %}
+    {% endif %}

@@ -1,0 +1,39 @@
+[ExamifyQuestion]
+==
+<?php
+	// check the practice session
+	function onStart()
+	{
+		$myPracticeSession = $this['practiceSession'];
+
+		// get all manual questions to be answered
+
+
+	}
+?>
+==
+{{ form_open({ request: 'onSubmitOpenAnswerPoints' }) }}
+<div class="row mt-3">
+	<div class="col-12 ml-2">
+		<h1>Open vragen nakijken</h1>
+		Voor de open vragen zul je zelf even na moeten gaan of je alle punten verdiend hebt. Geef met behulp van het correctie voorschrift aan hoeveel punten je hebt behaald per vraag zodat wij daarna je exacte punt kunnen berekenen! <br /><br />
+
+		We vertrouwen erop dat je eerlijk bent! Je hebt er niets aan om jezelf voor de gek te houden.
+			<div class="examify-questions-container mt-5" >
+			{% for questionID in manualQuestionIDs %}
+				{% component 'ExamifyQuestion' question_id=questionID practice_session_id=practiceSession.id is_finished=true to_be_checked=true %}
+			{% endfor %}
+			</div>
+	</div>
+</div>
+<div class="row mb-5">
+	<div class="col-12">
+		<div class="invalid-feedback bigger mb-3" ></div>
+		<input type="hidden" name="practice_session_id" value="{{ practiceSession.id }}" />
+		<button type="button" class="btn btn-dark-green shadow-none" onclick="return customAjaxClick($(this), {'forceHandIn': true });" >Opslaan &amp; Inleveren</button>
+	</div>
+</div>
+<div id="testresult" >
+
+</div>
+{{ form_close() }}

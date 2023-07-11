@@ -1,0 +1,150 @@
+{% if form_enabled %}
+	<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-add-homework" aria-expanded="false" aria-controls="collapse-add-homework">
+    <div class="d-flex flex-row align-items-center p-3 grey lighten-5 " >
+    	<div>Voeg huiswerk toe</div>
+			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+		</div>
+  </a>
+  <div class="collapse grey lighten-5" id="collapse-add-homework">
+  	<div class="p-3" >
+  		<p class="p-3 rounded border font-italic grey lighten-4" >
+  			Het is nu mogelijk om een examen op te splitsen in 2, 3, of 4 aparte huiswerkopdrachten. Klik daarvoor op 'datum toevoegen' en selecteer als huiswerkopdracht een geheel examen. Het examen wordt dan automatisch opgesplitst op basis van de te behalen punten.
+  		</p>
+		{{ form_open({ request: 'onAddHomework', class: 'text-center form-validation-js' }) }}
+			<input type="hidden" name="class_id" value="{{ class.id }}" />
+			<input type="hidden" name="leermodus" value="{{ PMA }}" />
+			<div class="row" >
+				<div class="col-md-12">
+					<div class="md-form">
+					  <input type="text" id="name" name="name" class="form-control">
+					  <label for="name">Naam opdracht</label>
+					</div>
+				</div>
+			</div>
+			<div class="row" >
+				<div class="col-md-12 text-left" >
+					Stel deadlines in
+				</div>
+			</div>
+			<div class="border rounded p-3" >
+				{% partial 'examifyHelpers/portal/formHomeworkDates.htm' ndates=1 %}
+			</div>
+			<div class="row">
+				<div class="col-md-12 mt-3 align-self-center">
+					<select class="mdb-select" searchable="Zoeken..." name="student_id[]" multiple >
+					  <option value="" disabled selected>Selecteer leerlingen</option>
+					  {% for ThisUser in class.getStudents(schoolyear) %}
+					  <option value="{{ ThisUser.id }}">{{ ThisUser.name }} {{ ThisUser.surname }}</option>
+					  {% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="row" >
+				<div class="col-md-12 align-self-center d-flex flex-column">
+					<div class="text-left mt-3">Selecteer teksten</div>
+					<div class="border rounded p-3" >
+						{% for level in class.course.getAllLevels() %}
+						<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-level-{{ level }}" aria-expanded="false" aria-controls="collapse-level-{{ level }}">
+					    <div class="d-flex flex-row align-items-center px-3 py-2 grey lighten-5 " >
+					    	<div>Selecteer <strong>{{ level }}</strong> teksten</div>
+							<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+						</div>
+					  </a>
+					  <div class="collapse grey lighten-5 d-flex flex-column pl-3" id="collapse-level-{{ level }}">
+					  	{% for exam in class.course.getExamsForLevelWithPracticeModeAvailable(level, PMA)%}
+					  	<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-level-{{ level }}-{{ exam.year }}-{{ exam.tijdvak }}" aria-expanded="false" aria-controls="collapse-level-{{ level }}-{{ exam.year }}-{{ exam.tijdvak }}">
+						    <div class="d-flex flex-row align-items-center px-3 py-2 grey lighten-5 " >
+						    	<div class="d-flex flex-row align-items-center">
+						    		<span>{{ exam.year }} - Tijdvak {{ exam.tijdvak }} </span>
+						    		{% if exam.practice_mode_available %}
+							    		<img src="{{ 'assets/img/icons/purple.png' | theme }}" width="12px" height="12px" class="rounded-circle mr-3 ml-3" />
+							    	{% endif %}
+						    	</div>
+									<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+								</div>
+						  </a>
+						  <div class="collapse grey lighten-5 pl-4 d-flex flex-column" id="collapse-level-{{ level }}-{{ exam.year }}-{{ exam.tijdvak }}">
+						  	<div class="pb-3 d-flex flex-column" >
+							  	<div class="d-flex flex-row" >
+							  		<div class="button btn btn-primary waves checkbox-select-all px-2 py-1 mx-0 mt-0 mb-2" >(de)selecteer alles</div>
+							  	</div>
+							  	{% for text in exam.getTexts() %}
+							  		<div class="form-check text-left mt-2 pl-0">
+										    <input type="checkbox" class="form-check-input" name="text_id[{{ text.id }}]" id="select-text-{{ text.id }}" value="{{ text.id }}" >
+										    <label class="form-check-label" for="select-text-{{ text.id }}">{{ text.myorder }} - {{ text.name }}</label>
+										</div>
+							  	{% endfor %}
+							 </div>
+						  </div>
+						  {% endfor %}
+					  </div>
+					  <a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-level-trials-{{ level }}" aria-expanded="false" aria-controls="collapse-level-trials-{{ level }}">
+					    <div class="d-flex flex-row align-items-center px-3 py-2 grey lighten-5 " >
+					    	<div>Selecteer <strong>{{ level }}</strong> vraagtypen trials</div>
+							<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+						</div>
+					  </a>
+					  <div class="collapse grey lighten-5 d-flex flex-column pl-3" id="collapse-level-trials-{{ level }}">
+					  	{% set trialsarray = class.course.getQuestionTypesTrialsGroupedByTypeForLevel(level) %}
+					  	{% for qtype in trialsarray.types %}
+					  	<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-level-{{ level }}-trialgroup-{{ loop.index0 }}" aria-expanded="false" aria-controls="collapse-level-{{ level }}-trialgroup-{{ loop.index0 }}">
+						    <div class="d-flex flex-row align-items-center px-3 py-2 grey lighten-5 " >
+						    	<div class="d-flex flex-row align-items-center">
+						    		{{ qtype.name }}
+						    	</div>
+								<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+							</div>
+						  </a>
+						  <div class="collapse grey lighten-5 pl-4 d-flex flex-column" id="collapse-level-{{ level }}-trialgroup-{{ loop.index0 }}">
+						  	<div class="d-flex flex-column pb-3" >
+							  	{% for trial in trialsarray.trials[qtype.id] %}
+							  		<div class="form-check text-left mt-2 pl-0">
+										    <input type="checkbox" class="form-check-input" name="trial_id[{{ trial.id }}]" id="select-trial-{{ trial.id }}" value="{{ trial.id }}" >
+										    <label class="form-check-label" for="select-trial-{{ trial.id }}">{{ trial.name }}</label>
+										</div>
+							  	{% endfor %}
+							  </div>
+						  </div>
+						  {% else %}
+						  <div class="d-flex px-3" ><i>Er zijn geen nog geen vraagtype trials beschikbaar.</i></div>
+						  {% endfor %}
+					  </div>
+					  {% endfor %}
+					  <hr />
+						<div class="d-flex flex-row align-items-center">
+	  					<img src="{{ 'assets/img/icons/purple.png' | theme }}" width="16px" height="16px" class="rounded-circle mr-3" />
+	  					<span>Uitleg beschikbaar</span>
+	  				</div>
+	  				{#
+	  				<div class="d-flex flex-row align-items-center">
+	  					<img src="{{ 'assets/img/icons/done.png' | theme }}" width="16px" height="16px" class="rounded-circle mr-3" />
+	  					<span>Eerder opgegeven</span>
+	  				</div>
+	  				#}
+					</div>
+				</div>
+			</div>
+			<div class="row" >
+				<div class="col-md-12">
+					<div class="md-form" >
+						<p class="text-left" >Het is mogelijk een maximale tijd in te stellen. De leerling dient dan binnen die ingestelde tijd - gemeten vanaf het starten van de opdracht - het gemaakte huiswerk in te leveren. Geef de tijd op in minuten. Laat het veld leeg indien er geen limiet ingesteld dient te worden.</p>
+					</div>
+					<div class="md-form">
+					  <input type="text" id="time_limit_mins" name="time_limit_mins" class="form-control">
+					  <label for="time_limit_mins">Maximale tijdsduur (in minuten)</label>
+					</div>
+				</div>
+			</div>
+			<div class="row" >
+				<div class="col-md-12 align-self-center text-left">
+					<input type="hidden" name="leermodus" value="{{ leermodus }}" />
+					<div class="invalid-feedback text-left">
+	            </div>
+					<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Voeg toe</button>
+
+				</div>
+			</div>
+		{{ form_close() }}
+	</div>
+</div>
+	{% endif %}

@@ -1,0 +1,11 @@
+# ===================================
+# Filter Scope Definitions
+# ===================================
+
+scopes: 
+
+  vak:
+    label: Vak
+    modelClass: Examify\Exams\Models\Courses
+    conditions: id in (select id from examify_exams_exams where course_id in (:filtered))
+    nameFrom: CourseAndLevel

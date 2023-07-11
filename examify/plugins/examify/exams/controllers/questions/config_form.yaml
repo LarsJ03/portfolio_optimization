@@ -1,0 +1,10 @@
+name: Questions
+form: $/examify/exams/models/questions/fields.yaml
+modelClass: Examify\Exams\Models\Questions
+defaultRedirect: examify/exams/questions
+create:
+    redirect: 'examify/exams/questions/update/:id'
+    redirectClose: examify/exams/questions
+update:
+    redirect: examify/exams/questions
+    redirectClose: examify/exams/questions

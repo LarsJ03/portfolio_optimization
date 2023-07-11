@@ -1,0 +1,73 @@
+<div class="row">
+	<div class="col-12 mt-3" >
+		<h3 class="small" >Docenten &amp; openstaande licenties</h3>
+		<a class="collapseme {% if not admin_changes %} collapsed {% endif %} d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-show-teachers-{{ school_id }}" aria-expanded="false" aria-controls="collapse-show-teachers-{{ school_id }}">
+			<div class="d-flex flex-row align-items-center white p-3 " >
+	    	<div>Docenten</div>
+				<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+			</div>
+	  </a>
+	  <div class="collapse {% if admin_changes %} show {% endif %} white p-3" id="collapse-show-teachers-{{ school_id }}">
+			{% for teacher in teachers %}
+			{% set isAdmin = teacher.isAdminForSchool(school_id) %}
+				<div class="d-flex justify-content-between align-items-center flex-wrap border-bottom p-2 lighten-3" >
+					<div class="username">
+						{{ teacher.name }} {{ teacher.surname }} ({{ teacher.email }}) {% if isAdmin %}(Beheerder) {% endif %}
+					</div>
+					{% if iscurrentyear %}
+					<div class="d-flex d-row" >
+					{% if isAdmin %}
+					{{ form_open({ request: 'onRemoveAdmin' }) }}
+						<input type="hidden" name="teacher_id" value="{{ teacher.id }}" />
+						<input type="hidden" name="school_id" value="{{ school_id }}" />
+						<button class="btn shadow-none px-3 py-2" type="submit" onclick="return customAjaxClick($(this)); " ><i class="fas fa-key"></i></button>
+					{{ form_close() }}
+					{% else %}
+					{{ form_open({ request: 'onMakeAdmin' }) }}
+						<input type="hidden" name="teacher_id" value="{{ teacher.id }}" />
+						<input type="hidden" name="school_id" value="{{ school_id }}" />
+						<button class="btn shadow-none px-3 py-2 justify-self" type="submit" onclick="return customAjaxClick($(this)); " ><i class="fas fa-key" style="color: #cccccc;"></i></button>
+					{{ form_close() }}
+					{% endif %}
+					{{ form_open({ request: 'onRemoveTeacher' }) }}
+						<input type="hidden" name="teacher_id" value="{{ teacher.id }}" />
+						<input type="hidden" name="school_id" value="{{ school_id }}" />
+						<button class="btn shadow-none px-3 py-2" type="submit" onclick="return customAjaxClick($(this)); " ><i class="fas fa-trash" style="color: red;" ></i></button>
+					{{ form_close() }}
+					</div>
+					{% endif %}
+				</div>
+			{% else %}
+				<div class="alert alert-secondary"> Er zijn nog geen docenten gevonden in ons systeem.</div>
+			{% endfor %}
+		</div>
+		<a class="collapseme {% if not deleted_action %} collapsed {% endif %} d-flex flex-column mt-2" type="button" data-toggle="collapse" data-target="#collapse-show-open-lics-{{ school_id }}" aria-expanded="false" aria-controls="collapse-show-open-lics-{{ school_id }}">
+			<div class="d-flex flex-row align-items-center white p-3 " >
+	    	<div>Openstaande licenties</div>
+				<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+			</div>
+	  </a>
+	  <div class="collapse {% if deleted_action %} show {% endif %} white p-3" id="collapse-show-open-lics-{{ school_id }}">
+	  	{% if inactiveLics is not empty %}
+			<a class="btn btn-info shadow-none ml-0 mb-3 py-2 px-3" href="/portal/export/{{ school_id }}/teachers/{{ year }}" ><i class="fa fa-download mr-3" aria-hidden="true"></i>Download alle beschikbare licentiecodes</a>
+		{% endif %}
+			{# get the inactive licences #}
+			{% for inactiveLic in inactiveLics %}
+			<div class="row">
+				<div class="col-12">
+					<div class="d-flex justify-content-between align-items-center flex-wrap border-bottom p-2" >
+						<div class="username text-break small">
+							{{ inactiveLic.key }}
+						</div>
+						{{ form_open({ request: 'onDelete' }) }}
+							<button class="btn btn-danger shadow-none" type="submit" onclick="return customAjaxClick($(this), { key: '{{ inactiveLic.key }}' }) " >Verwijder</button>
+						{{ form_close() }}
+					</div>
+				</div>
+			</div>
+			{% else %}
+				<div class="alert alert-secondary" >Er zijn geen openstaande licenties gevonden in ons systeem.</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

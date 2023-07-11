@@ -1,0 +1,74 @@
+[session]
+security = "guest"
+redirect = "mijn-account"
+==
+{% component 'session' %}
+<div class="bg-wrapper green">
+			<div class="flexbox">
+				<div class="logo">
+					<a href="https://www.kwekerijmuijderman.nl" >
+						<img src="https://www.kwekerijmuijderman.nl/themes/kwekerij-muijderman/assets/img/logo-kwekerij-muijderman-green-update.svg" alt="Logo Kwekerij Muijderman">
+					</a>
+				</div>
+				<div id="nav-mobile-menu-icon" >
+	              <span></span>
+	              <span></span>
+	              <span></span>
+	              <span></span>
+	            </div>
+				<nav class="main-nav">
+					    <ul>
+            <li role="presentation" class="active  ">
+                    <a href="/kwekerijmuijderman" >
+                Home
+            </a>
+        
+            </li>
+    <li role="presentation" class="  ">
+                    <a href="assortiment">
+                Assortiment
+            </a>
+        
+            </li>
+    <li role="presentation" class="  ">
+                    <a href="over-ons" >
+                Over ons
+            </a>
+        
+            </li>
+    <li role="presentation" class="  ">
+                    <a href="contact" >
+                Contact
+            </a>
+        
+            </li>
+    </ul>
+					<ul>
+			            <li role="presentation">
+		                    <a href="kruiwagen">
+				                Kruiwagen (<span class="kruiwagen-counter">3</span>)
+				            </a>
+					    </li>
+						{% if user %}
+
+						<li role="presentation">
+					    			                    <a href="/mijn-account" >
+				                Mijn account
+				            </a>
+				        </li>
+
+						{%endif%}
+
+					    <li role="presentation">
+						{% if user %}
+							<a data-request="onLogout" data-request-data="redirect: '/'">Uitloggen</a>
+						{%else%}
+					    					            <a href="inloggen" >
+								Inloggen
+							</a>
+						{% endif %}
+			            </li>
+				    </ul>
+				</nav>
+			</div>
+		</div>

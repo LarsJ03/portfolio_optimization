@@ -1,0 +1,35 @@
+<div class="d-flex flex-column align-items-center mt-5" >
+    <div class="w-100" style="background-color: #efefef; height: 4px;" ></div>
+    <i class="fas fa-caret-down text-center fa-5x" style="color: #efefef;" ></i>
+    <h3 class="text-uppercase text-center mt-1" >Kortingscode</h3>
+    <p style="max-width: 800px;" class="text-center" >
+        Activeer een kortingscode of ga verder zonder kortingscode.<br />Per bestelling kan er 1 code gebruikt worden.
+    </p>
+    <div class="col-sm-8" style="max-width: 400px;" >
+    {{ form_open({ request: 'onAddVoucher', 'class': 'text-center form-validation-js' }) }}
+        {% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+
+        {# show the form with the address information #}
+        <!-- First name -->
+        <div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormVoucher" class="form-control on-change-submit" name="voucher_code">
+            <label for="materialRegisterFormVoucher" >Kortingscode</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+
+        <!-- Sign up button -->
+        <button class="btn btn-primary btn-rounded mt-2 mb-4 waves-effect z-depth-0" type="submit">Voeg toe</button>
+    
+    {{ form_close() }}
+    {{ form_open({ request: 'onWithoutVoucher', 'class': 'text-center form-validation-js' }) }}
+        {% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+
+        <input type="hidden" name="voucher_code" value="__NO_VOUCHER_CODE_INPUT__" />
+
+        <!-- Sign up button -->
+        <button class="btn btn-outline-primary btn-rounded mt-2 mb-4 waves-effect z-depth-0" type="submit">Verder zonder kortingscode</button>
+
+    {{ form_close() }}
+</div>
+</div>

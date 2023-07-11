@@ -1,0 +1,13 @@
+{% for voucher in list_of_vouchers %}
+<a class="collapseme collapsed d-flex flex-column mt-3" type="button" data-toggle="collapse" data-target="#collapse-edit-voucher-{{ voucher.id }}" aria-expanded="false" aria-controls="collapse-edit-voucher-{{ voucher.id }}">
+  <div class="d-flex flex-row align-items-center p-3 blue lighten-5 " >
+  	<div>[{{ voucher.code }}] - {{ voucher.name }} ({{ voucher.count }}/{{ voucher.limit }})</div>
+		<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+	</div>
+</a>
+<div class="collapse blue lighten-5" id="collapse-edit-voucher-{{ voucher.id }}">
+	<div class="p-3" >
+		{% partial 'examifyHelpers/portal/formVoucher' MyRequest='onEditVoucher' myvoucher=voucher %}
+	</div>
+</div>
+{% endfor %}

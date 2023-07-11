@@ -1,0 +1,26 @@
+# ===================================
+# Filter Scope Definitions
+# ===================================
+
+scopes: 
+
+  vak:
+    label: Vak
+    modelClass: Examify\Exams\Models\Courses
+    conditions: text_id in (select id from examify_exams_texts where exam_id in (select id from examify_exams_exams where course_id in (:filtered)))
+    nameFrom: CourseAndLevel
+
+  year:
+    label: Jaar
+    type: number
+    conditions: text_id in (select id from examify_exams_texts where exam_id in (select id from examify_exams_exams where year = :filtered))
+
+  tijdvak:
+    label: Tijdvak
+    type: number
+    conditions: text_id in (select id from examify_exams_texts where exam_id in (select id from examify_exams_exams where tijdvak = :filtered))
+
+  texts:
+    label: Tekst
+    modelClass: Examify\Exams\Models\Texts
+    conditions: text_id in (:filtered)

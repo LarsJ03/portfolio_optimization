@@ -1,0 +1,78 @@
+<div class="row" >
+	<div class="col-md-12 mt-5">
+		Aankomend huiswerk
+		<hr />
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 mt-3">
+
+		{% for homework in class.getHomework(+1) if homework.parent_id == 0 %}
+		<div class="d-flex flex-column green lighten-4 mb-3" >
+				{% if homework.split_exam %}
+				<a class="d-flex p-3 green lighten-3 text-dark d-flex align-items-center" 
+					href="/portal/homework/{{ homework.id }}">
+					<span>{{ homework.name }}</span>
+					<span class="badge badge-success shadow-none ml-3" >Gesplitst examen</span>
+				</a>
+				{% else %}
+				<div class="d-flex p-3 green lighten-3 text-dark" >
+					{{ homework.name }}
+				</div>
+				{% endif %}
+				<div class="px-3 pt-3" >
+					{% if homework.hasChildren() %}
+						{% for child in homework.getChildren(false) %}
+							{% partial 'examifyHelpers/portal/homeworkCard.htm' homework=child class="lighten-5" %}
+						{% endfor %}
+					{% else %}
+						{% partial 'examifyHelpers/portal/homeworkCard.htm' homework=homework class="lighten-5" %}
+					{% endif %}
+				</div>
+			</div>
+		{% else %}
+			<div class="alert alert-secondary" >
+				Er is geen openstaand huiswerk voor deze klas.
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<div class="row" >
+	<div class="col-md-12 mt-4">
+		Archief
+		<hr />
+	</div>
+</div>
+<div class="row">
+	<div class="col-12 mt-3">
+
+		{% for homework in class.getHomework(-1) if homework.parent_id == 0 %}
+		<div class="d-flex flex-column blue lighten-4 mb-3" >
+				{% if homework.split_exam %}
+				<a class="d-flex p-3 blue lighten-3 text-dark d-flex align-items-center" 
+					href="/portal/homework/{{ homework.id }}">
+					<span>{{ homework.name }}</span>
+					<span class="badge badge-info shadow-none ml-3" >Gesplitst examen</span>
+				</a>
+				{% else %}
+				<div class="d-flex p-3 blue lighten-3 text-dark" >
+					{{ homework.name }}
+				</div>
+				{% endif %}
+				<div class="px-3 pt-3" >
+					{% if homework.hasChildren() %}
+						{% for child in homework.getChildren(false) %}
+							{% partial 'examifyHelpers/portal/homeworkCard.htm' homework=child class="lighten-5" %}
+						{% endfor %}
+					{% else %}
+						{% partial 'examifyHelpers/portal/homeworkCard.htm' homework=homework class="lighten-5" %}
+					{% endif %}
+				</div>
+			</div>
+		{% else %}
+			<div class="alert alert-secondary" >
+				Er is geen gearchiveerd huiswerk voor deze klas.
+			</div>
+		{% endfor %}
+	</div>
+</div>

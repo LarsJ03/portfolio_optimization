@@ -1,0 +1,10 @@
+name: Licenses
+form: $/examify/exams/models/licenses/fields.yaml
+modelClass: Examify\Exams\Models\Licenses
+defaultRedirect: examify/exams/licenses
+create:
+    redirect: 'examify/exams/licenses/update/:id'
+    redirectClose: examify/exams/licenses
+update:
+    redirect: examify/exams/licenses
+    redirectClose: examify/exams/licenses

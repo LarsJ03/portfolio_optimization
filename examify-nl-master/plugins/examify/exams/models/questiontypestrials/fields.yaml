@@ -1,0 +1,51 @@
+fields:
+    visible:
+        label: 'examify.exams::lang.exams.general.visible'
+        span: auto
+        type: switch
+    course:
+        label: 'examify.exams::lang.exams.questiontypestrials.course'
+        nameFrom: name
+        descriptionFrom: description
+        select: 'concat(name, '' - '', level)'
+        span: left
+        required: 1
+        type: relation
+        placeholder: 'Selecteer'
+    question_type:
+        label: 'examify.exams::lang.exams.questiontypestrials.question_type'
+        nameFrom: name
+        descriptionFrom: description
+        span: left
+        required: 1
+        type: relation
+        placeholder: 'Selecteer'
+    name:
+        label: 'examify.exams::lang.exams.questiontypestrials.name'
+        span: left
+        required: 1
+        type: text
+    question_ids_content:
+        label: 'examify.exams::lang.exams.questiontypestrials.questions'
+        prompt: 'Voeg vraag toe'
+        style: default
+        span: left
+        type: repeater
+        dependsOn: 
+            - course
+            - question_type
+        form:
+            fields:
+                text:
+                    label: 'examify.exams::lang.exams.questiontypestrials.select_text'
+                    showSearch: true
+                    span: full
+                    type: dropdown
+                    placeholder: 'Selecteer'
+                question:
+                    label: 'examify.exams::lang.exams.questiontypestrials.question'
+                    showSearch: true
+                    span: full
+                    dependsOn:
+                        - text
+                    type: dropdown

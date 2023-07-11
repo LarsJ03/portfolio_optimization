@@ -1,0 +1,190 @@
+// overrule the outline on buttons
+*, input, button {outline:none !important;}
+
+$enable-shadows: false;
+$btn-focus-width: 0;
+$btn-box-shadow: 0;
+
+// correct answers
+.examify-question.show-answer, .show-answer {
+	.btn-mc-answer {
+
+		&:hover {
+			cursor: default;
+			background-color: #ddd;
+			color: currentColor;
+			z-index: auto;
+		}
+
+		&.active {
+			z-index: 1;
+		}
+
+		&.correct-answer, &.correct-answer:hover {
+			background-color: #bbdac2;
+		}
+
+		&.active, &.active:hover {
+			&.correct-answer {
+				background-color: $green;
+			}
+			&:not(.correct-answer){
+				background-color: $red;
+			}
+		}
+	}
+
+}
+
+.uitleg.step-content {
+	line-height: 1.8rem;
+}
+
+// the exam question buttons
+.btn-mc-answer {
+	@include button-variant(#ddd, #ddd, $blue, $blue, $blue, $blue);
+	box-shadow: none !important;
+	padding-left: 1.5rem;
+	margin: 0;
+
+	@include font-size(16px);
+	
+	.answer-placeholder {
+		.answer-placeholder-number { 
+			width: 2rem;
+			font-weight: bold;
+			@include flex-shrink(0);
+		}
+	}
+}
+
+.badge {
+	&.badge-examify-all-points {
+		background-color: $green;
+	}
+	&.badge-examify-some-points {
+		background-color: $orange;
+	}
+	&.badge-examify-no-points {
+		background-color: $red;
+	}
+}
+
+
+.container.exam-questions {
+	max-width: 700px;
+}
+
+.container.exam-questions.large {
+	max-width: 800px;
+}
+
+.text-indication {
+	a.external_link {
+		color: inherit;
+		
+		i {
+			color: $primary;
+		}
+	}
+}
+
+.q-circle {
+	display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-right: .5rem;
+  line-height: 1.7rem;
+  color: #fff;
+  text-align: center;
+  border-radius: 50%;
+
+  @extend .bg-primary;
+}
+
+ul.stepper li.examify-all-points a span.circle {
+	background-color: $green !important;
+}
+ul.stepper li.examify-no-points a span.circle {
+	background-color: $red !important;
+}
+ul.stepper li.examify-some-points a span.circle {
+	background-color: $orange !important;
+}
+
+// set the auto-height textareas
+.md-form textarea {
+	&.auto-height.md-textarea {
+		resize: none;
+		padding-bottom: 0;
+	}
+}
+
+ul.stepper .md-form label.examify-open-question, label.examify-open-question {
+	left: 0;
+}
+
+// the radio button per row (goed of fout)
+.radio-per-row {
+	@include flexbox;
+	@include flex-direction(column);
+
+	.entry {
+		@include flexbox;
+		@include flex-direction(row);
+		@include justify-content(space-between);
+		@include align-items(center);
+
+		&:not(:first-child) {
+			padding-top: 1rem;
+		}
+
+		.btn-group {
+			@include flex-grow(0);
+		}
+
+		.answer-placeholder {
+			@include flex-grow(1);
+			padding: 0rem 2rem 0rem 1rem;
+		}
+
+		.btn-mc-answer {
+			padding-left: 1rem; 
+			padding-right: 1rem;
+			margin: 0 !important;
+		}
+	} 
+}
+
+// the switch color
+.switch label .lever {
+	margin-right: 1.6rem;
+}
+.switch label input[type=checkbox]:checked+.lever {
+  background-color: lighten($primary, 25%);
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+  background-color: $primary;
+}
+
+.correctievoorschrift {
+	ul {
+
+		margin-bottom: 1rem;
+
+		li {
+			list-style-type: square;
+			display: list-item;
+		}
+	}
+	ol {
+		margin-bottom: 1rem;
+		list-style-type: decimal;
+		li {
+			display: list-item;
+		}
+	}
+}
+
+

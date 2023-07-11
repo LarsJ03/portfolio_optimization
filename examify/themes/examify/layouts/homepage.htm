@@ -1,0 +1,384 @@
+[ExamifyOrder]
+
+[ExamifyAccount]
+redirect = "home"
+paramCode = "code"
+
+[staticPage]
+useContent = 1
+default = 0
+==
+<?php
+
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\Questions as Questions;
+  use Examify\Exams\Models\QuestionsAnswersLogs as QAL;
+  use Examify\Exams\Components\Order as Order;
+
+  function onStart()
+  {
+
+    // check if the user is logged in
+    $this['user'] = Users::getUser();
+
+    // get the number of active users
+    $this['nusers'] = Users::count();
+
+    // get the number of questions
+    $this['nquestions'] = Questions::count();
+
+    // get the number of questions answered
+    $this['nquestionsanswered'] = round( (1 * QAL::count() + 1) / 1000);
+
+  }
+
+  function onValidate(){
+    $h = input('_handler');
+    if($h == 'onOrderLogin'){
+      return Users::validateLogin();
+    }
+
+    if($h == 'onOrderRegister'){
+      return Users::validateRegistration();
+    }
+
+    if($h == 'onConfirmPersonalInformation')
+    {
+      return Order::validatePersonalInformation();
+    }
+  }
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = true %}
+
+<style>
+  header {
+    height: calc(100%);
+  }
+  .view {
+    height: calc(100%);
+  }
+</style>
+
+<!-- Main navigation -->
+<header class="homepage">
+
+  <!-- Full Page Intro -->
+  <div class="view bg-primary darken-3">
+    <!-- Mask & flexbox options-->
+    <div class="mask">
+      <!-- Content -->
+      <div class="container h-100">
+        <!--Grid row-->
+        <div class="row align-items-center h-100 d-flex justify-content-center">
+          <!-- some extra margin -->
+          <div class="col-12 mt-4"></div>
+          <!--Grid column-->
+          <div class="col-md-12 col-lg-3 d-none d-lg-flex">
+            <img src="{{ 'assets/img/X_logo.svg' | theme }}" alt="" class="img-fluid slogan-logo w-100 h-100">
+          </div>
+          <div class="col-md-12 col-lg-7 d-flex flex-column align-items-center">
+            <img src="{{ 'assets/img/X_logo.svg' | theme }}" alt="" class="img-fluid slogan-logo d-lg-none mb-3 mb-lg-5">
+            <h1 class="white-text mb-4 display-lg-3 text-center"><strong>Examify yourself.</strong></h1>
+            <p class="mb-4 pb-2 white-text slogan-subtext text-center">{variable name="intro_text" label="Intro text" tab="Introduction" type="text" }{/variable}
+              {{ intro_text | nl2br }}
+            </p>
+            {% if user %}
+            <div class="buttons" >
+              <p class="text-white text-center" >
+                Hoi {{ user.name }}
+              </p>
+              <a href="/login" type="button" class="btn btn-white btn-rounded shadow-none btn-md my-md-0">Start met oefenen</a>
+            </div>
+            {% else %}
+            <div class="buttons" >
+              <a href="/login" type="button" class="btn btn-outline-white btn-rounded shadow-none btn-md ml-md-0">Inloggen</a>
+              <a onclick="scrollToElement($('#kies-je-pakket'));" style="color: #000;" type="button" class="btn btn-white btn-md btn-rounded shadow-none">Kies je pakket</a>
+            </div>
+            {% endif %}
+          </div>
+          <!-- some extra margin -->
+          <div class="col-12 mb-0 d-flex flex-row align-items-center justify-content-center">
+            <img src="{{ 'assets/img/arrow-down.svg' | theme }}" height="32px">
+          </div>
+          <!--Grid column-->
+
+          <!--Grid column-->
+        </div>
+        <!--Grid row-->
+      </div>
+      <!-- Content -->
+    </div>
+    <!-- Mask & flexbox options-->
+  </div>
+  <!-- Full Page Intro -->
+  
+</header>
+<!-- Main navigation -->
+
+<div class="container main-line pt-5 pb-3">
+  <section class="p-md-3 mx-md-5 " >
+  <div class="container exam-questions">
+    <div class="row">
+      <div class="col-12 mt-5 mb-2">
+        <h2 class="text-left text-sm-center">{variable name="main_intro_title" label="Homepage titel" tab="Introduction" type="text" }{/variable}{{ main_intro_title }}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-left text-sm-center text-high-rows mb-5">
+        {variable name="main_intro_text" label="Intro tekst" tab="Introduction" type="richeditor" }{/variable}
+        {{ main_intro_text | raw }}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <hr class="small" />
+    </div>
+  </div>
+  </section>
+</div>
+
+<div class="container main-line" id="kies-je-pakket">
+  <div class="container exam-questions">
+    <div class="row">
+      <div class="col-12 mt-3 mb-2">
+        <h2 class="text-left text-sm-center">{variable name="main_order_title" label="Titel" tab="Bestellen" type="text" }{/variable}{{ main_order_title }}</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 text-left text-sm-center text-high-rows mb-3">
+        {variable name="main_order_text" label="Tekst" tab="Bestellen" type="richeditor" }{/variable}
+        {{ main_order_text | raw }}
+      </div>
+    </div>
+  </div>
+</div>
+{% component 'ExamifyOrder' %}
+<div class="container mt-5 px-0">
+
+
+  <!--Section: Content-->
+  <section class="dark-grey-text pb-0 px-5 rounded">
+    <div class="row">
+      <div class="col-12 mb-5">
+        <hr class="small" />
+      </div>
+    </div>
+    
+    <h3 class="text-center mb-1 pb-2">Je begeeft je in goed gezelschap.</h3>
+
+    <div class="row mt-5">
+
+      <div class="col-lg-4 mb-4">
+        <div class="row">
+          <div class="col-6 pr-0 ">
+            <h4 class="display-4 text-right mb-0 count-up">{{ nquestions }}</h4>
+          </div>
+
+          <div class="col-6">
+            <p class="text-uppercase font-weight-normal mb-1 mt-1">Vragen<br />beschikbaar</p>
+            <p class="mb-0"><i class="fas fa-list fa-2x mb-0"></i></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-4">
+        <div class="row">
+          <div class="col-6 pr-0">
+            <h4 class="display-4 text-right mb-0 count-up">{{ nusers }}</h4>
+          </div>
+
+          <div class="col-6">
+            <p class="text-uppercase font-weight-normal mb-1 mt-1">Leerlingen<br />geholpen</p>
+            <p class="mb-0"><i class="fas fa-user fa-2x mb-0"></i></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-4">
+        <div class="row">
+          <div class="col-6 pr-0">
+            <h4 class="display-4 text-right mb-0" >{{ nquestionsanswered }}k</h4>
+          </div>
+
+          <div class="col-6">
+            <p class="text-uppercase font-weight-normal mb-1 mt-1">Vragen<br />gemaakt</p>
+            <p class="mb-0"><i class="fas fa-smile fa-2x mb-0"></i></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+  <!--Section: Content-->
+
+
+</div>
+{#
+<div class="container main-line pt-5 pb-3">
+  <section class="p-md-3 mx-md-3 " >
+   <div class="row">
+    <div class="col-12">
+      <hr class="small" />
+    </div>
+  </div>
+  </section>
+</div>
+#}
+{repeater name="partners" prompt="Voeg een partner toe" tab="Partners"}
+  {variable type="mediafinder" name="icon" label="Logo" mode="image" }{/variable}
+  {variable type="text" name="partner_name" label="Naam" }{/variable}
+  {variable type="text" name="partner_url" label="Url" }{/variable}
+{/repeater}
+{% if partners %}
+<div class="mt-5 py-5" style="background-color: #efefef;" >
+  <div class="container-fluid main-line" style="max-width:1400px;">
+    <section class="text-lg-left py-lg-3">
+      <h2 class="text-center mb-3 pb-3 mt-lg-3">{variable name="main_text_partners_1" label="Kopstekst 1" tab="Partners" type="text" }{/variable}{{ main_text_partners_1 }}</h2>
+      <div class="row" >
+        <div class="col-12 d-flex justify-content-center" >
+          <p class="homepage-describing-text mb-5" >
+            {variable name="desc_text_partners_1" label="Omschrijving 1" tab="Partners" type="textarea" }{/variable}{{ 
+              desc_text_partners_1 
+            }}
+          </p>
+        </div>
+      </div>
+      
+      <div class="row mx-0" >
+          {% for partner in partners %}
+            <div class="col-sm-6 col-md-4 col-lg-3 mt-4" >
+              <div class="p-3" style="background-color: #ffffff; border-radius: 1rem;" >
+                <a style="display: block; width: 100%; background-size: contain; background-repeat: no-repeat; background-position: center center; background-image: url({{ partner.icon | media }});" href="{{ partner.partner_url }}" target="_blank" >
+                  <img src="{{ 'assets/img/icons/transparent_2x1.png' | theme }}" style="width: 100%;" />
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+      </div>
+    </section>
+  </div>
+</div>
+{% endif %}
+<div class="py-5" style="background-color: #deebfd;" >
+  <div class="container-fluid main-line" style="max-width:1400px;">
+    <section class="text-lg-left py-lg-3">
+      <h2 class="text-center mb-3 pb-3 mt-lg-3">{variable name="main_text_screenshots_1" label="Kopstekst 1" tab="Screenshots" type="text" }{/variable}{{ main_text_screenshots_1 }}</h2>
+      <div class="row" >
+        <div class="col-12 d-flex justify-content-center" >
+          <p class="homepage-describing-text mb-5" >
+            {variable name="desc_text_screenshots_1" label="Omschrijving 1" tab="Screenshots" type="textarea" }{/variable}{{ desc_text_screenshots_1 }}
+          </p>
+        </div>
+      </div>
+      <div class="row text-center d-flex justify-content-center">
+        <div class="col-lg-6 mb-lg-0 mb-0">
+          <div class="d-flex align-items-end justify-content-center mb-0" >
+            <img class="card" src="{{ 'assets/img/home/automatisch_nakijken_r.png' | theme }}" style="width: 100%; border-radius: 1rem;" />
+          </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-6 mb-lg-0 mb-0 sm-hide">
+          <div class="d-flex align-items-end justify-content-center mb-0" >
+            <img class="card" src="{{ 'assets/img/home/automatisch_nakijken_right.png' | theme }}" style="width: 100%; border-radius: 1rem;" />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 mt-2 mt-lg-5"></div>
+      </div>
+      <h2 class="text-center mb-3 pb-3 mt-lg-3 mt-5 mt-lg-0">{variable name="main_text_screenshots_2" label="Kopstekst 2" tab="Screenshots" type="text" }{/variable}{{ main_text_screenshots_2 }}</h2>
+      <div class="row" >
+        <div class="col-12 d-flex justify-content-center" >
+          <p class="homepage-describing-text mb-5" >
+            {variable name="desc_text_screenshots_2" label="Omschrijving 2" tab="Screenshots" type="textarea" }{/variable}{{ desc_text_screenshots_2 }}
+          </p>
+        </div>
+      </div>
+      <div class="row text-center d-flex justify-content-center mb-lg-5" >
+        <div class="col-lg-6 mb-lg-0 mb-2">
+          <div class="d-flex align-items-end justify-content-center mb-2" >
+            <img class="card" src="{{ 'assets/img/home/analyse_r.png' | theme }}" style="width: 100%; border-radius: 1rem;" />
+          </div>
+        </div>
+        <div class="col-lg-6 mb-lg-0 mb-2">
+          <div class="d-flex align-items-end justify-content-center mb-2" >
+            <img class="card" src="{{ 'assets/img/home/uitleg.png' | theme }}" style="width: 100%; border-radius: 1rem;" />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<div class="white" >
+  <div class="container main-line" >
+    <section class="p-5 text-lg-left" >
+      <h2 class="text-center mt-5" >
+        Interesse? contact@examify.nl
+      </h2>
+    </section>
+  </div>
+</div>
+{#
+<div class="white " >
+  <div class="container main-line ">
+    <section class="p-md-3 mx-md-5 text-lg-left">
+      <h2 class="text-center mb-5 pb-3 mt-lg-3">{variable name="main_text_practice_title" label="Koptekst 1" tab="Uitleg" type="text" }{/variable}{{ main_text_practice_title }}</h2>
+      <div class="row text-center d-flex justify-content-center">
+        <div class="col-lg-5 col-md-6 mb-lg-0 mb-5">
+          <div class="feature-icon d-flex align-items-end justify-content-center mb-4" >
+            <img src="{{ 'assets/img/icons/leermodus.png' | theme }}" />
+          </div>
+          <h4 class="font-weight-bold mb-4">{variable name="practice_column_1_title" label="Titel kolom 1" tab="Uitleg" type="text" }{/variable}{{ practice_column_1_title }}</h4>
+          <p class="text-muted px-2 mb-lg-0">
+            {variable name="practice_column_1_desc" label="Tekst kolom 1" tab="Uitleg" type="textarea" }{/variable}
+            {{ practice_column_1_desc }}
+          </p>
+        </div>
+        <div class="col-lg-5 col-md-6 mb-lg-0 mb-5">
+          <div class="feature-icon d-flex align-items-end justify-content-center mb-4" >
+            <img src="{{ 'assets/img/icons/examenmodus.png' | theme }}" />
+          </div>
+          <h4 class="font-weight-bold mb-4">{variable name="practice_column_2_title" label="Titel kolom 2" tab="Uitleg" type="text" }{/variable}{{ practice_column_2_title }}</h4>
+          <p class="text-muted px-2 mb-lg-0">
+            {variable name="practice_column_2_desc" label="Tekst kolom 2" tab="Uitleg" type="textarea" }{/variable}
+            {{ practice_column_2_desc }}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 mt-5"></div>
+      </div>
+      <h2 class="text-center my-5 pb-3">{variable name="main_text_row_2_title" label="Koptekst 2" tab="Uitleg" type="text" }{/variable}{{ main_text_row_2_title }}</h2>
+      <div class="row text-center d-flex justify-content-center my-5" >
+        <div class="col-lg-5 col-md-6 mb-md-0 mb-5">
+          <div class="feature-icon d-flex align-items-end justify-content-center mb-4" >
+            <img src="{{ 'assets/img/icons/statistics.png' | theme }}" />
+          </div>
+          <h4 class="font-weight-bold mb-4">{variable name="practice_row_2_column_1_title" label="Titel kolom 1" tab="Uitleg" type="text" }{/variable}{{ practice_row_2_column_1_title }}</h4>
+          <p class="text-muted px-2 mb-md-0">
+            {variable name="practice_row_2_column_1_desc" label="Tekst kolom 1" tab="Uitleg" type="textarea" }{/variable}
+            {{ practice_row_2_column_1_desc }}
+          </p>
+        </div>
+        <div class="col-lg-5 col-md-6 mb-md-0 mb-5">
+          <div class="feature-icon d-flex align-items-end justify-content-center mb-4" >
+            <img src="{{ 'assets/img/icons/improvement.png' | theme }}" />
+          </div>
+          <h4 class="font-weight-bold mb-4">{variable name="practice_row_2_column_2_title" label="Titel kolom 2" tab="Uitleg" type="text" }{/variable}{{ practice_row_2_column_2_title }}</h4>
+          <p class="text-muted px-2 mb-md-0">
+            {variable name="practice_row_2_column_2_desc" label="Tekst kolom 2" tab="Uitleg" type="textarea" }{/variable}
+            {{ practice_row_2_column_2_desc }}
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+#}
+
+
+
+{% partial 'page-end' %}

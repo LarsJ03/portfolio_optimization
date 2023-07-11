@@ -1,0 +1,4 @@
+title: QuestionTypesExplanations
+modelClass: Examify\Exams\Models\QuestionTypesExplanations
+toolbar:
+    buttons: reorder_toolbar

@@ -1,0 +1,56 @@
+header.homepage {
+
+	.slogan-subtext {
+		@include font-size(32px);
+
+		@include mobile {
+			@include font-size(24px);
+		}
+	}
+
+	img.slogan-logo {
+		@include touch {
+			max-width: 250px;
+		}
+
+		@include mobile {
+			max-width: 150px;
+		}
+	}
+
+}
+
+p.homepage-describing-text {
+	max-width: 640px;
+	@include font-size(20px);
+	text-align: center;
+}
+
+.feature-icon {
+
+	height: 200px;
+
+	img {
+		max-width: 250px;
+		max-height: 100%;
+	}
+}
+
+// limit the horizontal lines in mobile
+hr {
+	@include mobile {
+		max-width: 250px;
+	}
+
+	&.small {
+		max-width: 250px;
+	}
+}
+
+/*
+.container.main-line {
+	@include desktop {
+		border-left: 10px solid #43c3f7;
+	}
+}
+*/

@@ -1,0 +1,193 @@
+fields:
+    text:
+        label: 'examify.exams::lang.exams.general.text'
+        showSearch: true
+        span: left
+        required: 1
+        type: dropdown
+        placeholder: 'Selecteer'
+    question_nr:
+        label: 'examify.exams::lang.exams.questions.question_nr'
+        span: left
+        required: 1
+        type: number
+    type:
+        label: 'examify.exams::lang.exams.questiontypes.type'
+        nameFrom: name
+        descriptionFrom: description
+        span: left
+        required: 1
+        type: relation
+        placeholder: 'Selecteer'
+    question_builder:
+        label: 'examify.exams::lang.exams.questions.name'
+        prompt: 'Voeg nieuw element toe'
+        span: full
+        type: repeater
+        default:
+            0:
+                format: textarea
+            1:
+                format: vraag
+            2:
+                format: textarea
+        form:
+            fields:
+                format:
+                    label: Format
+                    options:
+                        name: Vraag
+                        textarea: 'Text area'
+                        image: Afbeelding
+                        editor: Editor
+                    span: right
+                    required: 1
+                    type: dropdown
+                    default: textarea
+                name:
+                    label: 'examify.exams::lang.exams.questions.name'
+                    size: ''
+                    span: left
+                    hidden: 0
+                    required: 1
+                    trigger:
+                        action: show
+                        field: format
+                        condition: 'value[name]'
+                    type: textarea
+                textarea:
+                    label: 'Text area'
+                    size: ''
+                    span: left
+                    required: 1
+                    trigger:
+                        action: show
+                        field: format
+                        condition: 'value[textarea]'
+                    type: textarea
+                editor:
+                    label: Editor
+                    size: ''
+                    span: left
+                    required: 1
+                    trigger:
+                        action: show
+                        field: format
+                        condition: 'value[editor]'
+                    type: richeditor
+                image:
+                    label: 'Media finder'
+                    mode: image
+                    span: left
+                    required: 1
+                    trigger:
+                        action: show
+                        field: format
+                        condition: 'value[image]'
+                    type: mediafinder
+                image_max_width:
+                    label: 'Maximum breedte (px)'
+                    required: 1
+                    span: right
+                    default: 640
+                    trigger:
+                        action: show
+                        field: format
+                        condition: 'value[image]'
+                    type: number
+                image_hidden:
+                    label: 'Tekstfragment'
+                    type: switch
+                    span: right
+                    trigger:
+                        action: show
+                        field: format
+                        condition: 'value[image]'
+
+    points:
+        label: 'examify.exams::lang.exams.questions.points'
+        span: left
+        default: '1'
+        required: 1
+        type: number
+tabs:
+    fields:
+        answer_type:
+            label: 'examify.exams::lang.exams.questions.answertype'
+            options:
+                multiplechoice_single: 'multiple choice (1 correct answer)'
+                multiplechoice_multiple: 'multiple choice (>1 correct answers)'
+                open: open
+                truefalse: 'true or false'
+            showSearch: true
+            span: left
+            required: 1
+            type: dropdown
+            tab: 'examify.exams::lang.exams.general.answers'
+        count_only_correct:
+            label: 'Tel alleen de juist gemarkeerde'
+            type: switch
+            span: left
+            trigger:
+                action: show
+                field: answer_type
+                condition: 'value[truefalse]'
+            tab: 'examify.exams::lang.exams.general.answers'
+        answers_content:
+            label: 'examify.exams::lang.exams.general.answers'
+            prompt: 'Voeg antwoord toe'
+            span: full
+            trigger:
+                action: hide
+                field: answer_type
+                condition: 'value[open]'
+            type: repeater
+            tab: 'examify.exams::lang.exams.general.answers'
+            form:
+                fields:
+                    name:
+                        label: 'examify.exams::lang.exams.answers.name'
+                        span: left
+                        type: text
+                        attributes: 
+                            maxlength: '2047'
+                    points:
+                        label: 'examify.exams::lang.exams.general.correct'
+                        span: auto
+                        type: switch
+        open_answer_correction:
+            label: 'examify.exams::lang.exams.exams.correction'
+            size: ''
+            span: left
+            trigger:
+                action: show
+                field: answer_type
+                condition: 'value[open]'
+            type: richeditor
+            tab: 'examify.exams::lang.exams.general.answers'
+        open_answer_image:
+            label: 'Antwoordmodel afbeelding'
+            mode: image
+            span: right
+            trigger:
+                action: show
+                field: answer_type
+                condition: 'value[open]'
+            type: mediafinder
+            tab: 'examify.exams::lang.exams.general.answers'
+        open_answer_image_max_width:
+            label: 'Maximum breedte (px)'
+            span: right
+            default: 640
+            trigger:
+                action: show
+                field: answer_type
+                condition: 'value[open]'
+            type: number
+            tab: 'examify.exams::lang.exams.general.answers'
+        explanation:
+            label: 'examify.exams::lang.exams.general.explanation'
+            size: ''
+            span: full
+            type: richeditor
+            tab: 'examify.exams::lang.exams.general.explanation'

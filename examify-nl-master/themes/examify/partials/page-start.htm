@@ -1,0 +1,47 @@
+description = "Start of every page"
+==
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-50737611-9"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-50737611-9');
+    </script>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    
+    <title>{{ this.page.meta_title }} | Examify</title>
+    
+    <meta name="description" content="{{ this.page.meta_description }}" >
+    
+    <link href="{{ 'assets/css/style.min.css?4'|theme }}" rel="stylesheet">
+
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- social media -->
+    <meta property="og:title" content="{{ this.page.meta_title }}" />
+    <meta property="og:description" content="{{ this.page.meta_description }}" />
+    <meta property="og:image" content="{{ 'assets/img/examify-square.png' | theme }}" />
+
+    {% styles %}
+    
+    <!-- test Jort live -->
+  </head>
+  <body {% if page_background %} class="{{ page_background }}" {% endif %}>

@@ -1,0 +1,42 @@
+<div class="mb-0" >
+
+				<div class="row">
+					<div class="col-12 d-flex">
+						<div class="practice_session_entry
+							alert 
+							alert-secondary
+							flex-grow-1 d-flex flex-column rounded-lg
+							p-0" 
+							>
+
+							<!-- info -->
+							<a class="collapseme collapsed d-flex py-2 px-3 " 
+							type="button" data-toggle="collapse" data-target="#collapse-trial-{{ trial.id }}" aria-expanded="false" aria-controls="collapse-trial-{{ trial.id }}"
+							> 
+								<div class="d-flex flex-column flex-grow-1" >
+									{# in case it is homework, the name comes from the classname #}
+						    		<div class="session-name d-flex flex-grow-1 justify-content-start align-items-start" >  
+						    			{% set flagpath = 'assets/img/flags/' ~ course.getFlagUrl() %}
+						    			<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+						    			<span class="mr-3" >{{ trial.name }}</span>
+						    			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+						    		</div>
+					    		</div>
+					    	</a>
+						    <div class="collapse" id="collapse-trial-{{ trial.id }}">
+						    	<div class="px-3 pb-2 pt-1 d-flex flex-row flex-wrap" >
+						    		<button class="btn py-2 px-3 shadow-none ml-0" style="background-color: #cccccc;"
+						    			href="/oefenen/mijn-oefensessie-{{ mySession.id }}" 
+						    			target="_blank" disabled >
+						    			Bekijk oefensessie
+						    		</button>
+						    		{{ form_open({ url: 'trial-start' }) }}
+						    			<input type="hidden" name="trial_id" value="{{ trial.id }}" />
+						    			<button class="btn btn-primary py-2 px-3 shadow-none" >Start nieuwe sessie</button>
+						    		{{ form_close() }}
+						    	</div>
+						    </div>
+					    </div>
+					</div>
+				</div>
+			</div>

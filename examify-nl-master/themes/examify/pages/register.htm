@@ -1,0 +1,15 @@
+title = "register"
+url = "/register/:code?"
+layout = "register"
+description = "Registreer"
+is_hidden = 0
+==
+<?php
+	function onStart()
+	{
+		if(Auth::check()){
+			return Redirect::to('oefenen');
+		}
+	}
+?>
+==

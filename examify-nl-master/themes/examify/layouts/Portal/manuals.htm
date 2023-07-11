@@ -1,0 +1,90 @@
+[ExamifyPracticeSessionSelector]
+[ExamifyAdminClasses]
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\Exams as Exams;
+  use Examify\Exams\Models\Courses as Courses;
+  use Examify\Exams\Models\Classes as Classes;
+
+  function onStart()
+  { 
+
+    $year = $this->param('year');
+
+    $currentyear = \Examify\Exams\Models\Classes::getCurrentYear();
+    if(!$year || $year > ($currentyear + 1))
+    {
+      return redirect('/portal/classes/' . \Examify\Exams\Models\Classes::getCurrentYear());
+    }
+
+    // validate the user is logged in 
+    $user = Users::getUser();
+
+    if(!$user)
+    {
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    // get the schools this user administrates
+    $schools = $user->getSchoolAdmin();
+
+    if(!$user->isTeacher() && !$schools->count()){
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    $this['schoolyear'] = $this->param('year');
+
+
+    $content_blocks = [
+      [
+        'title' => 'Inzage in een huiswerkopdracht',
+        'file' => 'manual_check_homework_answers.htm'
+      ],
+      [
+        'title' => 'Gesplitste huiswerkopdracht samenstellen',
+        'file' => 'manual_add_homework.htm'
+      ],
+      [
+        'title' => 'Gesplitste huiswerkopdracht inzien',
+        'file' => 'manual_check_homework_multiple.htm'
+      ]
+    ];
+
+    $this['content_blocks'] = $content_blocks;
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+
+<div class="container">
+  <div class="dashboard-container pt-4">
+    {% partial 'examifyHelpers/portal/navbar' %}
+    <div class="content-column">
+      <div class="content-inside border p-1 p-sm-3 pt-0" >  
+        {% for c in content_blocks %}
+          <a class="collapseme d-flex flex-column mt-2" type="button" data-toggle="collapse" data-target="#collapse-show-file-{{ loop.index }}" aria-expanded="false" aria-controls="collapse-show-file-{{ loop.index }}">
+            <div class="d-flex flex-row align-items-center grey lighten-5 p-3 " >
+              <h2 class="mb-0 small">{{ c.title }}</h2>
+              <div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+            </div>
+          </a>
+          <div class="collapse" id="collapse-show-file-{{ loop.index }}" >
+            <div class="grey lighten-5 pb-5 p-1 p-lg-3 pb-lg-5 d-flex flex-column align-items-center" >
+              <div class="manuals-examify">
+              {% content c.file %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+{% partial 'page-end' %}

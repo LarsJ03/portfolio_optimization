@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: School Selector
+
+# Model Form Field configuration
+form: $/examify/exams/models/schoolselector/fields.yaml
+
+# Model Class name
+modelClass: Examify\Exams\Models\SchoolSelector
+
+# Default redirect location
+defaultRedirect: examify/exams/schoolselector
+
+# Create page
+create:
+    title: backend::lang.form.create_title
+    redirect: examify/exams/schoolselector/update/:id
+    redirectClose: examify/exams/schoolselector
+
+# Update page
+update:
+    title: backend::lang.form.update_title
+    redirect: examify/exams/schoolselector
+    redirectClose: examify/exams/schoolselector
+
+# Preview page
+preview:
+    title: backend::lang.form.preview_title

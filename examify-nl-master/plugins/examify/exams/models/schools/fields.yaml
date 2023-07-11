@@ -1,0 +1,9 @@
+fields:
+    name:
+        label: Schoolnaam
+        span: auto
+        type: text
+    place:
+        label: Plaats
+        span: auto
+        type: text

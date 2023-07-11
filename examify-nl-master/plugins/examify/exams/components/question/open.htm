@@ -1,0 +1,59 @@
+<div class="d-flex flex-row mb-2" >
+{% partial __SELF__~"::question_indicator" %}
+  <div class="text-left d-flex flex-column mb-4 flex-grow-1 mt-1">
+    {% partial __SELF__~"::label_text" %}
+    
+    <!-- Section Description -->
+    <div class="grey lighten-3 font-weight-normal px-3 py-1 my-3 d-flex flex-column" >
+      <div class="md-form mt-3 mb-0">
+        {% if practice_session_is_finished %}
+        <div>
+          <strong>Gegeven antwoord:</strong><hr />
+          {% if cached_answer %}
+            {{ cached_answer.value | nl2br }}
+          {% endif %}
+        </div>
+        {% else %}
+        <form data-request="onSubmitAnswerOpenQuestion" class="interactive-question-form" >
+
+          <!-- specify the relevant ids -->
+          <input type="hidden" name="qid" value="{{ question.id }}" />
+          <input type="hidden" name="psid" value="{{ psid }} " />
+
+          <textarea id="q_id_{{ question.id }}" class="md-textarea auto-height form-control" name="open_answer" rows="3" >{% if cached_answer %}{{ cached_answer.value }}{% endif %}</textarea>
+          <label for="q_id_{{ question.id }}" class="examify-open-question {% if cached_answer %} active {% endif %}" >Antwoord:</label>
+        </form>
+        {% endif %}
+      </div>
+
+      {% if to_be_checked %}
+      <div class="mt-5 mb-0">
+        <!-- Material inline 1 -->
+        <strong>Behaalde punten:</strong>
+        <hr />
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <input type="hidden" name="questionIdentifier[{{ question.id }}]" value="1" />
+        {% for npoints in 0..question.points %}
+          <label class="btn btn-primary form-check-label shadow-none mr-3" >
+            <input class="form-check-input" type="radio" name="checkQuestions[{{ question.id }}]" id="q-{{ question.id }}-a-{{ npoints }}" autocomplete="off" value="{{ npoints }}" >
+            {{ npoints }} 
+          </label>
+        {% endfor %}
+        </div>
+
+      </div>
+      {% endif %}
+
+      {% if practice_session_is_finished or show_corrections %}
+      <div class="md-form mt-5 mb-0 correctievoorschrift" >
+        <strong>Antwoord volgens correctievoorschrift:</strong><hr />
+        {% if question.open_answer_image is not empty %}
+          <img class="mb-3" src="{{ question.open_answer_image | media }}" {% if question.open_answer_image_max_width is not empty %} style="max-width: {{ question.open_answer_image_max_width }}px; width:100%;" {% endif %} />
+        {% endif %}
+        {{ question.open_answer_correction | raw }}
+      </div>
+      {% endif %}
+    </div>
+    {% partial __SELF__~"::examify_uitleg" %}
+  </div>
+</div>

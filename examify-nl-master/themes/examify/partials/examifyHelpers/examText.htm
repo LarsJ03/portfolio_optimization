@@ -1,0 +1,29 @@
+==
+<?php
+	function onStart()
+	{
+		// only include the questions that are included for this session
+
+	}
+?>
+==
+
+<div class="pagination-placeholder mb-5" data-exam-text-id="{{ examtext.id }}" >
+	<div class="mb-4" >
+		<h3 class="mt-4">{{ examtext.name }}</h3>
+		{% partial 'examifyHelpers/textOrPrintscreenLink' myText=examtext %}
+	</div>
+	<!-- questions per text -->
+
+	<div class="examify-questions-container" >
+	{% for question in examtext.questions %}
+		{% component 'ExamifyQuestion' question_id=question.id  practice_session_id=psid %}
+	{% endfor %}
+	</div>
+
+	{# include here also submitting form #}
+	{# include the partial if it is not yet finished #}
+	{% if practiceSession.leermodus and examtext.hasunlocked %}
+		{% partial 'examifyHelpers/checkPracticeSessionDefault' text_id=examtext.id %}
+	{% endif %}
+</div>

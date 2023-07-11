@@ -1,0 +1,145 @@
+[staticPage]
+useContent = 1
+default = 0
+==
+<?php
+
+  use \Examify\Exams\Models\QuestionTypesExplanations as QTE;
+  use \Examify\Exams\Models\Courses as Courses;
+  use \Examify\Exams\Models\Classes as Classes;
+  use \Examify\Exams\Models\Users as Users;
+
+  public function onStart()
+  {
+    // get the course name
+    $coursename = $this['coursename'] = $this->param('coursename');
+
+    // get the content in the question types explanations
+    $course = Courses::where('name', $coursename)->where('level', 'vwo')->first(); // should be only one
+    $course_havo = Courses::where('name', $coursename)->where('level', 'havo')->first(); 
+
+    if(!$course)
+    {
+      return $this->redirect('/');
+    }
+
+    // check if the student has a licence for this
+    $schoolyear = Classes::getCurrentYear();
+
+    $user = Users::getUser();
+
+    if(!$user)
+    {
+      return;
+    }
+
+    // check if the student has at least a licence for havo or vwo
+    $lic_havo = $user->hasLicenceForCourseIdAndYear($course_havo->id, $schoolyear);
+    $lic_vwo  = $user->hasLicenceForCourseIdAndYear($course->id, $schoolyear);
+
+    if(!$lic_havo && !$lic_vwo)
+    {
+      return;
+    }
+
+    // get the coursename
+    if($coursename == 'nederlands' || $coursename == 'spaans')
+    {
+      $this['hidelink'] = true;
+    }
+    else {
+      $this['hidelink'] = false;
+    }
+
+    // get the corresponding question type explanation 
+    $qtes = $this['qtes'] = QTE::with('course')->where('course_id', $course->id)->get();
+  }
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = false %}
+
+<div class="container main-line pt-5 pb-5">
+
+
+    <!--Section: Content-->
+    <section class="dark-grey-text">
+
+      <!-- Section heading -->
+      <h2 class="text-center font-weight-bold mb-4 pb-2">Aanpak vraagtypen</h2>
+      <!-- Section description -->
+
+      <p class="text-center mx-auto w-responsive mb-5">
+        Op een eindexamen kom je in aanraking met verschillende vraagtypen. De verschillende vraagtypen vragen om een verschillende benadering. In dit overzicht leer je hoe je de verschillende vraagtypen kunt herkennen. Verder vind je voor ieder vraagtype een stappenplan en handige tips.
+      </p>
+
+      {% if not hidelink %}
+      <hr class="w-header my-5" >
+      <h3 class="text-center mb-4 pb-2" >Bekijk ook</h2>
+
+      <div class="row">
+        <div class="col-12 d-flex flex-row flex-wrap justify-content-center">
+          <a href="/theorie/{{ coursename }}/signaalwoorden" class="btn btn-primary shadow-none" >Signaalwoorden</a>
+        </div>
+      </div>
+      {% endif %}
+
+  </section>
+</div>
+{% for qte in qtes %}
+<div class="container-fluid
+  {% if loop.index is divisible by(2) %}
+  background-table-white 
+  {% else %}
+  grey lighten-4
+  {% endif %}
+  "
+ id="{{ qte.question_type.name | slug }}" >
+ <div class="row" >
+  <div class="col-12" >
+    <h2 class="small text-center pt-2 mt-5 mb-3 text-uppercase text-primary"><strong>{{ qte.question_type.name }}</strong></h2>
+    <div class="container py-4">
+      <div class="row d-flex justify-content-center" >
+        <div class="col-md-5 d-flex flex-column">
+          <h5 class="font-weight-light">Herkennen</h5>
+          <div style="width: 50px; height: 6px; margin-bottom: 1rem; margin-top: 0.5rem; float: left; background-color: #ddd;" ></div>
+          <!-- <p class="small grey-text">Responsive, Minimalism</p>-->
+          <div class="herkennen" >
+            {{ qte.herkennen | raw }}
+          </div>
+        </div>
+        <div class="col-md-5 ml-sm-5 d-flex flex-column pt-sm-0 pt-3">
+          <h5 class="font-weight-light">Aanpak</h5>
+          <div style="width: 50px; height: 6px; margin-bottom: 1rem; margin-top: 0.5rem; float: left; background-color: #ddd;" ></div>
+          <!-- <p class="small grey-text">Responsive, Minimalism</p>-->
+          <div class="aanpak">
+            {{ qte.aanpak | raw }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% else %}
+  <div class="container " >
+    <div class="row" >
+      <div class="col-12 d-flex  align-items-center justify-content-center" >
+        <div class="alert alert-secondary" >Voor toegang tot deze content heb je een licentie voor dit vak nodig.<span class="ml-3 shadow-none badge badge-primary" >Premium</span></div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+{% if qtes is not empty %}
+{% if not hidelink %}
+<hr class="w-header my-5" >
+<h3 class="text-center mb-4 pb-2" >Bekijk ook</h2>
+
+<div class="col-12 mb-5 d-flex flex-row flex-wrap justify-content-center">
+  <a href="/theorie/{{ coursename }}/signaalwoorden" class="btn btn-primary shadow-none" >Signaalwoorden</a>
+</div>
+{% endif %}
+{% endif %}
+{% partial 'page-end' %}

@@ -1,0 +1,10 @@
+name: StocksController
+form: $/larsjacobs/portfoliomanager/models/stock/fields.yaml
+modelClass: LarsJacobs\Portfoliomanager\Models\Stock
+defaultRedirect: larsjacobs/portfoliomanager/stockscontroller
+create:
+    redirect: 'larsjacobs/portfoliomanager/stockscontroller/update/:id'
+    redirectClose: larsjacobs/portfoliomanager/stockscontroller
+update:
+    redirect: larsjacobs/portfoliomanager/stockscontroller
+    redirectClose: larsjacobs/portfoliomanager/stockscontroller

@@ -1,0 +1,92 @@
+{{ form_open({ request: MyRequest, class: 'text-center form-validation-js' }) }}
+	{% if myvoucher %}
+	<input type="hidden" name="idnr" value="{{ myvoucher.id }}" />
+	{% endif %}
+	<div class="row">
+	  <div class="col-md-6">
+	    <div class="md-form">
+			  <input placeholder="Selecteer datum" name="start_date" type="text" id="date-picker-start" class="form-control datepicker active"
+			  {% if myvoucher %} value="{{ myvoucher.start_time|date('d-m-Y') }}" {% endif %} />
+			  <label for="date-picker-start" class="active">Start datum</label>
+			</div>
+	  </div>
+	  <div class="col-md-6">
+	    <div class="md-form">
+			  <input placeholder="Selecteer tijd" name="start_time" type="text" class="timepicker form-control timepicker active"
+			  {% if myvoucher %} value="{{ myvoucher.start_time|date('H:i') }}" {% endif %} />
+			  <label for="input_starttime" class="active">Start tijd</label>
+			</div>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-6">
+	    <div class="md-form">
+			  <input placeholder="Selecteer datum" name="end_date" type="text" id="date-picker-end" class="form-control datepicker active"
+			  {% if myvoucher %} value="{{ myvoucher.end_time|date('d-m-Y') }}" {% endif %} />
+			  <label for="date-picker-end" class="active">Eind datum</label>
+			</div>
+	  </div>
+	  <div class="col-md-6">
+	    <div class="md-form">
+			  <input placeholder="Selecteer tijd" name="end_time" type="text" class="timepicker form-control timepicker active"
+			  {% if myvoucher %} value="{{ myvoucher.end_time|date('H:i') }}" {% endif %} />
+			  <label for="input_endtime" class="active">Eind tijd</label>
+			</div>
+	  </div>
+	</div>
+	<div class="row" >
+		<div class="col-md-12">
+			<div class="md-form">
+			  <input type="text" id="name" name="name" class="form-control"
+			  	{% if myvoucher %} value="{{ myvoucher.name }}" {% endif %} />
+			  <label for="name" {% if myvoucher %} class="active" {% endif %}>Naam opdracht</label>
+			</div>
+		</div>
+	</div>
+	<div class="row" >
+		<div class="col-md-12">
+			<div class="md-form">
+			  <input type="text" id="code" name="code" class="form-control"
+			  {% if myvoucher %} value="{{ myvoucher.code }}" {% endif %} />
+			  <label for="code" {% if myvoucher %} class="active" {% endif %}>Code</label>
+			</div>
+		</div>
+	</div>
+	<div class="row" >
+		<div class="col-md-12">
+			<div class="md-form">
+			  <input type="text" id="discount_perc" name="discount_perc" class="form-control"
+			  {% if myvoucher %} value="{{ myvoucher.discount_perc }}" {% endif %} />
+			  <label for="discount_perc" {% if myvoucher %} class="active" {% endif %}>Percentage korting</label>
+			</div>
+		</div>
+	</div>
+	<div class="row" >
+		<div class="col-md-12">
+			<div class="md-form">
+			  <input type="text" id="discount_eur" name="discount_eur" class="form-control"
+			  {% if myvoucher %} value="{{ myvoucher.discount_eur }}" {% endif %} />
+			  <label for="discount_eur" {% if myvoucher %} class="active" {% endif %}>Euro's korting</label>
+			</div>
+		</div>
+	</div>
+	<div class="row" >
+		<div class="col-md-12">
+			<div class="md-form">
+			  <input type="text" id="limit" name="limit" class="form-control"
+			  {% if myvoucher %} value="{{ myvoucher.limit }}" {% endif %} />
+			  <label for="limit" {% if myvoucher %} class="active" {% endif %}>Maximaal aantal activaties</label>
+			</div>
+		</div>
+	</div>
+	<div class="row" >
+		<div class="col-md-12 align-self-center text-left">
+			<div class="invalid-feedback text-left"></div>
+			<div class="info-feedback text-left" ></div>
+			<div class="success-feedback" >Wijzigingen opgeslagen!</div>
+			<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >
+				{% if myvoucher %}Wijzig{% else %}Voeg toe{% endif %}</button>
+
+		</div>
+	</div>
+{{ form_close() }}

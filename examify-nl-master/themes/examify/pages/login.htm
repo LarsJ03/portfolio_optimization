@@ -1,0 +1,14 @@
+title = "login"
+url = "/login"
+layout = "login"
+is_hidden = 0
+==
+<?php
+	function onStart()
+	{
+		if(Auth::check()){
+			return Redirect::to('oefenen');
+		}
+	}
+?>
+==

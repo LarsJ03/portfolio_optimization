@@ -1,0 +1,99 @@
+==
+<?php
+
+	// get the licenses
+	use Examify\Exams\Models\Users as Users;
+	use Examify\Exams\Models\Licenses as Licenses;
+
+	function onStart()
+	{
+			$user = Users::getUser();
+
+			if(!$user)
+			{
+				return;
+			}
+
+			// get the licences
+			$this['orders'] = $user->orders()->orderByDesc('id')->get();
+
+	}
+?>
+==
+{% for order in orders %}
+
+	<div class="row" id="{{ order.name }}" >
+		<div class="col-12 d-flex flex-column mb-3">
+	  	<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-show-elements-order-{{ order.id }}" aria-expanded="false" aria-controls="collapse-show-elements-order-{{ order.id }}">
+				<div class="d-flex flex-row align-items-center grey lighten-5 p-3 " >
+			  	<span class="mr-2" >Ordernummer</span><strong>{{ order.name }}</strong>
+			  	{% if order.status == 'paid' %}
+			  	<div class="badge examify-green shadow-none ml-3" >Betaald &amp; verwerkt</div>
+			  	{% endif %}
+			  	{% if order.status == 'overruled' or order.status == 'canceled' %}
+			  	<div class="badge badge-warning shadow-none ml-3">Geannuleerd</div>
+			  	{% endif %}
+			  	{% if order.status == 'created' %}
+			  	<div class="badge badge-info shadow-none ml-3">Wacht op betaling</div>
+			  	{% endif %}
+					<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+				</div>
+			</a>
+			<div class="collapse grey lighten-5" id="collapse-show-elements-order-{{ order.id }}" >
+				<div class="d-flex flex-column p-3" >
+					{% if order.getMollieStatus() == 'created' and order.status != 'overruled' %}
+					<p>
+						We hebben je betaling op dit moment nog niet ontvangen. Klik op de knop hieronder om de betaling te autoriseren en de bestelling af te ronden. <strong>Let op:</strong> als we de betaling niet binnen 1 dag hebben ontvangen dan word je bestelling automatisch geannuleerd.
+					</p>
+					<div>
+						<a href="{{ order.getMollieObject().getCheckoutUrl() }}" target="_blank" class="mb-3 btn examify-green rounded" >Betaling autoriseren</a>
+					</div>
+					{% endif %}
+					{% if order.getMollieStatus() == 'paid' %}
+					<h3 class="small" ><strong>Factuur</strong></h3>
+					<div class="d-flex flex-row mb-3" >
+						<a href="/{{ order.invoice }}" target="_blank" class="btn btn-outline-primary ml-0" style="color: #888;" >
+							<div class="d-flex flex-row align-items-center flex-grow-0 flex-shrink-1 flex-base-0" >
+									<span class="mr-3" >Download de factuur van je bestelling</span>
+									<i class="far fa-file-alt shadow-none"></i></div>
+						</a>
+					</div>
+					{% endif %}
+					<h3 class="small" ><strong>Vakken</strong></h3>
+					{% for course in order.getCourses() %}
+						<div class="d-flex flex-row align-items-center mb-1" >
+							<div class="mr-2" >
+								<img style="max-height: 1.5em;" class="mx-1" src="{{ ('assets/img/flags/' ~ course.getFlagUrl())|theme}}" />
+							</div>
+							<span>{{ course.name }} ({{ course.level }})</span>
+						</div>
+					{% endfor %} 
+					<h3 class="small mt-3" ><strong>Schooljaren</strong></h3>
+					{% for year in order.getSchoolYears() %}
+						<span>{{ year - 1 }} - {{ year }}</span>
+					{% endfor %}
+					{% if order.status == 'paid' %}
+						<h3 class="small mt-3" ><strong>Licenties</strong></h3>
+						{% for lic in order.licences %}
+							<div class="alert alert-success d-flex flex-column" >
+								<span>{{ lic.course.name }} ({{ lic.course.level }} {{ lic.schoolyear }})</span>
+								<div class="text-break" ><small>{{ lic.key }}</small></div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+	  </div>
+	</div>
+
+{% else %}
+	<div class="row">
+		<div class="col-12 d-flex">
+	  	<!-- geen oefensessies gevonden -->
+	    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+	      Er zijn geen bestellingen gevonden in ons systeem.
+	    </div>
+	  </div>
+	</div>
+
+{% endfor %}

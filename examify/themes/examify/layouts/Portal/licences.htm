@@ -1,0 +1,61 @@
+[ExamifyPracticeSessionSelector]
+[ExamifyAdminLicences]
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\Exams as Exams;
+  use Examify\Exams\Models\Courses as Courses;
+
+  function onStart()
+  { 
+
+    $year = $this->param('year', 0);
+
+    $currentyear = \Examify\Exams\Models\Classes::getCurrentYear();
+    if(!$year || $year > ($currentyear + 1))
+    {
+      return redirect('/portal/licences/' . $currentyear);
+    }
+
+    // validate the user is logged in 
+    $user = Users::getUser();
+
+    if(!$user)
+    {
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    // get the schools this user administrates
+    $schools = $user->getSchoolAdmin();
+
+    if(!$schools->count()){
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+    
+    $this['schools'] = $schools;
+    $this['user'] = $user;
+
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+<div class="container">
+  <div class="dashboard-container pt-4">
+    {% partial 'examifyHelpers/portal/navbar' %}
+    <div class="content-column">
+      <div class="content-inside border p-1 p-sm-3" >
+        {# loop over the school #}
+        {% for school in schools %}
+          {% component 'ExamifyAdminLicences' school_id=school.id %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+{% partial 'page-end' %}

@@ -1,0 +1,10 @@
+name: QuestionTypesTrials
+form: $/examify/exams/models/questiontypestrials/fields.yaml
+modelClass: Examify\Exams\Models\QuestionTypesTrials
+defaultRedirect: examify/exams/questiontypestrials
+create:
+    redirect: 'examify/exams/questiontypestrials/update/:id'
+    redirectClose: examify/exams/questiontypestrials
+update:
+    redirect: examify/exams/questiontypestrials
+    redirectClose: examify/exams/questiontypestrials

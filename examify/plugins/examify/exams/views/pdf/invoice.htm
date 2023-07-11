@@ -1,0 +1,67 @@
+title = "Factuur"
+layout = "examify.exams::pdf.layouts.default"
+description = "Invoice template"
+size = "a4" 
+orientation = "portrait" 
+==
+<table style="width: 100%; margin-bottom: 50px;">
+    <tr>
+        <td style="text-align: center; ">
+            <h2 class="text-blue" style="margin-bottom: 0px;" >Factuur</h2>
+        </td>
+    </tr>
+    <tr>
+    	<td style="text-align: center;" >
+    		<h3 style="font-weight: normal; margin-top: 0px;">Status: <strong>Betaald via iDEAL</strong></h3>
+    	</td>
+    </tr>
+</table>
+<table style="width: 100%; margin-bottom: 50px;" >
+    <tr><td>Factuur voor:</td></tr>
+    <tr><td>{{ user.name }} {{ user.surname }}</td></tr>
+    <tr><td>{{ pricing.orderinformation.street }}</td></tr>
+    <tr><td>{{ pricing.orderinformation.zipcode }} {{ pricing.orderinformation.city }}</td></tr>
+    <tr><td>{{ pricing.orderinformation.country }}</td></tr>
+</table> 
+<table style="margin-bottom: 50px; width: 100%;">
+    <tr >
+    	<th style="text-align: left;">Omschrijving</th>
+    	<th style="text-align: right;">Aantal</th>
+    	<th style="text-align: right;"><span style="white-space: nowrap;">Prijs / eenheid (euro)</span></th>
+    	<th style="text-align: right;">Bedrag (euro)</th></tr>
+    {% for line in order.lines %}
+    <tr>
+    	<td>{{ line.name }}</td>
+    	<td style="text-align: right;">{{ line.quantity }}</td>
+    	<td style="text-align: right;">{{ line.unitPrice.value|number_format(2, ',', '.') }}</td><td style="text-align: right;">{{ line.totalAmount.value|number_format(2, ',', '.') }}</td>
+    </tr>
+    {% endfor %}
+    {% set subtotal = pricing.topay.value|number_format(2, ',', '.') %}
+    <tr >
+    	<td></td><td></td>
+    	<td style="border-top: 1px solid #000;">Subtotaal (euro)</td>
+    	<td style="border-top: 1px solid #000; text-align: right;">{{ subtotal }}</td>
+    </tr>
+    <tr >
+    	<td></td><td></td>
+    	<td >Belasting tarief (%)</td>
+    	<td style="text-align: right;"  >0</td>
+    </tr>
+    <tr >
+    	<td></td><td></td>
+    	<td >Belasting (euro)</td>
+    	<td style="text-align: right;" >0,00</td>
+    </tr>
+    <tr >
+    	<td></td><td></td>
+    	<td ><strong>Totaal (euro)</strong></td>
+    	<td style="text-align: right;" ><strong>{{ pricing.topay.value|number_format(2, ',', '.') }}</strong></td>
+    </tr>
+</table>
+<table style="width: 100%;" >
+	<tr>
+		<td style="text-align: center;" >
+			Bedankt voor je vertrouwen in Examify!
+		</td>
+	</tr>
+</table>

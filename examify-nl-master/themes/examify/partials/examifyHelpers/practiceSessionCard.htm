@@ -1,0 +1,141 @@
+<div class="mb-0" >
+
+				{# get the percentage of completeness #}
+				{% set completenessPercentage = mySession.getPercentageCompleted() %}
+				<div class="row">
+					<div class="col-12 d-flex" >
+						<div class="d-flex flex-grow-1 d-flex flex-column rounded-lg
+							alert p-0
+								{# make it green if homework and finished #}
+								{% if mySession.homework_id %}
+									{% if mySession.finished %}
+									alert-success
+									{% elseif mySession.isOverDueDate() %}
+									alert-danger
+									{% elseif selector %}
+									alert-primary
+									{% else %}
+									alert-secondary
+									{% endif %}
+								{% elseif mySession.finished %}
+								alert-success
+								{% else %}
+								alert-primary
+								{% endif %}
+						">
+							<a class="practice_session_entry
+								{% if selector %}
+								collapseme collapsed
+								{% endif %}
+								py-2 px-3
+								{% if not selector and portallink and not mySession.finished %}
+								no-hover
+								{% endif %}
+								" 
+								{% if not selector %}
+									{% if portallink %}
+										{% if not mySession.finished %}
+										href="#" 
+										{% else %}
+										href="/portal/session/{{ mySession.id }}" 
+										{% endif %}
+									{% elseif mySession.homework_id %}
+										href="/huiswerk/mijn-huiswerksessie-{{ mySession.id }}"
+									{% else %}
+										href="/oefenen/mijn-oefensessie-{{ mySession.id }}"
+									{% endif %} 
+								{% else %}
+									data-toggle="collapse" data-target="#collapse-session-{{ mySession.id }}"
+									aria-expanded="false" aria-controls="collapse-session-{{ mySession.id }}"
+								{% endif %}
+
+								>
+
+								<!-- info -->
+								<div class="d-flex " > 
+									<div class="d-flex flex-column flex-grow-1" >
+										{# in case it is homework, the name comes from the classname #}
+									{% if mySession.homework_id %}
+									{% set hw = mySession.getHomework() %}
+									{% endif %}
+					    			{% if mySession.homework_id and not selector %}
+					    			<div class="session-due-date d-flex flex-grow-1 justify-content-start mb-2"  >
+					    				<div class="info-texts mr-3 d-flex" >
+					    					{% set flagpath = 'assets/img/flags/' ~ hw.getClass().course.getFlagUrl() %}
+						    				<span class="mr-3" ><strong>{{ mySession.due_date|date('d/m') }}</strong> {{ mySession.due_date|date('H:i') }}</span>
+						    				<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+						    				<span>{{ hw.name }}</span>
+						    			</div>
+						    			{% partial 'examifyHelpers/practiceSessionCardBadges' mySession=mySession %}
+					    			</div>
+					    			{% else %}
+						    		<div class="session-name d-flex flex-grow-1 justify-content-start align-items-center" >  
+						    			{% set flagpath = 'assets/img/flags/' ~ mySession.course.getFlagUrl() %}
+						    			<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+						    			<span class="mr-3" >{{ mySession.exam.year }} / Tijdvak {{ mySession.exam.tijdvak }}</span>
+					    				{% partial 'examifyHelpers/practiceSessionCardBadges' mySession=mySession %}
+						    		</div>
+						    		{% endif %}
+						    		<div class="dates-and-info d-flex" >
+						    			{% if mySession.homework_id %}
+						    				{% set qtt = hw.getQuestionTypesTrial() %}
+						    				{% if qtt %}
+						    				Totaal te maken: {{ qtt.getFullName() }}
+						    				{% else %}
+						    					Totaal te maken: {{ hw.ntexts }} tekst{% if hw.ntexts > 1 %}en{% endif %}, {{ hw.nquestions }} {% if hw.nquestions > 1 %}vragen{% else %}vraag{% endif %}
+						    					{% if mySession.exam_id %}
+						    						({{ mySession.getFullExamName() }})
+						    					{% endif %}
+						    				{% endif %}
+												[Klas {{ hw.class.name }}]
+						    			{% else %}
+											Gestart op {{ mySession.start_time | date("d-m-Y / H:m")}} 
+											{% endif %}
+											{% if mySession.finished %}
+											 - Afgerond op {{ mySession.end_time | date("d-m-Y / H:m") }}
+											{% endif %}
+							    	</div>
+						    	</div>
+						    	{% if mySession.finished %}
+								 	<div class="result ml-auto align-self-center" style="color: {{ mySession.getProgressColor() }}">
+								 		{% if mySession.leermodus or not mySession.mark %}
+								 			<img src="{{ 'assets/img/icons/checkbox.png' | theme }}" alt="Done!" width="24px" />
+										{% else %}
+								 			{{ mySession.mark }}
+								 		{% endif %}
+								 	</div>
+						    	{% endif %}
+						    </div>
+					    	{% if not mySession.finished and mySession.started %}
+								<div class="progress md-progress mb-0 mt-2">
+					  			<div class="progress-bar bg-success" role="progressbar" style="width: {{ completenessPercentage }}%" aria-valuenow="{{ completenessPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+								{% endif %}
+					    </a>
+					    {% if selector %}
+					    	<div class="collapse" id="collapse-session-{{ mySession.id }}">
+						    	<div class="px-3 pb-2 pt-1 d-flex flex-row flex-wrap" >
+						    		{{ form_open({ url: '/oefenen/mijn-oefensessie-' ~ mySession.id, target: '_blank', class: 'd-flex' }) }}
+						    			<button class="btn btn-primary py-2 px-3 shadow-none ml-0" >
+						    			Bekijk oefensessie
+						    			</button>
+						    		{{ form_close() }}
+						    		{{ form_open({ url: 'practice-start' }) }}
+						    			<input type="hidden" name="exam_id" value="{{ mySession.exam.id }}" />
+						    			<input type="hidden" name="leermodus" value="0" />
+						    			<button class="btn btn-outline-primary py-2 px-3 shadow-none" >Start examenmodus</button>
+						    		{{ form_close() }}
+						    		{{ form_open({ url: 'practice-start' }) }}
+						    			<input type="hidden" name="exam_id" value="{{ mySession.exam.id }}" />
+						    			<input type="hidden" name="leermodus" value="1" />
+						    			<button class="btn {% if exam.practice_mode_available %} btn-outline-primary {% endif %} py-2 px-3 shadow-none" 
+						    			{% if not mySession.exam.practice_mode_available %} disabled style="color: #aaaaaa; border: 2px solid #aaaaaa;" {% endif %}
+						    			>Start leermodus</button>
+						    		{{ form_close() }}
+						    	</div>
+						    </div>
+					    {% endif %}
+						</div>
+					</div>
+				</div>
+			</div>

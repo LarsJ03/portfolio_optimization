@@ -1,0 +1,55 @@
+<div class="d-flex flex-column align-items-center mt-5" >
+    <div class="w-100" style="background-color: #efefef; height: 4px;" ></div>
+    <i class="fas fa-caret-down text-center fa-5x" style="color: #efefef;" ></i>
+    <span class="text-uppercase text-center mb-0" >{{ level }}</span>
+    <h3 class="text-uppercase text-center mt-1" >Adresgegevens</h3>
+    <p style="max-width: 800px;" class="text-center" >
+        
+    </p>
+    <div class="col-sm-8" style="max-width: 400px;" >
+    {{ form_open({ request: 'onConfirmPersonalInformation', 'class': 'text-center form-validation-js' }) }}
+        {% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+
+        {% set street = user.getUserSetting('street') %}
+        {% set city = user.getUserSetting('city') %}
+        {% set zipcode = user.getUserSetting('zipcode') %}
+        {% set country = user.getUserSetting('country') %}
+
+        {# show the form with the address information #}
+        <!-- First name -->
+        <div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormStreet" class="form-control on-change-submit {% if street %} is-updated-by-user is-valid {% endif %}" name="street" {% if street %} value="{{ street }}" {% endif %}>
+            <label for="materialRegisterFormStreet" {% if street %} class="active" {% endif %}>Straat + Huisnummer</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+
+        <div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormZipcode" class="form-control on-change-submit {% if zipcode %} is-updated-by-user is-valid {% endif %}" name="zipcode" {% if zipcode %} value="{{ zipcode }}" {% endif %}>
+            <label for="materialRegisterFormZipcode" {% if zipcode %} class="active" {% endif %}>Postcode</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+
+        <div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormCity" class="form-control on-change-submit {% if city %} is-updated-by-user is-valid {% endif %}" name="city" {% if city %} value="{{ city }}" {% endif %}>
+            <label for="materialRegisterFormCity" {% if city %} class="active" {% endif %} >Plaats</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+
+        <div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormCountry" class="form-control on-change-submit {% if country %} is-updated-by-user is-valid {% endif %}" name="country" {% if country %} value="{{ country }}" {% endif %}>
+            <label for="materialRegisterFormCountry" {% if country %} class="active" {% endif %} >Land</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+
+        <input type="hidden" name="contactinfo" value="1" />
+
+        <!-- Sign up button -->
+        <button class="btn btn-primary btn-rounded mt-2 mb-4 waves-effect z-depth-0" type="submit">Bevestig</button>
+    
+    {{ form_close() }}
+</div>
+</div>

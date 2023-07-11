@@ -1,0 +1,212 @@
+title = "Custom query for admin"
+url = "/custom_for_admin/:start/:end"
+is_hidden = 1
+==
+<?php
+	use \Examify\Exams\Models\Users as Users;
+	use \Examify\Exams\Models\Questions as Questions;
+	use \Examify\Exams\Models\QuestionsAnswersLogs as QAL;
+	use \Examify\Exams\Models\PracticeSessions as PS;
+	use \Examify\Exams\Models\PracticeSessionsResultsLogs as PSRL;
+	use \Examify\Exams\Models\Homework as HW;
+	use \Examify\Exams\Models\Schools as Schools;
+	use \Examify\Exams\Models\Courses as Courses;
+	use \Examify\Exams\Models\Classes as Classes;
+	use \Examify\Exams\Models\Homework as Homework;
+	use \Backend\Models\User as BackendUser;
+
+	// loop over the practice sessions that are finished
+	public function onStart()
+	{
+			
+
+			$class = Classes::find($this->param('start'));
+			$students = $class->getStudents();
+			$desired = $class->course->level;
+			echo "Desired: " . $desired . "<br />";
+
+			foreach($students as $student)
+			{
+				$level = $student->getUserSetting('level');
+				
+				echo $student->name . ' - ' . $level . "<br />";
+
+
+
+				$student->setUserSetting('level', 'vwo');
+			}
+ 
+
+	/*
+				$qals = QAL::where('practice_session_id', $ps->id)->orderByDesc('id')->get();
+
+
+				// pluck all the relevant information
+				$a = $qals->map( function($item, $key) {
+					if($item->answer_id){ 
+						$new = [ 
+							'question_id' => $item->question_id, 
+							'answer_id' => $item->answer_id, 
+							'points' => $item->points, 
+							'log_id' => $item->id 
+						];
+					}
+					else {
+						$new = [ 
+							'question_id' => $item->question_id, 
+							'open_answer' => $item->open_answer,
+							'points' => $item->points,
+							'log_id' => $item->id
+						];
+					}
+
+					return $new;
+					
+				});
+				
+				$ps->cached_answers = $a;
+				$ps->save();
+
+			}
+
+			dd('done!');
+
+
+			$a = QAL::where('practice_session_id', 109)->get();
+			dd($a);
+
+			$ca = collect($ps->cached_answers);
+
+			$z = $ca->where('question_id', 34);
+			$a = $z->unique('answer_id');
+
+			dd($a);
+			
+			$points = $a->pluck('points')->values()->all();
+			$keys = $a->pluck('answer_id')->values()->all();
+
+			dd(array_combine($keys, $points));
+
+			$test = collect($test);
+
+			dd($test->pluck('aid'));
+
+			return;
+
+			$schoolid = $this->param('schoolid');
+			$year = $this->param('year');
+
+			// get the school
+			$school = Schools::find($schoolid);
+
+			// get the students for that year
+			$students = $school->getStudents($year);
+
+			//dd($students);
+			$count = 0;
+
+			foreach($students as $u)
+			{
+
+				$data = [ 
+					'name' => $u->name,
+					'schoolname' => $school->name,
+					'link' => 'https://www.examify.nl/oefenen'
+				];
+
+				if($count == 0){
+					Mail::queue('examify.exams::mail.general_text', $data, function($message) use ($u) {
+	            $message->to($u->email, $u->name . ' ' . $u->surname);
+	            $message->bcc('jort@examify.nl', 'Email Registration');
+	        });
+				}
+				else {
+					Mail::queue('examify.exams::mail.general_text', $data, function($message) use ($u) {
+	            $message->to($u->email, $u->name . ' ' . $u->surname);
+	        });
+				}
+
+				$count = $count + 1;
+
+      }
+
+			/*
+			Mail::queue('examify.exams::mail.account_generated', $data, function($message) use ($u) {
+                        $message->to($u->email, $u->name . ' ' . $u->surname);
+                        //$message->bcc('accounts@examify.nl', 'Account Registration');
+                    });
+                    */
+
+	}
+
+		// check for all question if the text is available
+
+		/*
+		$allps = PS::where('finished', true)
+								->where('id', '>=', $this->param('start'))
+								->where('id', '<=', $this->param('end'))
+								->get();
+
+		foreach($allps as $ps)
+		{
+			// change everywhere the is_final to 0 such that the saveCachedAnswer can do its job
+			$allqal = QAL::where('practice_session_id', $ps->id)->get();
+			foreach($allqal as $qal)
+			{
+				$qal->is_final = false;
+				$qal->save();
+			}
+
+			// first restore all the multiple choice
+			$allpsrl = PSRL::where('practice_session_id', $ps->id)->get();
+
+			foreach($allpsrl as $psrl)
+			{
+				// get the question
+				$q = $psrl->question;
+				
+				// check if it is an multiple choice question
+				if($q->answer_type == 'multiplechoice_single' || $q->answer_type == 'open')
+				{
+					// just save the last entry
+					$myAnswer = QAL::where('practice_session_id', $ps->id)
+                    ->where('question_id', $q->id)
+                    ->orderByDesc('id')
+                    ->limit(1)->first();
+
+          if($myAnswer)
+          {
+          	$myAnswer->is_final = true;
+          	$myAnswer->save();
+          }
+				}
+
+				// in case of true false, follow different approach
+				if($q->answer_type == 'truefalse')
+				{
+						// loop over all the entries and see if there is something cached
+            $relatedanswers = $q->answers();
+
+            $resultarray = [];
+            foreach($q->answers as $answer){
+                $myLog = QAL::where('practice_session_id', $ps->id)
+                    ->where('question_id', $q->id)
+                    ->where('answer_id', $answer->id)
+                    ->orderByDesc('id')
+                    ->limit(1)->first();
+
+                if(!$myLog){
+                    continue;
+                }
+
+                $myLog->is_final = true;
+                $myLog->save();
+            }
+				}
+
+				// the points scored are apparently already correct
+			}
+		}
+		*/
+?>
+==

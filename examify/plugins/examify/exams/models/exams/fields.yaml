@@ -1,0 +1,62 @@
+fields:
+    for_free:
+        label: 'examify.exams::lang.exams.general.for_free'
+        span: auto
+        type: switch
+    visible:
+        label: 'examify.exams::lang.exams.general.visible'
+        span: left
+        type: switch
+    practice_mode_available:
+        label: 'examify.exams::lang.exams.general.practice_mode_available'
+        span: left
+        type: switch
+    only_for_question_types:
+        label: 'examify.exams::lang.exams.exams.only_for_question_types'
+        span: left
+        type: switch
+    course:
+        label: 'examify.exams::lang.exams.exams.course'
+        descriptionFrom: description
+        span: left
+        type: relation
+        select: 'concat(name, '' - '', level)'
+    year:
+        label: 'examify.exams::lang.exams.exams.year'
+        span: left
+        type: number
+    tijdvak:
+        label: 'examify.exams::lang.exams.exams.tijdvak'
+        options:
+            1: 'Tijdvak 1'
+            2: 'TIjdvak 2'
+        span: auto
+        type: radio
+    norm:
+        label: 'examify.exams::lang.exams.exams.norm'
+        span: auto
+        type: number
+    pdf_texts:
+        label: 'examify.exams::lang.exams.exams.pdf_texts'
+        span: left
+        type: text
+    texts_content:
+        label: 'examify.exams::lang.exams.general.texts'
+        prompt: 'Voeg nieuwe tekst toe'
+        span: full
+        type: repeater
+        form:
+            fields:
+                name:
+                    label: 'examify.exams::lang.exams.general.title'
+                    span: full
+                    type: text
+                printscreen:
+                    label: Printscreen
+                    mode: image
+                    span: auto
+                    type: mediafinder
+                max_width:
+                    label: 'Max breedte'
+                    span: left
+                    type: number

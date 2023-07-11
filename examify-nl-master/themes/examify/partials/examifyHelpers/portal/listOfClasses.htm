@@ -1,0 +1,28 @@
+<div class="d-flex flex-column" >
+			{# loop over the courses #}
+			{% set hasClasses = false %}
+			{% for course in courses %}
+			{% set classes = course.getClassesForSchool(school, schoolyear) %}
+			{% if classes is not empty %}
+				{% set hasClasses = true %}
+
+
+			<div class="lighten-5 mb-3 py-3" >
+					<h5>{{ course.name }} - {{ course.level }} {% if isadmin %}(totaal {{ course.getCountStudentsInClasses(school, schoolyear) }} leerlingen){% endif %}</h5>
+					{% for class in classes %}
+					<a class="alert blue lighten-4 d-flex" href="/portal/classes/{{ class.schoolyear }}/{{ class.id }}/homework">
+						{{ class.name }}
+					</a>
+					{% endfor %}
+			</div>
+			{% endif %}
+			{% endfor %}
+
+			{% if not hasClasses %}
+			<div class="alert alert-secondary" >
+				Er zijn voor het geselecteerde schooljaar nog geen klassen gekoppeld aan je docentenaccount.
+			</div>
+			{% endif %}
+</div>
+
+

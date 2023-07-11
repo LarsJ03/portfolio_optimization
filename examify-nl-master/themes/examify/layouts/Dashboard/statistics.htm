@@ -1,0 +1,60 @@
+[ExamifyStatistics]
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\Exams as Exams;
+  use Examify\Exams\Models\Courses as Courses;
+  use Examify\Exams\Models\Classes as Classes;
+
+  function onStart()
+  { 
+
+    $year = $this->param('year');
+
+    $currentyear = \Examify\Exams\Models\Classes::getCurrentYear();
+    if(!$year || $year > ($currentyear + 1))
+    {
+      return redirect('/dashboard/statistics/' . \Examify\Exams\Models\Classes::getCurrentYear());
+    }
+
+    // validate the user is logged in 
+    $user = Users::getUser();
+
+    if(!$user)
+    {
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    $user->isSuperAdmin = $user->getUserSetting('isSuperAdmin') ? true : false;
+
+    // check if the user is a teacher
+    if(!$user->isTeacher() && !$user->isSuperAdmin)
+    {
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    $this['user'] = $user;
+
+    $this['schoolyear'] = $this->param('year');
+
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+<div class="container">
+  <div class="dashboard-container pt-4">
+    {% partial 'examifyHelpers/portal/navbar' %}
+    <div class="content-column">
+      <div class="content-inside border p-1 p-sm-3" >
+        {% component 'ExamifyStatistics' %}
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+{% partial 'page-end' %}

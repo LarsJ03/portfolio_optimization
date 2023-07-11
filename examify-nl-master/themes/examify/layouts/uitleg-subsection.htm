@@ -1,0 +1,163 @@
+[staticPage]
+useContent = 1
+default = 0
+==
+<?php
+
+  use \Examify\Exams\Models\QuestionTypesExplanations as QTE;
+  use \Examify\Exams\Models\Courses as Courses;
+  use \Examify\Exams\Models\Classes as Classes;
+  use \Examify\Exams\Models\Users as Users;
+
+  public function onStart()
+  {
+    $user = Users::getUser();
+
+    if(!$user)
+    {
+      return;
+    }
+
+    $schoolyear = Classes::getCurrentYear();
+
+    $url = url()->current();
+
+    // get the part after theorie/
+    $url = explode('/', trim($url, '/'));
+    foreach($url as $key => $value)
+    {
+      if($value == 'theorie')
+      {
+        $coursename = $url[$key + 1];
+        break;
+      }
+    }
+
+    // get the content in the question types explanations
+    $course = Courses::where('name', $coursename)->where('level', 'vwo')->first(); // should be only one
+    $course_havo = Courses::where('name', $coursename)->where('level', 'havo')->first(); 
+
+    if(!$course)
+    {
+      return $this->redirect('/');
+    }
+
+    $user = Users::getUser();
+
+    if(!$user)
+    {
+      return;
+    }
+
+    // check if the student has at least a licence for havo or vwo
+    $lic_havo = $user->hasLicenceForCourseIdAndYear($course_havo->id, $schoolyear);
+    $lic_vwo  = $user->hasLicenceForCourseIdAndYear($course->id, $schoolyear);
+
+    if(!$lic_havo && !$lic_vwo)
+    {
+      return;
+    }
+
+    // haslicense
+    $this['haslicense'] = true;
+
+  }
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = false %}
+
+<div class="container main-line pt-5 pb-2">
+
+
+    <!--Section: Content-->
+    <section class="dark-grey-text">
+
+      <!-- Section heading -->
+      {variable name="field_title" label="Titel" tab="Introductie" type="text" }{/variable}
+      <h2 class="text-center font-weight-bold mb-4 pb-2">{{ field_title }}</h2>
+      <!-- Section description -->
+
+      {variable name="field_introduction" label="Introductie" tab="Introductie" type="textarea" }{/variable}
+      <p class="text-center mx-auto w-responsive mb-5">{{ field_introduction }}</p>
+      
+      {variable name="field_language_link" label="Taal link" tab="Links" type="text" }{/variable}
+      {repeater name="field_links" prompt="Voeg link toe" tab="Links"}
+        {variable name="url" label="URL" tab="Links" type="text" }{/variable}
+        {variable name="name" label="Naam" tab="Links" type="text" }{/variable}
+      {/repeater}
+
+      <hr class="w-header my-5" >
+      <h3 class="text-center mb-4 pb-2" >Bekijk ook</h2>
+
+      <div class="row">
+        <div class="col-12 d-flex flex-row flex-wrap justify-content-center">
+          {% for link in field_links %}
+          <a href="/theorie/{{ field_language_link }}/{{ link.url }}" class="btn btn-primary shadow-none" >{{ link.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+
+  </section>
+</div>
+
+{% if haslicense %}
+{% for table in sections %}
+<div class="container mt-5">
+  <section>
+    <hr class="w-header my-1" >
+    <p class="lead text-center text-muted pt-2 my-5">{{ table.title }}</p>
+  </section>
+</div>
+{% for entry in table.entries %}
+<div class="
+  {% if loop.index is divisible by(2) %}
+  background-table-white 
+  {% else %}
+  background-table-grey
+  {% endif %}
+">
+  <div class="container py-4">
+    <div class="row d-flex justify-content-center" >
+      <div class="col-md-5 col-xl-4">
+        <h5 class="font-weight-normal"><span class="dark-grey-text">{{ entry.word }}</span></h5>
+        <!-- <p class="small grey-text">Responsive, Minimalism</p>-->
+      </div>
+
+      <div class="col-md-5">
+        {% set twig_content_variable = entry.example %}
+        {% set replace_value_var_lower = entry.word | lower %}
+        {% set replace_with_value_var_lower = '<strong>' ~ entry.word | lower ~ '</strong>' %}
+        {% set replace_value_var_standard = entry.word %}
+        {% set replace_with_value_var_standard = '<strong>' ~ entry.word ~ '</strong>' %}
+        <p class="text-muted mb-0">{{ entry.explanation }}<br /><em>{{ entry.example | replace({ (replace_value_var_lower): replace_with_value_var_lower }) | replace({ (replace_value_var_standard): replace_with_value_var_standard }) | raw }}</em></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endfor %}
+
+
+      <hr class="w-header my-5" >
+      <h3 class="text-center mb-4 pb-2" >Bekijk ook</h2>
+
+      
+        <div class="col-12 mb-5 d-flex flex-row flex-wrap justify-content-center">
+          {% for link in field_links %}
+          <a href="/theorie/{{ field_language_link }}/{{ link.url }}" class="btn btn-primary shadow-none" >{{ link.name }}</a>
+          {% endfor %}
+        </div>
+{% endif %}
+
+{% if not haslicense %}
+   <div class="container " >
+    <div class="row" >
+      <div class="col-12 d-flex  align-items-center justify-content-center" >
+        <div class="alert alert-secondary mt-5" >Voor toegang tot deze content heb je een licentie voor dit vak nodig.<span class="ml-3 shadow-none badge badge-primary" >Premium</span></div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% partial 'page-end' %}

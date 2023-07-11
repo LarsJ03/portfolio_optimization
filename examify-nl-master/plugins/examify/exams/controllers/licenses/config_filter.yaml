@@ -1,0 +1,21 @@
+# ===================================
+# Filter Scope Definitions
+# ===================================
+
+scopes: 
+
+  class_id:
+    label: Klas
+    modelClass: Examify\Exams\Models\Classes
+    conditions: class_id in (:filtered)
+    nameFrom: name
+  school_id:
+    label: School
+    modelClass: Examify\Exams\Models\Schools
+    conditions: school_id in (:filtered)
+    nameFrom: name
+  course_id:
+    label: Vak
+    modelClass: Examify\Exams\Models\Courses
+    conditions: course_id in (:filtered)
+    nameFrom: CourseLevel

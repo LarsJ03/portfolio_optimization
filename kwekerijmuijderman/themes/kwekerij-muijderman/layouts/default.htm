@@ -1,0 +1,35 @@
+[session]
+security = "all"
+==
+{% component 'session' %}
+<!DOCTYPE html>
+<html>
+
+
+<script src="{{ 'assets/javascript/jquery.js'|theme }}"></script>
+
+{% framework %}
+
+    <head>
+        {% partial 'meta' %}
+    </head>
+    <body class="{{ 'page-'~this.page.id }}">
+
+        <!-- Header -->
+        <header id="layout-header">
+            {% partial 'header' %}
+        </header>
+
+        <!-- Content -->
+        <section id="layout-content">
+            {% page %}
+        </section>
+
+        <!-- Footer -->
+        <footer id="layout-footer">
+            {% partial 'footer' %}
+        </footer>
+
+
+    </body>
+</html>

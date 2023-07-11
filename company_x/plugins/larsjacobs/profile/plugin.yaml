@@ -1,0 +1,6 @@
+plugin:
+    name: 'larsjacobs.profile::lang.plugin.name'
+    description: 'larsjacobs.profile::lang.plugin.description'
+    author: LarsJacobs
+    icon: oc-icon-adjust
+    homepage: ''

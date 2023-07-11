@@ -1,0 +1,22 @@
+description = "Breadcrumbs navigation bar"
+==
+{% if thisSession and isvalid == true %}
+{% if thisSession.homework_id %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/huiswerk">Huiswerk</a></li>
+    <li class="breadcrumb-item active">
+			{% set hw = thisSession.getHomework() %}
+			{{ hw.name }} <small>[Klas {{ hw.class.name }}]</small>
+		</li>
+  </ol>
+</nav>
+{% else %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb mb-0">
+    <li class="breadcrumb-item"><a href="/oefenen">Oefenen</a></li>
+    <li class="breadcrumb-item active">{{ thisSession.name }}</li>
+  </ol>
+</nav>
+{% endif %}
+{% endif %}

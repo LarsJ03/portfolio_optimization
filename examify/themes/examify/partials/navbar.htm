@@ -1,0 +1,79 @@
+description = "Main navigation bar"
+
+[staticMenu MyMainMenu]
+code="mainmenu"
+
+==
+<?php
+  use \Examify\Exams\Models\Users as Users;
+
+  function onStart()
+  {
+    $this['user'] = $user = Users::getUser();
+
+    $this['schoolyear'] = $schoolyear = $this->param('year', \Examify\Exams\Models\Classes::getCurrentYear());
+
+    // define the extra menuitems
+    $this['extraMenuItems'] = \Examify\Exams\Models\NavbarManager::getNavbarItemsMain($schoolyear);
+
+    $this['currenturl'] = url()->current();
+  }
+?>
+==
+<!--Navbar -->
+<!-- dummy box to compensate for fixed bars -->
+{% if not hide_dummy %}
+<div class="dummy-box invisible mb-2 mb-sm-5" >
+  <nav class="navbar navbar-expand-lg navbar-dark primary-color lighten-1" id="main-navbar">
+    <a class="navbar-brand" href="/">Examify</a>
+  </nav>
+  {% partial 'examifyHelpers/practiceSessions/breadcrumbs' %}
+</div>
+{% else %}
+<div class="dummy-box invisible mb-2 mb-sm-5" style="position: absolute; top: 0; left: 0;" >
+  <nav class="navbar navbar-expand-lg navbar-dark primary-color lighten-1" id="main-navbar">
+    <a class="navbar-brand" href="/">Examify</a>
+  </nav>
+  {% partial 'examifyHelpers/practiceSessions/breadcrumbs' %}
+</div>
+{% endif %}
+<!-- the top fixed bar -->
+<div class="fixed-top" >
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-none primary-color lighten-1" id="main-navbar">
+  <a class="navbar-brand" href="/"><img src="{{ 'assets/img/logo_examify_white.svg' | theme }}" height="40px" /></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+    aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-collapse collapse" id="navbarSupportedContent-555">
+    <ul class="navbar-nav mr-auto">
+      {% for item in extraMenuItems %}
+        {% if item.show %}
+          {% if item.activeurl %}
+            {# check if the active url matches the currenturl as well #}
+            {% set urlcheck = item.activeurl | app %}
+            {% set checklength = urlcheck | length %}
+            {% if currenturl | slice(0, checklength) == urlcheck %}
+              {% set showActive = true %}
+            {% else %}
+              {% set showActive = false %}
+            {% endif %}
+          {% else %}
+            {% set showActive = false %}
+          {% endif %}
+        <li class="nav-item {% if (item.url | app) == currenturl or showActive %} active {% endif %} {% if item.extracss %}{{ item.extracss }}{% endif %}" >
+          <a class="nav-link px-3" href="{{ item.url }}" >{{ item.name }}
+            {% if (item.url | app) == currenturl or showActive %}
+            <span class="sr-only">(current)</span>
+            {% endif %}
+          </a>
+        </a>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    {% partial 'userHelpers/navbar.htm' %}
+    </div>
+  </nav>
+  {% partial 'examifyHelpers/practiceSessions/breadcrumbs' %}
+</div>
+<!--/.Navbar -->

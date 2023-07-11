@@ -1,0 +1,11 @@
+plugin:
+    name: 'larsjacobs.dashboard::lang.plugin.name'
+    description: 'larsjacobs.dashboard::lang.plugin.description'
+    author: 'Lars Jacobs'
+    icon: oc-icon-dashboard
+    homepage: ''
+navigation:
+    main-menu-item:
+        label: Dashboard
+        url: larsjacobs/dashboard/dashboardcontroller
+        icon: icon-dashboard

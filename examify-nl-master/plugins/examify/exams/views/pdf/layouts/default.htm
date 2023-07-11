@@ -1,0 +1,100 @@
+name = "Default Examify PDF layout"
+== 
+@font-face {
+    font-family: 'Open Sans';
+    src: url('plugins/renatio/dynamicpdf/assets/fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-weight: bold;
+    src: url('plugins/renatio/dynamicpdf/assets/fonts/OpenSans-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: italic;
+    src: url('plugins/renatio/dynamicpdf/assets/fonts/OpenSans-Italic.ttf');
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    font-style: italic;
+    font-weight: bold;
+    src: url('plugins/renatio/dynamicpdf/assets/fonts/OpenSans-BoldItalic.ttf');
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    padding: 0 5% 0 5%;
+}
+.blue {
+    background-color: #5282ca;
+}
+.text-blue {
+    color: #5282ca;
+}
+td.table-property {
+    color: #757575;
+    padding-right: 20px;
+}
+tr.border-top td {
+    border-top: 1px solid #000;
+}
+==
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Document</title>
+        <style type="text/css" media="screen">
+            {{ css|raw }}
+        </style>
+    </head>
+    <body>
+        <table style="width: 100%; ">
+            <tr>
+                <td style="padding-right: 100px; max-height: 50px;">
+                    <div style="height: 50px; width: auto;">
+                        <img width="160px" src="{{ 'assets/img/logo-cropped.svg' | theme }}" />
+                    </div>
+                </td>
+                <td >
+                    <table>
+                        <tr>
+                            <td class="table-property"  >Factuurnummer: </td><td>{{ name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="table-property" >Factuurdatum: </td><td>{{ date }}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <div style="width: 100%; height: 20px; margin-left: -25%; margin-right: -25%; margin-top: 20px; margin-bottom: 20px;" class="blue" ></div>
+        <table style="margin-bottom: 50px;">
+            <tr>
+                <td style="padding-right: 100px;">
+                    <table>
+                        <tr><td class="table-property" >Naam</td><td>Examify V.O.F.</td></tr>
+                        <tr><td class="table-property" >IBAN</td><td>NL69ABNA0871814269</td></tr>
+                        <tr><td class="table-property" >BIC</td><td>ABNANL2A</td></tr>
+                        <tr><td class="table-property" >KvK nr.</td><td>77415159</td></tr>
+                        <tr><td class="table-property" >BTW nr.</td><td>NL861991655B01</td></tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr><td class="table-property" >Adres</td><td>Lakenvelder 35</td></tr>
+                        <tr><td class="table-property" ></td><td>5507KV Veldhoven</td></tr>
+                        <tr><td class="table-property" ></td><td>Nederland</td></tr>
+                        <tr><td class="table-property" >E-mail</td><td>bestellingen@examify.nl</td></tr>
+                        <tr><td class="table-property" >Website</td><td>www.examify.nl</td></tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        {{ content_html|raw }}
+    </body>
+</html>

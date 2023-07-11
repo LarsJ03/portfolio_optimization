@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Stream Controller
+
+# Model Form Field configuration
+form: $/examify/exams/models/streamcontroller/fields.yaml
+
+# Model Class name
+modelClass: Examify\Exams\Models\StreamController
+
+# Default redirect location
+defaultRedirect: examify/exams/streamcontroller
+
+# Create page
+create:
+    title: Create Stream Controller
+    redirect: examify/exams/streamcontroller/update/:id
+    redirectClose: examify/exams/streamcontroller
+
+# Update page
+update:
+    title: Edit Stream Controller
+    redirect: examify/exams/streamcontroller
+    redirectClose: examify/exams/streamcontroller
+
+# Preview page
+preview:
+    title: Preview Stream Controller

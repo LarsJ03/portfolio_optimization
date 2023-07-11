@@ -1,0 +1,32 @@
+footer {
+	.footer-title {
+		@include font-size(20px);
+		font-weight: 700;
+	}
+
+	ul li {
+		
+		padding-top: 0.4rem;
+		padding-bottom: 0.4rem;
+		font-weight: 600;
+		@include font-size(16px);
+		color: #ccdaf5;
+
+		.divide-nav {
+			 width: 30px;
+			 height: 6px;
+			 background-color: #80bae6;
+			 margin: 12px 0;
+		}
+
+		a {
+			color: #ccdaf5;
+
+			&:hover {
+				color: #ccdaf5;
+				text-decoration: underline;
+			}
+		}
+	}
+
+}

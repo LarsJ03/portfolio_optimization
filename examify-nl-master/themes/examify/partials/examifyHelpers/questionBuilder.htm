@@ -1,0 +1,51 @@
+{# loop over the question builder #}
+{% set question_posted = false %}
+{% for qentry in question.question_builder %}
+  {% if qentry.format == 'name' %}
+    {% set question_posted = true %}
+    <div>
+      <strong class="font-weight-bold">{{ qentry.name }}</strong>
+    {% if practice_session_is_finished %}
+      <a href="/theorie/{{ question.getCourseAttribute() | slug }}/aanpak-vraagtypen#{{ question.type.name | slug }}" target="_blank" class="badge badge-info shadow-none ml-1 rounded" >{{ question.type.name }}</a>
+      {% endif %}
+      {% if practice_session_is_finished and not to_be_checked and not leermodus %}
+      <span class="badge shadow-none rounded
+        {% if question.points == pointsScored %}
+        badge-examify-all-points 
+        {% elseif pointsScored == 0 %}
+        badge-examify-no-points
+        {% else %}
+        badge-examify-some-points
+        {% endif %}
+      " >+{{ pointsScored }}p</span>
+    {% endif %}
+    </div>
+  {% elseif qentry.format == 'textarea' %}
+    <div class="font-weight-normal" >{{ qentry.textarea | nl2br }}</div>
+  {% elseif qentry.format == 'editor' %}
+    <div class="font-weight-normal" >{{ qentry.editor | raw }}</div>
+  {% elseif qentry.format == 'image' %}
+    {% if qentry.image_hidden %}
+    <div class="question-image d-flex flex-column align-items-start mb-3 {% if question_posted %} mt-3 {% endif %}"  >
+      {% set myrand = random() %}
+      <div class="collapseme collapsed d-flex flex-column flex-shrink-1" type="button" data-toggle="collapse" data-target="#collapseme-qim-{{ myrand }}"
+      }
+    aria-expanded="false" aria-controls="collapseme-qim-{{ myrand }}">
+        <div class="p-3 rounded border" >
+          <div class="d-flex flex-shrink-1 justify-content-start align-items-center" >
+            <span class="font-weight-light" >Tekstfragment</span>
+            <div class="ml-3" ><i class="fa fa-angle-up rotate-icon"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="collapse"  id="collapseme-qim-{{ myrand }}" >
+      <img class="py-3" src="{{ qentry.image | media }}" {% if qentry.image_max_width %} style="max-width: {{ qentry.image_max_width }}px; width:100%;" {% endif %} />
+    </div>
+    {% else %}
+    <div class="question-image my-3" >
+      <img src="{{ qentry.image | media }}" {% if qentry.image_max_width %} style="max-width: {{ qentry.image_max_width }}px; width:100%;" {% endif %} />
+    </div>
+    {% endif %}
+  {% endif %}
+{% endfor %}

@@ -1,0 +1,31 @@
+{% if user and user.isAdmin %}
+<div class="row" >
+	<div class="col-12"><h2>Administrators</h2></div>
+</div>
+<div class="row">
+	<div class="col-12">
+	{{ form_open({ request: 'onSubmit', 'class' : 'text-center form-validation-js' }) }}
+		<div class="row">
+			<div class="col-md-8">
+				<select class="mdb-select md-form" searchable="Zoeken..." name="user_id" >
+				  <option value="" disabled selected>Voeg een gebruiker toe</option>
+				  {% for ThisUser in AllUsers %}
+				  <option value="{{ ThisUser.id }}">{{ ThisUser.name }} {{ ThisUser.surname }} ({{ ThisUser.email }})</option>
+				  {% endfor %}
+				</select>
+				<div class="invalid-feedback text-left">
+            </div>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Voeg toe</button>
+
+			</div>
+		</div>
+		{{ form_close() }}
+	</div>
+</div>
+<div id="list-of-administrators" >
+{% partial 'examifyHelpers/portal/listOfAdministrators' MyAdmins=MyAdmins isSuperAdmin=user.isSuperAdmin %}
+</div>
+{% endif %}
+

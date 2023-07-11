@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-12" >
+		<hr />
+			{% for MySchool in MySchools %}
+			<div class="collapseme collapsed d-flex flex-column mt-3" type="button" data-toggle="collapse" data-target="#collapse-show-school-{{ MySchool.id }}" aria-expanded="false" aria-controls="collapse-show-school-{{ MySchool.id }}">
+				<div class="d-flex flex-row align-items-center grey lighten-5 p-3 " >
+			  	<h2 class="mb-0 small">{{ MySchool.name }} ({{ MySchool.place }})</h2>
+					{#<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>#}
+				</div>
+			</div>
+			{#
+			<div class="collapse {% if not user.isSuperAdmin() %}show{% endif %}" id="collapse-show-school-{{ MySchool.id }}" >
+				<div class="row">
+					<div class="col-12">
+						<div class="d-flex flex-column border py-2 px-2 my-2" >
+							<table class="table">
+								{% for entry in MySchool.getLicensesPerCourse(schoolyear) %}
+									<tr><td>{{ entry.course.name }} ({{ entry.course.level }})</td><td>{{ entry.count }}</td></tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			#}
+			{% endfor %}
+		<hr />
+	</div>
+</div>

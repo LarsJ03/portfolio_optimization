@@ -1,0 +1,81 @@
+<div class="mb-0" >
+
+				{# get the percentage of completeness #}
+				{% set completenessPercentage = mySession.getPercentageCompleted() %}
+				<div class="row">
+					<div class="col-12 d-flex" >
+						<div class="d-flex flex-grow-1 d-flex flex-column rounded-lg
+							alert p-0
+								{# make it green if homework and finished #}
+								{% if mySession.finished %}
+								alert-success
+								{% else %}
+								alert-primary
+								{% endif %}
+						">
+							<a class="practice_session_entry
+								{% if selector %}
+								collapseme collapsed
+								{% endif %}
+								py-2 px-3
+								" 
+								
+								data-toggle="collapse" data-target="#collapse-session-{{ mySession.id }}"
+								aria-expanded="false" aria-controls="collapse-session-{{ mySession.id }}"
+
+							>
+
+								<!-- info -->
+								<div class="d-flex " > 
+									<div class="d-flex flex-column flex-grow-1" >
+										{# in case it is homework, the name comes from the classname #}
+							    		<div class="session-name d-flex flex-grow-1 justify-content-start align-items-center" >  
+							    			{% set flagpath = 'assets/img/flags/' ~ mySession.course.getFlagUrl() %}
+							    			<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+							    			<span class="mr-3" >{{ trial.name }}</span>
+						    				{% partial 'examifyHelpers/practiceSessionCardBadges' mySession=mySession %}
+							    		</div>
+							    		<div class="dates-and-info d-flex" >
+							    			{% if mySession.started_at %}
+												Gestart op {{ mySession.started_at | date("d-m-Y / H:m")}} 
+											{% elseif mySession.homework_id %}
+												Openstaande huiswerkopdracht
+											{% endif %}
+											{% if mySession.finished %}
+											 - Afgerond op {{ mySession.updated_at | date("d-m-Y / H:m") }}
+											{% endif %}
+								    	</div>
+							    	</div>
+						    	{% if mySession.finished %}
+								 	<div class="result ml-auto align-self-center" style="color: {{ mySession.getProgressColor() }}">
+								 		{% if mySession.leermodus or not mySession.mark %}
+								 			<img src="{{ 'assets/img/icons/checkbox.png' | theme }}" alt="Done!" width="24px" />
+										{% else %}
+								 			{{ mySession.mark }} 
+								 		{% endif %}
+								 	</div>
+						    	{% endif %}
+						    </div>
+					    	{% if not mySession.finished and mySession.started %}
+								<div class="progress md-progress mb-0 mt-2">
+					  			<div class="progress-bar bg-success" role="progressbar" style="width: {{ completenessPercentage }}%" aria-valuenow="{{ completenessPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
+								{% endif %}
+					    </a>
+					    	<div class="collapse" id="collapse-session-{{ mySession.id }}">
+						    	<div class="px-3 pb-2 pt-1 d-flex flex-row flex-wrap" >
+						    		{{ form_open({ url: '/oefenen/mijn-oefensessie-' ~ mySession.id, class: 'd-flex' }) }}
+						    			<button class="btn btn-primary py-2 px-3 shadow-none ml-0" >
+						    			Bekijk oefensessie
+						    			</button>
+						    		{{ form_close() }}
+						    		{{ form_open({ url: 'trial-start' }) }}
+						    			<input type="hidden" name="trial_id" value="{{ trial.id}}" />
+						    			<button class="btn btn-outline-primary py-2 px-3 shadow-none" >Start nieuwe sessie</button>
+						    		{{ form_close() }}
+						    	</div>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>

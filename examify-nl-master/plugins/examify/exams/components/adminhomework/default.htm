@@ -1,0 +1,54 @@
+<!-- Modal -->
+<div class="modal fade" id="delete-homework-modal" tabindex="-1" role="dialog" aria-labelledby="deleteHomeworkLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteHomeworkLabel">Huiswerkopdracht verwijderen?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modal-delete-confirmation-body">
+      	Weet je zeker dat je deze huiswerkopdracht <br />
+      	"<strong id="modal-homework-name" ></strong>"<br />
+      	wilt verwijderen?
+      </div>
+      <div class="modal-footer">
+      	{{ form_open({ request: 'onDeleteHomework' }) }}
+      		<input type="hidden" name="is_confirmed" value="-1" />
+        	<button type="button" class="btn btn-success shadow-none" onclick="return customAjaxClick($(this));" >Nee</button>
+        {{ form_close() }}
+        {{ form_open({ request: 'onDeleteHomework' }) }}
+      		<input type="hidden" name="is_confirmed" value="1" />
+      		<div id="modal-delete-form-input" >
+      		</div>
+        	<button type="button" class="btn btn-danger shadow-none" onclick="return customAjaxClick($(this));" >Ja</button>
+        {{ form_close() }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+	<div class="col-12 ">
+		<div class="grey lighten-4 p-3" >
+			<div class="row">
+				<div class="col-12">
+					<h5>{{ class.name }} ({{ class.course.name }} - {{ class.course.level }})</h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 mt-3">
+					<div class="grey lighten-3 p-3" >
+						<div id="list-of-class-homework-form-{{ class.id }}" >
+							{% partial 'examifyHelpers/portal/formHomework' class=class %}
+						</div>
+						<div id="list-of-class-homework-{{ class.id }}" >
+							{% partial 'examifyHelpers/portal/listOfClassHomework' class=class %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

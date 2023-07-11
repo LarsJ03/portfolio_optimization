@@ -1,0 +1,44 @@
+<div class="d-flex flex-row mb-2" >
+  {% partial __SELF__~"::question_indicator" %}
+  <div class="text-left d-flex flex-column mb-4">
+    {% partial __SELF__~"::label_text" %}
+
+    <!-- Section Description -->
+    <form data-request="onSubmitAnswerMultipleChoiceSingle" class="interactive-question-form d-flex my-3" >
+
+      <!-- specify the relevant ids -->
+      <input type="hidden" name="qid" value="{{ question.id }}" />
+      <input type="hidden" name="psid" value="{{ psid }} " />
+      <div class="d-flex flex-column examify-question {% if practice_session_is_finished %} show-answer {% endif %} grey lighten-3 grey p-3 lighten-3" >
+        <div class="btn-group-vertical btn-group-toggle" {% if not practice_session_is_finished %} data-toggle="buttons" {% endif %}>
+          {# loop over the answers #}
+          {% if randomizeAnswers %}
+            {% set qanswers = seedShuffle(question.answers, psid.id * question.id) %}
+          {% else %}
+            {% set qanswers = question.answers %}
+          {% endif %}
+          {% for answer in qanswers %}
+            {% set myAnswerLetter = range('A','Z')[loop.index0] %}
+          <label class="btn btn-mc-answer text-left text-transform-none {% if answer.points %} correct-answer {% endif %} {% if cached_answer == answer.id %} active {% endif %}">
+            {% if not practice_session_is_finished %}
+            <input class="form-check-input" type="radio" name="aid" value="{{ answer.id }}" autocomplete="off" {% if practice_session_is_finished %} disabled {% endif %}
+              {# 
+                In case the cached answer is equal to the answer id, set the chacked value 
+                #}
+              {% if cached_answer == answer.id %}
+              checked 
+              {% endif %}
+            />
+            {% endif %}
+            <div class="answer-placeholder d-flex" >
+              <div class="answer-placeholder-number" >{{ myAnswerLetter }}</div>
+              <div class="answer-placeholder-desc" >{{ answer.name }}</div>
+            </div>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+    </form>
+    {% partial __SELF__~"::examify_uitleg" %}
+  </div>
+</div>

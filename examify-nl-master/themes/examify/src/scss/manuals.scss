@@ -1,0 +1,9 @@
+.manuals-examify {
+
+  max-width: 640px;
+  
+  h3 {
+   @include font-size(24px);
+  }
+
+}

@@ -1,0 +1,69 @@
+title = "profile-questions"
+layout = "default"
+url = "/profile-questions"
+==
+<!-- HTML form -->
+<form id="question-form">
+  <div id="question-set-1">
+    <h3>Question 1</h3>
+    <p>Answer: <input type="text" name="answer1"></p>
+
+    <h3>Question 2</h3>
+    <p>Answer: <input type="text" name="answer2"></p>
+
+    <button type="button" id="next-set-1" class="btn btn-blue btn-next">Next Questions</button>
+  </div>
+
+  <div id="question-set-2" style="display: none;">
+    <h3>Question 3</h3>
+    <p>Answer: <input type="text" name="answer3"></p>
+
+    <h3>Question 4</h3>
+    <p>Answer: <input type="text" name="answer4"></p>
+
+    <button type="button" id="prev-set-2" class="btn btn-blue btn-prev">Previous Questions</button>
+    <button type="button" id="next-set-2" class="btn btn-blue btn-next">Next Questions</button>
+  </div>
+
+  <div id="question-set-3" style="display: none;">
+    <h3>Question 5</h3>
+    <p>Answer: <input type="text" name="answer5"></p>
+
+    <h3>Question 6</h3>
+    <p>Answer: <input type="text" name="answer6"></p>
+
+    <button type="button" id="prev-set-3" class="btn btn-blue btn-prev">Previous Questions</button>
+    <button type="submit" id="submit-questions" class="btn btn-blue">Submit</button>
+  </div>
+</form>
+
+<!-- jQuery script -->
+<script>
+$(document).ready(function() {
+  // Set up question sets
+  var questionSets = ['#question-set-1', '#question-set-2', '#question-set-3'];
+  var currentSetIndex = 0;
+  var currentSet = questionSets[currentSetIndex];
+  $(currentSet).show();
+
+  // Handle "Next Questions" buttons
+  $('.btn-next').click(function() {
+    if (currentSetIndex < questionSets.length - 1) {
+      $(currentSet).hide();
+      currentSetIndex++;
+      currentSet = questionSets[currentSetIndex];
+      $(currentSet).show();
+    }
+  });
+
+  // Handle "Previous Questions" buttons
+  $('.btn-prev').click(function() {
+    if (currentSetIndex > 0) {
+      $(currentSet).hide();
+      currentSetIndex--;
+      currentSet = questionSets[currentSetIndex];
+      $(currentSet).show();
+    }
+  });
+});
+</script>

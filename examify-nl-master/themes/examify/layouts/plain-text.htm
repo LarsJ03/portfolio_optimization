@@ -1,0 +1,21 @@
+[staticPage]
+useContent = 1
+default = 0
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = false %}
+
+<div class="container main-line py-5">
+  <section class="p-md-3 mx-md-5 " >
+    <div class="container exam-questions">
+      <div class="row">
+        <div class="col-12 my-5 text-break">
+          {variable name="Content" label="Content" tab="Content" type="richeditor" }{/variable}
+          {{ Content | raw }}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% partial 'page-end' %}

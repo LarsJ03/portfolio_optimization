@@ -1,0 +1,16 @@
+columns:
+    portfolio_id:
+        label: 'Portfolio ID'
+        type: number
+        searchable: true
+        sortable: true
+    stock_id:
+        label: 'Stock ID'
+        type: number
+        searchable: true
+        sortable: true
+    quantity:
+        label: Quantity
+        type: number
+        searchable: true
+        sortable: true

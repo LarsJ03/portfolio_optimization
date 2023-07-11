@@ -1,0 +1,24 @@
+url = "/my-account"
+layout = "default"
+title = "My Account"
+
+[account]
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+
+[session]
+security = "user"
+redirect = "login"
+==
+{% component 'session' %}
+<div class='container'>  
+    <div class='col-lg-4'>
+
+{% partial account ~ '::activation_check' %}
+
+    {% partial 'user-update' %}
+
+    {% partial account ~ '::deactivate_link' %}
+    </div>
+</div>

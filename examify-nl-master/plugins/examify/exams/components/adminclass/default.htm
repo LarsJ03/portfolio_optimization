@@ -1,0 +1,75 @@
+<div class="row">
+	<div class="col-12 ">
+		<div class="grey lighten-4 p-3" >
+			<div class="row">
+				<div class="col-12">
+					<h5>{{ class.name }} ({{ class.course.name }} - {{ class.course.level }})</h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 mt-3">
+					<h3 class="small" >Docenten</h3>
+					<div class="grey lighten-3 p-3" >
+						{% if user.isAdminForSchool(class.school_id) %}
+						{% if form_enabled %}
+						{{ form_open({ request: 'onAddTeacher', class: 'text-center form-validation-js' }) }}
+							<input type="hidden" name="class_id" value="{{ class.id }}" />
+							<div class="row">
+								<div class="col-md-4 align-self-center">
+									<select class="mdb-select md-form" searchable="Zoeken..." name="teacher_id[]" multiple >
+									  <option value="" disabled selected>Selecteer docent</option>
+									  {% for ThisUser in school.getTeachers(schoolyear) %}
+									  <option value="{{ ThisUser.id }}">{{ ThisUser.name }} {{ ThisUser.surname }} ({{ ThisUser.email }})</option>
+									  {% endfor %}
+									</select>
+									<div class="invalid-feedback text-left">
+					            </div>
+								</div>
+								<div class="col-md-4 align-self-center text-left">
+									<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Voeg toe</button>
+
+								</div>
+							</div>
+						{{ form_close() }}
+						{% endif %}
+						{% endif %}
+						<div id="list-of-class-teachers-{{ class.id }}" >
+							{% partial 'examifyHelpers/portal/listOfClassTeachers' class=class teachers=class.getTeachers() %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-12 mt-3">
+					<h3 class="small" >Leerlingen</h3>
+					<div class="grey lighten-3 p-3" >
+						{% if form_enabled %}
+						{{ form_open({ request: 'onAddStudent', class: 'text-center form-validation-js' }) }}
+							<input type="hidden" name="class_id" value="{{ class.id }}" />
+							<div class="row">
+								<div class="col-md-4 align-self-center">
+									<select class="mdb-select md-form" searchable="Zoeken..." name="student_id[]" multiple >
+									  <option value="" disabled selected>Selecteer leerling</option>
+									  {% for ThisUser in school.getStudents(schoolyear) %}
+									  <option value="{{ ThisUser.id }}">{{ ThisUser.name }} {{ ThisUser.surname }}</option>
+									  {% endfor %}
+									</select>
+									<div class="invalid-feedback text-left">
+					            </div>
+								</div>
+								<div class="col-md-4 align-self-center text-left">
+									<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Voeg toe</button>
+
+								</div>
+							</div>
+						{{ form_close() }}
+						{% endif %}
+						<div id="list-of-class-students-{{ class.id }}" >
+							{% partial 'examifyHelpers/portal/listOfClassStudents' class=class students=class.getStudents() %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,37 @@
+columns:
+    id:
+        label: id
+        type: number
+    user_id:
+        label: user_id
+        type: number
+    leermodus:
+        label: leermodus
+        type: number
+    finished:
+        label: finished
+        type: number
+    totalpointsavailable:
+        label: totalpointsavailable
+        type: number
+    totalpointsachieved:
+        label: totalpointsachieved
+        type: number
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime
+    exam_id:
+        label: exam_id
+        type: number
+    name:
+        label: name
+        type: text
+    mark:
+        label: mark
+        type: text
+    course_id:
+        label: course_id
+        type: number

@@ -1,0 +1,35 @@
+columns:
+    id:
+        label: id
+        type: number
+    course_id:
+        label: vak
+        type: number
+        relation: course
+        valueFrom: name
+    level:
+        label: level
+        type: number
+        relation: course
+        valueFrom: level
+    year:
+        label: 'examify.exams::lang.exams.exams.year'
+        type: number
+    tijdvak:
+        label: 'examify.exams::lang.exams.exams.tijdvak'
+        type: number
+    practice_mode_available:
+        label: Leermodus
+        type: number
+    visible:
+        label: Zichtbaar
+        type: number
+    for_free:
+        label: Gratis
+        type: number
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime

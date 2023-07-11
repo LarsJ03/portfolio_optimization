@@ -1,0 +1,23 @@
+fields:
+    question_type:
+        label: 'examify.exams::lang.exams.questiontypes.question_type'
+        nameFrom: name
+        descriptionFrom: description
+        span: auto
+        type: relation
+    course:
+        label: 'examify.exams::lang.exams.courses.course'
+        nameFrom: CourseAndLevel
+        descriptionFrom: description
+        span: auto
+        type: relation
+    herkennen:
+        label: 'examify.exams::lang.exams.questiontypes.recognize'
+        size: ''
+        span: auto
+        type: richeditor
+    aanpak:
+        label: 'examify.exams::lang.exams.questiontypes.strategy'
+        size: ''
+        span: auto
+        type: richeditor

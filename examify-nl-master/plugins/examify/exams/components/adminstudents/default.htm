@@ -1,0 +1,97 @@
+{% if user %}
+<div class="pb-3" >
+	<a class="collapseme {% if not user.hasSchoolSelected() %}collapsed{% endif %} d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-show-elements-{{ school.id }}" aria-expanded="false" aria-controls="collapse-show-elements-{{ school.id }}">
+		<div class="d-flex flex-row align-items-center grey lighten-5 p-3 " >
+	  	<h2 class="mb-0 small">{{ school.name }}</h2>
+			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+		</div>
+	</a>
+	<div class="collapse {% if user.hasSchoolSelected() %}show{% endif %}" id="collapse-show-elements-{{ school.id }}" >
+		<div class="grey lighten-5 p-3 mb-3" >
+			<div class="row">
+				<div class="col-12 mt-3">
+					<h3 class="small" >Genereer leerlinglicenties</h3>
+					<div class="grey lighten-4 p-3" >
+						{{ form_open({ request: 'onGenerate', 'class' : 'text-center form-validation-js' }) }}
+							{# set the school id #}
+							<input type="hidden" name="school_id" value="{{ school.id }}" />
+							<div class="row">
+								<div class="col-md-8 align-self-center">
+									<div class="md-form">
+					            <input autocomplete="off" type="text" id="materialRegisterFormNlicences-{{ school.id }}" class="form-control on-change-submit" name="nlicences">
+					            <label for="materialRegisterFormNlicences-{{ school.id }}">Aantal licenties</label>
+					            <div class="invalid-feedback text-left">
+					            </div>
+					        </div>
+								</div>
+								<div class="col-md-4 align-self-center">
+									<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Genereer</button>
+								</div>
+							</div>
+						{{ form_close() }}
+						<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-show-import-{{ school_id }}" aria-expanded="false" aria-controls="collapse-show-import-{{ school_id }}">
+							<div class="d-flex flex-row align-items-center white p-3 " >
+					    	<div>Importeren</div>
+								<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+							</div>
+					  </a>
+					  <div class="collapse white px-3" id="collapse-show-import-{{ school_id }}">
+						{{ form_open({ request: 'onImport', 'class' : 'text-center form-validation-js', 'files' : true }) }}
+							{# set the school id #}
+							<input type="hidden" name="school_id" value="{{ school.id }}" />
+							<div class="row">
+								<div class="col-md-8 align-self-center">
+									<div class="md-form">
+					            <div class="file-field">
+										    <div class="btn btn-primary shadow-none btn-sm float-left">
+										      <span>Selecteer bestand</span>
+										      <input type="file" name="import_csv">
+										    </div>
+										    <div class="file-path-wrapper">
+										      <input class="file-path validate" type="text" placeholder="Bestandsnaam voor import csv" disabled="disabled">
+										    </div>
+										  </div>
+					        </div>
+				        	<h3 class="small text-left">Genereer licenties voor:</h3>
+					        {% for course in courses %}
+					        <div class="form-check text-left">
+									    <input type="checkbox" name="course_ids[]" value="{{ course.id }}" class="form-check-input" id="course-{{ course.id }}-school-{{ school.id }}">
+									    <label class="form-check-label" for="course-{{ course.id }}-school-{{ school.id }}">{{ course.name }} [{{ course.level }}]</label>
+									</div>
+									{% endfor %}
+									<h3 class="small text-left">Koppel aan klasnaam</h3>
+									<div class="md-form">
+					            <input autocomplete="off" type="text" id="materialRegisterFormClassNameImport-{{ school.id }}" class="form-control on-change-submit" name="classname">
+					            <label for="materialRegisterFormClassNameImport-{{ school.id }}">Klasnaam</label>
+					        </div>
+					        <div class="md-form">
+					            <input autocomplete="off" type="text" id="materialRegisterFormSchoolYearImport-{{ school.id }}" class="form-control on-change-submit" name="yearToLicence">
+					            <label for="materialRegisterFormSchoolYearImport-{{ school.id }}">Schooljaar</label>
+					        </div>
+									<div class="md-form text-left">
+										<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this), { 'confirmation': false });" id="import-button-school-{{ school.id }}" >Importeer &amp; Genereer</button>
+									</div>
+					        <div class="invalid-feedback text-left"></div>
+					        <div class="d-flex flex-column" id="import-settings-school-{{ school.id }}">
+					       	</div>
+					       	<div class="md-form text-left info-feedback"  >
+
+							</div>
+							<div class="md-form text-left" >
+					       		<button class="btn btn-primary shadow-none text-md-right d-none" type="submit" onclick="return customAjaxClick($(this), { 'confirmation': true });" id="import-button-confirm-school-{{ school.id }}"  >Bevestig</button>
+					       	</div>
+
+					      </div>
+							</div>
+						{{ form_close() }}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="list-of-students-{{ school.id }}"  >
+			{% partial 'examifyHelpers/portal/listOfStudents' %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

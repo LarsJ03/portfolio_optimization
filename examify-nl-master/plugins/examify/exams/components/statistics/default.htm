@@ -1,0 +1,34 @@
+<div class="row">
+	<div class="col-md-12 mb-3">
+		<h2>Overzicht van score per vraagtype</h2>
+		<hr />
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="chart-container" >
+			<canvas id="questionTypesChart"></canvas>
+		</div>
+		<hr class="mt-4 mb-5"  />
+	</div>
+	{{ form_open({ request: 'onGetStatisticsPerQuestionType' }) }}
+		<input type="hidden" name="chart_form" value="#questionTypesChart" />
+	{{ form_close() }}
+</div>
+<div class="row">
+	<div class="col-md-12 mb-3">
+		<h2>Overzicht van score per antwoordtype</h2>
+		<hr />
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="chart-container" >
+			<canvas id="answerTypesChart"></canvas>
+		</div>
+		<hr class="mt-4 mb-5"  />
+	</div>
+	{{ form_open({ request: 'onGetStatisticsPerAnswerType' }) }}
+		<input type="hidden" name="chart_form" value="#answerTypesChart" />
+	{{ form_close() }}
+</div>

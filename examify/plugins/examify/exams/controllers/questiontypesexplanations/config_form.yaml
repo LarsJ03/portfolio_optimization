@@ -1,0 +1,10 @@
+name: QuestionTypesExplanations
+form: $/examify/exams/models/questiontypesexplanations/fields.yaml
+modelClass: Examify\Exams\Models\QuestionTypesExplanations
+defaultRedirect: examify/exams/questiontypesexplanations
+create:
+    redirect: 'examify/exams/questiontypesexplanations/update/:id'
+    redirectClose: examify/exams/questiontypesexplanations
+update:
+    redirect: examify/exams/questiontypesexplanations
+    redirectClose: examify/exams/questiontypesexplanations

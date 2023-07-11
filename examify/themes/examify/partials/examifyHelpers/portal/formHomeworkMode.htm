@@ -1,0 +1,30 @@
+{% if form_enabled %}
+<div class="row" >
+	<div class="col-md-12 mt-4">
+		Nieuw huiswerk toevoegen
+		<hr />
+	</div>
+</div>
+{{ form_open({ request: 'onSelectMode', class: 'text-center form-validation-js' }) }}
+<input type="hidden" name="classid" value="{{ class.id }}" />
+<div class="row" >
+	<div class="col-md-12" >
+		<div class="mt-0 text-left">
+		  <input type="radio" class="form-check-input" id="leermodus" name="oefenmodus" value="leermodus" onchange="return customAjaxClick($(this));" >
+		  <label class="form-check-label" for="leermodus" >Leermodus
+				<div class="small font-italic font-weight-light" >Met leermodus kun je examenvragen oefenen met een complete toelichting per vraag. De toelichting maakt duidelijk waarom een antwoord goed is en hoe je dit in de tekst kunt vinden.</div>
+			</label>
+		</div>
+
+		<div class="mt-2 text-left">
+		  <input type="radio" class="form-check-input" id="examenmodus" name="oefenmodus" value="examenmodus" onchange="return customAjaxClick($(this));" >
+		  <label class="form-check-label" for="examenmodus">Examenmodus
+				<p class="font-italic font-weight-light"><small class="font-weight-light" >
+					Met examenmodus maak je een examen net zoals in het echt. Aan het einde zie je welk punt je hebt gehaald en krijg je feedback over je antwoorden.</small>
+				</p>
+		  </label>
+		</div>
+	</div>
+</div>
+{{ form_close() }}
+{% endif %}

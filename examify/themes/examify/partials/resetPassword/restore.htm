@@ -1,0 +1,17 @@
+<p class="lead mt-5">
+    <strong>Wachtwoord vergeten?</strong> Geen probleem! Vul hieronder het e-mailadres van je account in en wij sturen je meteen een mailtje met een code om je wachtwoord opnieuw in te stellen.
+</p>
+
+<form
+    data-request="{{ __SELF__ }}::onRestorePassword"
+    data-request-update="'{{ __SELF__ }}::reset': '#partialUserResetForm'">
+    <!-- E-mail -->
+    <div class="md-form">
+        <input autocomplete="off" type="email" id="materialRegisterFormEmail" class="form-control on-change-submit" name="email">
+        <label for="materialRegisterFormEmail">E-mail</label>
+        <div class="invalid-feedback text-left">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary shadow-none btn-rounded">Verzenden</button>
+</form>

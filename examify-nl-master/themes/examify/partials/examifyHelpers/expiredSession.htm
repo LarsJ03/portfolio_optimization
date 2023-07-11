@@ -1,0 +1,16 @@
+<div class="container exam-questions" >
+  <div class="d-flex flex-column align-items-center" >
+  	<div>
+  		<img width="128" height="128" class="mt-5" src="{{ 'assets/img/icons/stopwatch.png' | theme }}" />
+  	</div>
+    <h2 class="mt-5" >Tijdslimiet bereikt</h2>
+    <p class="text-center">Er gold een tijdslimiet voor deze vragen. Je kreeg <strong>{{ thisSession.time_limit_mins }} minuten</strong> om de opgaven te maken en in te leveren. De beschikbare tijd is verstreken. Klik op de knop hieronder om je antwoorden in te leveren en na te kijken.</p>
+
+    {{ form_open({ request: 'onSubmitPracticeSession', 'class' : 'text-center' }) }}
+    	<input type="hidden" name="psid" value="{{ thisSession.id }}" />
+      <button class="btn shadow-none btn-rounded mt-3 mb-5 align-self-center btn-primary" onclick="return customAjaxClick($(this), {'forceHandIn': true });" >Inleveren &amp; Nakijken</button>
+      <div class="invalid-feedback" ></div>
+    {{ form_close() }}
+
+  </div>
+</div>

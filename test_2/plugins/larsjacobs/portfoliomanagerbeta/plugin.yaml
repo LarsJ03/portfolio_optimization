@@ -1,0 +1,6 @@
+plugin:
+    name: 'larsjacobs.portfoliomanagerbeta::lang.plugin.name'
+    description: 'larsjacobs.portfoliomanagerbeta::lang.plugin.description'
+    author: 'Lars Jacobs'
+    icon: oc-icon-briefcase
+    homepage: ''

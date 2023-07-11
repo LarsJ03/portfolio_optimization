@@ -1,0 +1,28 @@
+[session]
+security = "all"
+==
+{% component 'session' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        {% partial 'meta' %}
+    </head>
+    
+
+        <!-- Header -->
+        <header id="layout-header">
+            {% partial 'header' %}
+        </header>
+
+        <!-- Content -->
+        <section id="layout-content">
+            {% page %}
+        </section>
+
+        <!-- Footer -->
+        <footer id="layout-footer">
+            {% partial 'footer' %}
+        </footer>
+
+
+</html>

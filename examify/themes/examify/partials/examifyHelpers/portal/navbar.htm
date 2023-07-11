@@ -1,0 +1,187 @@
+==
+<?php
+	use \Examify\Exams\Models\Users as Users;
+	use \Examify\Exams\Models\Classes as Classes;
+
+	function onStart()
+	{
+
+		// get the year
+		$this['schoolyear'] = $schoolyear = $this->param('year', \Examify\Exams\Models\Classes::getCurrentYear());
+
+		// check if this user is an superadmin
+		$user = Users::getUser();
+
+		if(!$user)
+		{
+			return;
+		}
+
+		$isSuperAdmin = $user->getUserSetting('isSuperAdmin') ? true : false;
+		$isAdmin = $user->getUserSetting('isAdmin') ? true : $isSuperAdmin;
+		$isSchoolAdmin = $user->isSchoolAdmin();
+		$isTeacher = $user->isTeacher();
+
+		// get multiple schools (if teacher, or admin)
+		$this['schools'] = $schools = $user->getSchoolTeacher(true)->sortBy('name');
+		$this['nschools'] = $schools->count();
+		$schoolid = $this->param('schoolid', 0);
+
+		if($schools->count()){
+			if($schoolid){
+				$school = $schools->where('id', $schoolid)->first();
+			}
+			else {
+				$school = $schools->first();
+			}
+
+			$schoolname = $school->first()->name;
+			$schoolid = $school->first()->id;
+		}
+
+		$this['schoolname'] = $schoolname;
+		$this['schoolid'] = $schoolid;
+
+		// check if the schoolid is present
+
+
+		$this['isSuperAdmin'] = $isSuperAdmin;
+
+		// construct the year menu
+		$cyear = Classes::getCurrentYear();
+
+		// years to show
+		$ayear = $this->param('year');
+		$hidenext = $ayear == $cyear;
+		$hideprev = !$user->isTeacher($ayear - 1);
+
+		$this['ayear'] = $ayear;
+		$this['hidenext'] = $hidenext;
+		$this['hideprev'] = $hideprev;
+
+		$this['currenturl'] = $current_url = url()->current();
+
+		// construct the url
+		$this['nexturl'] = $hidenext ? '#' : str_replace('/' . $ayear, '/' . ($ayear + 1), $current_url);
+		$this['prevurl'] = $hideprev ? '#' : str_replace('/' . $ayear, '/' . ($ayear - 1), $current_url);
+		$this['showyear'] = true;
+
+
+		// in case a class is selected, a different menu should be presented
+		$this['classid'] = $classid = $this->param('classid', false);
+		if($classid)
+		{
+			
+			$class = Classes::where('schoolyear', $this->param('year'))->find($classid);
+			if(!$class)
+		    {
+		      return redirect('/portal/classes/' . $schoolyear);
+		    }
+
+		    // check if the user is authorized for this class
+		    if(!$user->isAdminForSchool($class->school_id) && !$user->isTeacherForClass($class->id)){
+		      return redirect('/portal/classes/' . $schoolyear);
+		    }
+
+		   	$this['backurl'] = '/portal/classes/' . $schoolyear;
+
+			$this['menuItems'] = [
+				[
+					'url' => '/portal/classes/' . $schoolyear . '/' . $classid,
+					'name' => 'Samenstelling',
+					'show' => true
+				],
+				[
+					'url' => '/portal/classes/' . $schoolyear .'/' . $classid . '/homework',
+					'name' => 'Huiswerk',
+					'show' => true
+				]
+			];
+
+			$this['showyear'] = false;
+		}
+
+		else {
+			$this['menuItems'] = [ 
+				[
+					'url' => '/portal/manuals/' . $schoolyear,
+					'name' => 'Handleidingen',
+					'show' => $isTeacher
+				],
+				[
+					'url' => '/portal/schools/' . $schoolyear,
+					'name' => 'Scholen',
+					'show' => $isAdmin
+				],
+				[
+					'url' => '/portal/licences/' . $schoolyear,
+					'name' => 'Licenties',
+					'show' => $isSchoolAdmin
+				],
+				[
+					'url' => '/portal/teachers/' . $schoolyear,
+					'name' => 'Docenten',
+					'show' => $isSchoolAdmin
+				],
+				[
+					'url' => '/portal/students/' . $schoolyear,
+					'name' => 'Leerlingen',
+					'show' => $isSchoolAdmin
+				],
+				[
+					'url' => '/portal/classes/' . $schoolyear,
+					'name' => 'Klassen',
+					'show' => $isTeacher || $isSchoolAdmin
+				],
+				[
+					'url' => '/portal/vouchers/' . $schoolyear, 
+					'name' => 'Vouchers',
+					'show' => $isSuperAdmin
+				]
+			];
+		}
+	}
+?>
+==
+<div class="navbar-column pr-lg-3 mb-3">
+      <div class="list-group w-100">
+      	{% if showyear %}
+      	<div type="button" class="list-group-item d-flex flex-row justify-content-center" style="cursor: default;" >
+      		<a href="{{ prevurl }}"  ><i class="fas fa-arrow-left mr-2" {% if hideprev %} style="color: #cccccc;" {% endif %}></i></a> {{ ayear }} <a href="{{ nexturl }}" {% if hidenext %} style="color: #cccccc;" {% endif %} ><i class="fas fa-arrow-right ml-2"></i></a>
+      	</div>
+      	{% endif %}
+      	{% for item in menuItems %}
+      		{% if item.show %}
+	        <a type="button" class="list-group-item list-group-item-action {% if (item.url | app) == currenturl %} active {% endif %}" href="{{ item.url }}" >
+	        	{{ item.name }}
+	        </a>
+	        {% endif %}
+        {% endfor %}
+      </div>
+      {% if classid %}
+      <div class="mt-3" >
+				<a href="{{ backurl }}" >Terug naar klassen</a>
+			</div>
+			{% elseif isSuperAdmin %}
+			<a class="collapseme collapsed d-flex flex-column mt-5" type="button" data-toggle="collapse" data-target="#collapse-show-portal-schools" aria-expanded="false" aria-controls="collapse-show-portal-schools" >
+      		<div class="d-flex flex-row align-items-center grey lighten-5 p-3 " >
+      			<span class="mr-2">Selecteer school</span>
+      			<div class="ml-auto" >
+      				<i class="fa fa-angle-up rotate-icon"></i>
+      			</div>
+      		</div>
+      	</a>
+      	<div class="collapse" id="collapse-show-portal-schools" >
+      		<div class="d-flex flex-column p-3 grey lighten-5" >
+      			<a href="/portal/select-school/0" class="mb-3" >
+      				Alles tonen
+      			</a>
+		      	{% for school in schools %}
+		      	<a href="/portal/select-school/{{ school.id }}" >
+		      		{{ school.name }}
+		      	</a>
+		      	{% endfor %}
+		     </div>
+		 </div>
+		 {% endif %}
+    </div>

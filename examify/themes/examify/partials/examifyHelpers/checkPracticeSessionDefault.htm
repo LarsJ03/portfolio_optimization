@@ -1,0 +1,13 @@
+{# add a button to finish the exam #}
+<div class="row" >
+	<div class="col-md-12 mb-5" >
+		{{ form_open({ request: 'onSubmitPracticeSession' }) }}
+		<input type="hidden" name="psid" value="{{ practiceSession.id }}" />
+		<div class="invalid-feedback"></div>
+		<button type="button" class="btn btn-dark-green hand-in-button shadow-none" onclick="return customAjaxClick($(this));" >{% if not practiceSession.leermodus %}Alles inleveren{% else %}Inleveren{% endif %} & nakijken</button>
+		<div class="info-feedback" ></div>
+		<input type="hidden" name="tracker_examify_pagination_active_view" />
+		<input type="hidden" name="active_exam_text_id" value="{{ text_id }}" />
+		{{ form_close() }}
+	</div>
+</div>

@@ -1,0 +1,29 @@
+{% if practice_session_is_finished and question.explanation and not to_be_checked  %}
+  <div class="uitleg step-content">
+    <button class="shadow-none btn primary btn-rounded blue-gradient mr-0 blue shadow-none examify-outleg-toggle" data-toggle="collapse" data-target="#uitleg-q-{{ question.id }}" >Uitleg tonen / verbergen</button>
+  </div>
+  <div class="row helper" ></div>
+  <div class="row mt-0 collapse" id="uitleg-q-{{ question.id }}">
+    <div class="col-12">
+      <div class="uitleg step-content mt-3 ">
+        <div class="row">
+          <div class="col-12">
+            <div class="d-flex justify-content-between mb-2">
+              <div class="examify-legt-uit">
+                Examify legt uit:
+              </div>
+              <div class="examify-text-type">
+                <strong>{{ question.type.name }}</strong>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 mb-2">
+                {{ question.explanation | raw }}
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}

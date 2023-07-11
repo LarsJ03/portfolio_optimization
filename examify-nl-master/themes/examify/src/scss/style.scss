@@ -1,0 +1,207 @@
+// include bootstrap
+$box-shadow: none;
+
+@import "customvariables";
+@import "~bootstrap/scss/bootstrap";
+
+// set the roboto font path
+$roboto-font-path: 'fonts/roboto/'; 	// automatically prepends it with assets/css/
+@import "mdb/mdb-pro";
+@import "mdb/addons-pro/steppers";
+
+@import "flex";
+@import 'mixins';
+@import 'responsiveness';
+
+@import 'answer-forms';
+@import 'homepage';
+@import 'examify-dashboard';
+@import 'uitleg';
+@import 'footer';
+@import 'bestellen';
+@import 'manuals';
+
+.oc-loading:after {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.score-bar {
+	.green-bar {
+		background-color: #1DA83F;
+	}
+}
+
+.btn {
+	position: relative;
+}
+
+a.text-gray:not(:hover) {
+	// practice session id
+	color: $gray-900;
+}
+
+.success-feedback {
+	display: none;
+	color: green;
+}
+
+.examify-green {
+	background-color: #4ca242; 
+	color: #fff;
+
+	&.btn {
+		&:hover {
+			background-color: #63c558;
+			color: #fff;
+		}
+	}
+}
+
+h1.small {
+	@include font-size(20px);
+}
+
+.text-line-through {
+	text-decoration: line-through;
+}
+
+.switch label .lever:after, .button, a {
+	@extend .shadow-none;
+}
+
+.wave-effect {
+	cursor: pointer;
+}
+
+html,
+body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+ul.stepper {
+	padding: 0;
+	margin: 1em 0;
+}
+
+h2.small {
+	@include font-size(20px);
+}
+
+.flag-placeholder {
+	max-width: 200px;
+}
+
+// standard additions
+.text-transform-none {
+	text-transform: none !important;
+}
+
+.text-high-rows {
+	line-height: 1.8rem;
+}
+
+// textarea 
+
+// the scrollbar
+.dotted-scrollspy {
+	z-index: 10;
+}
+
+a.no-hover {
+	&:hover {
+		cursor: default;
+	}
+}
+
+// hide the dropdown indication if validated
+.select-wrapper {
+	&.is-invalid, &.is-valid {
+		.caret { display: none; }
+	}
+}
+
+.invalid-feedback {
+	&.bigger {
+		@include font-size(16px);
+	}
+}
+
+.valid-feedback {
+	font-color: $primary;
+}
+
+ul.stepper {
+	
+	overflow: visible;
+
+	.step-new-content {
+		&.show {
+			display: block;		}
+	}
+}
+
+.select-wrapper ul.dropdown-content li {
+	@include flexbox();
+	@include flex-direction(row);
+	@include justify-content(space-between);
+	@include align-items(center);
+
+	img {
+		@include order(5);
+		width: 0.8rem;
+		height: 0.8rem;
+	}
+}
+
+a.practice_session_entry {
+	.dates-and-info {
+		@include font-size(12px);
+	}
+
+	color: inherit;
+
+	&:hover {
+		color: $gray-900;
+	}
+
+	.result {
+		@include font-size(24px);
+	}
+}
+
+.badge-light.badge-light-white {
+	background-color: #fff !important;
+}
+
+.collapse:not(.show):not(.navbar-collapse) {
+	display: none !important;
+}
+
+.collapseme:not(.collapsed) i {
+    -webkit-transition: all 150ms ease-in 0s;
+    -moz-transition: all 150ms ease-in 0s;
+    -o-transition: all 150ms ease-in 0s;
+    -ms-transition: all 150ms ease-in 0s;
+    transition: all 150ms ease-in 0s;               
+}
+.collapseme.collapsed i {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);                     
+}
+.collapseme i {
+    -webkit-transition: all 150ms ease-in 0s;
+    -moz-transition: all 150ms ease-in 0s;
+    -o-transition: all 150ms ease-in 0s;
+    -ms-transition: all 150ms ease-in 0s;
+    transition: all 150ms ease-in 0s;
+}

@@ -1,0 +1,173 @@
+{% if listofquestions %}
+	<div class="d-flex flex-column">
+		{# group by text #}
+		{% for textid, list in listofquestions.bytext %}
+		<div class="d-flex flex-column mb-3 grey lighten-5 rounded p-4" >
+			{# divide the with by the maximum number of points in this session #}
+			{% set myText = listofquestions.texts[textid] %}
+			<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapseme-text-{{ myText.id }}"
+    aria-expanded="false" aria-controls="collapseme-text-{{ myText.id }}">
+				<div class="d-flex flex-row align-items-center " >
+					<div>{{ myText.exam.year }}<span style="color: grey;">T{{ myText.exam.tijdvak }}</span></div><div class="ml-3" >Tekst {{ myText.myorder }} - {{ myText.name }} </div>
+
+					<div class="pb-1"> <span class="badge badge-warning shadow-none ml-3 rounded" >Max: {{ listofquestions.pointspertext[textid].pointsAvailable }}p</span></div>
+					
+
+					<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+				</div>
+				<div class="score-bar d-flex flex-row" >
+					<div style="width:{{ listofquestions.pointspertext[textid].pointsAchieved / listofquestions.maxpointspertext * 100}}%; height:1em;" class="green-bar" ></div>
+					<div style="width:{{ listofquestions.pointspertext[textid].pointsWrongAnswered / listofquestions.maxpointspertext * 100 }}%; height:1em; background-color: red;" ></div>
+					<div style="width:{{ listofquestions.pointspertext[textid].pointsUnanswered / listofquestions.maxpointspertext * 100 }}%; height:1em; background-color: #aaa;" ></div>
+				</div>
+			</a>
+			<div class="questions-list mx-3 collapse" id="collapseme-text-{{ myText.id }}" >
+				<div class="py-3 d-flex flex-column" >
+					{% partial 'examifyHelpers/textOrPrintscreenLink' myText=myText hw_mode=true %}
+				{% for q in list %}
+					<div class="question-element d-flex flex-column grey lighten-4 rounded p-3 mb-1" >
+
+						<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapseme-question-{{ q.question.id }}"
+    aria-expanded="false" aria-controls="collapseme-question-{{ q.question.id }}">
+							{# the question information #}
+							<div class="question-info d-flex" >
+								<div class="d-flex flex-row flex-grow-1"  >
+									<div style="color: grey;">{{ q.question.question_nr }}</div>
+									<div class="ml-3"> {{ q.question.name }} ({{ q.question.points }}p)</div>
+									<div class="ml-auto" ><span onclick="window.open('/theorie/{{ q.question.getCourseAttribute() | slug }}/aanpak-vraagtypen#{{ q.question.type.name | slug }}')" class="badge badge-info shadow-none ml-3 rounded " >{{ q.question.type.name }}</span></div>
+									<div class="ml-4"><i class="fa fa-angle-up rotate-icon"></i></div>
+								</div>
+							</div>
+							<div class="score-bar d-flex flex-row mt-2" >
+								<div style="width:{{ q.pointsAchieved / listofquestions.maxpointspertext * 100}}%; height:0.5em;" class="green-bar" ></div>
+								<div style="width:{{ q.pointsWrongAnswered / listofquestions.maxpointspertext * 100 }}%; height:0.5em; background-color: red;" ></div>
+								<div style="width:{{ q.pointsUnanswered / listofquestions.maxpointspertext * 100 }}%; height:0.5em; background-color: #aaa;" ></div>
+							</div>
+						</a>
+						<div class="collapse" id="collapseme-question-{{ q.question.id }}" >
+							<div class="d-flex p-1 mt-2" >
+								<div class="d-flex flex-column rounded grey lighten-4 border p-3 show-answer flex-grow-1" >
+									<div class="text-left d-flex flex-column font-weight-bold" >
+										{% set question = q.question %}
+										{% partial 'examifyHelpers/questionBuilder' question=question %}
+									</div>
+									{% if question.answer_type == 'multiplechoice_single' or question.answer_type == 'multiplechoice_multiple' %}
+										<div class="d-flex flex-column align-self-start mt-3" >
+										{% for answer in question.answers %}
+						          {% set myAnswerLetter = range('A','Z')[loop.index0] %}
+						          <label class="btn btn-mc-answer text-left text-transform-none {% if answer.points %} correct-answer {% endif %} ">
+						          <div class="answer-placeholder d-flex" >
+						            <div class="answer-placeholder-number" >{{ myAnswerLetter }}</div>
+						            <div class="d-flex flex-column" >
+							            <div class="answer-placeholder-desc" >{{ answer.name }}</div>
+							            {% if q.answers[answer.id] > 0 %}
+							            <div class="points d-flex flex-wrap" >
+							            	{% if answer.points %}
+								            	{% for ii in 1..q.answers[answer.id] %}
+								            		<span style="color: green;" ><i class="fas fa-check mr-1" ></i></span>
+								            	{% endfor %}
+							            	{% else %}
+							            		{% for ii in 1..q.answers[answer.id] %}
+								            		<span style="color: red;" ><i class="fas fa-times-circle mr-1" ></i></span>
+								            	{% endfor %}
+								            {% endif %}
+							            </div>
+							            {% endif %}
+							          </div>
+						          </div>
+						        	</label>
+						        {% endfor %}
+						       </div>
+					        {% endif %}
+					        {% if question.answer_type == 'open' %}
+					        {# show the answers given #}
+					        <div class="p-3 grey lighten-2 d-flex flex-column mt-5" >
+						        <a class="collapseme collapsed d-flex flex-row" type="button" data-toggle="collapse" data-target="#collapseme-question-open-answers-{{ q.question.id }}"
+	    aria-expanded="false" aria-controls="collapseme-question-open-answers-{{ q.question.id }}">
+	    								<span>Toon de gegeven antwoorden</span>
+	    								<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+	    							</a>
+	    							<div class="collapse d-flex flex-column" id="collapseme-question-open-answers-{{ q.question.id }}" >
+	    								{% for answer in q.answers %}
+	    									{% if not answer.open_answer == null %}
+	    										{% if answer.points == 0 %}
+	    											{% set myclass = "red lighten-3" %}
+	    										{% else %}
+	    											{% if answer.points == question.points %}
+	    												{% set myclass = "green lighten-2" %}
+	    											{% else %}
+	    												{% set myclass = "green lighten-" ~ min(5, 2 + (question.points - answer.points)) %}
+	    											{% endif %}
+	    										{% endif %}
+	    										<div class="p-3 {{ myclass }} border rounded mt-2 d-flex flex-column" >
+	    											<div class="d-flex flex-row">
+	    												<div style="width: 2em;" ><strong>{{ answer.points }}p</strong></div>
+	    												<div class="ml-1"> {{ answer.open_answer | nl2br }}</div>
+	    											</div>
+	    											<div class="d-flex align-self-end font-italic">
+	    												{% if not hideNames %}
+	    													{{ answer.user.name }} {{ answer.user.surname }}
+	    												{% else %}
+	    													Naam van leerling
+	    												{% endif %}
+	    											</div>
+	    											<!-- /.d-flex -->
+	    											<!-- /.d-flex flex-row -->
+	    										</div>
+	    									{% endif %}
+	    								{% endfor %}
+	    							</div>
+	    						</div>
+					        <div class="md-form mt-5 mb-0 correctievoorschrift" >
+					          <strong>Antwoord volgens correctievoorschrift:</strong><hr />
+					          {{ question.open_answer_correction | raw }}
+					        </div>
+					        {% endif %}
+					        {% if question.answer_type == 'truefalse' %}
+					        	<div class="radio-per-row mt-2" >
+					        	{% for answer in question.answers %}
+					        		<div class="d-flex flex-column p-3 rounded border grey lighten-3 mt-2" >
+						        		<div class="entry" >
+						        			<div class="answer-placeholder" >{{ answer.name }}</div>
+						        			<div class="btn-group examify-question show-answer" >
+						        				<label class="btn btn-mc-answer text-center form-check-label {% if answer.points %} correct-answer {% endif %}">
+						        					Wel
+						        				</label>
+						        				<label class="btn btn-mc-answer text-center form-check-label {% if not answer.points %} correct-answer {% endif %}">
+						        					Niet
+						        				</label>
+						        			</div>
+						        		</div>
+						        		<div class="score-bar d-flex flex-row mt-3" >
+						        			{% if q.answers[answer.id] is empty %}
+						        				<div style="width:100%; height:0.5em; background-color: #aaa;" ></div>
+						        			{% else %}
+														<div style="width:{{ q.answers[answer.id]['ntrue'] }}%; height:0.5em;" class="green-bar" ></div>
+														<div style="width:{{ q.answers[answer.id]['nfalse'] }}%; height:0.5em; background-color: red;" ></div>
+														<div style="width:{{ q.answers[answer.id]['nunans'] }}%; height:0.5em; background-color: #aaa;" ></div>
+													{% endif %}
+												</div>
+						        	</div>
+					        	{% endfor %}
+					        	</div>
+					        {% endif %}
+					        {% if question.explanation %}
+					        <div class="mt-4" >
+					        	{% partial 'examifyHelpers/examify_uitleg' question=question practice_session_is_finished=true%}
+									</div>
+									{% endif %}
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+{% else %}
+<div id="placeholder-chart-question-types" class="text-center mt-5" >
+	Geen data om weer te geven.
+</div>
+{% endif %}

@@ -1,0 +1,102 @@
+<div class="d-flex flex-column align-items-center mt-5" >
+    <div class="w-100 flex-grow-1" style="background-color: #efefef; height: 4px;" ></div>
+    <i class="fas fa-caret-down text-center fa-5x" style="color: #efefef;" ></i>
+    <h3 class="text-uppercase text-center mt-1" >Overzicht</h3>
+    <p style="max-width: 640px;" class="text-center" >
+        Hieronder vind je een overzicht van het pakket dat je hebt samengesteld.
+    </p>
+    <div style="max-width: 500px;" class="d-flex flex-column justify-content-center"  >
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="d-flex flex-row" >
+              <i class="fas fa-user mr-3 fa-fw"></i>
+              <div class="d-flex flex-column">
+                <strong>Gebruiker</strong>
+                <span>{{ user.name }} {{ user.surname }}</span>
+                <span>{{ user.email }}</span>
+              </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="d-flex flex-row" >
+              <i class="fas fa-box-open mr-3 fa-fw"></i>
+              <div class="d-flex flex-column">
+                  <strong>Pakket</strong>
+                  {% for course in orderinformation.courses %}
+                      <span>{{ course.name }} ({{ course.level }})</span>
+                  {% endfor %}
+              </div>
+          </div>
+        </li>
+        {% for year, price in orderinformation.pricing.years if price.active %}
+        <li class="list-group-item">
+          <div class="d-flex flex-row" >
+              <i class="fas fa-calendar-alt mr-3 fa-fw"></i>
+              <div class="d-flex flex-column">
+                  <strong>Licentie</strong>
+                  <span>Schooljaar {{ year - 1}} - {{ year }}</span>
+                  {% if loop.index == 1 %}
+                    <span class="small font-italic" >Vanaf nu tot en met 31 juli {{ year }}</span>
+                  {% else %}
+                    <span class="small font-italic" >Vanaf 1 augustus {{ year - 1 }} tot en met 31 juli {{ year }}</span>
+                  {% endif %}
+                  {% if price.discount %}
+                    <div class="mt-1">
+                      <span class="text-line-through">&euro;{{ price.baseprice.getDutchFormat() }}</span>
+                      <span class="ml-2" >&euro;{{ price.price.getDutchFormat() }}</span>
+                      <span class="ml-2 text-nowrap text-success">({{ orderinformation.discountForTwoYears }}% korting)</span>
+                    </div>
+                  {% else %}
+                    <span class="mt-1">&euro;{{ price.price.getDutchFormat() }}</span>
+                  {% endif %}
+                  {% if (price.courseids|length) < (orderinformation.courseids|length) %}
+                    <small>De prijs wijkt af omdat je voor &eacute;&eacute;n of meerdere geselecteerde vakken al een licentie in je bezit hebt.</small>
+                  {% endif %}
+              </div>
+          </div>
+        </li>
+        {% endfor %}
+        <li class="list-group-item">
+          <div class="d-flex flex-row" >
+              <i class="fas fa-home mr-3 fa-fw"></i>
+              <div class="d-flex flex-column">
+                <strong>Adresgegevens</strong>
+                <span>{{ user.getUserSetting('street') }}</span>
+                <span>{{ user.getUserSetting('zipcode') }} {{ user.getUserSetting('city') }}</span>
+                <span>{{ user.getUserSetting('country') }}</span>
+              </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="d-flex flex-row" >
+              <i class="fas fa-coins mr-3 fa-fw"></i>
+              <div class="d-flex flex-column">
+                <strong>Totaalbedrag</strong>
+                {% if orderinformation.pricing.voucher %}
+                <div>
+                  <span class="text-line-through" >&euro;{{ orderinformation.pricing.beforediscount.getDutchFormat() }}</span>
+                  <span class="ml-2 text-nowrap text-success">(Kortingscode: {{ orderinformation.pricing.voucher.code }} : {{ orderinformation.pricing.voucher.getDiscountText() }})</span>
+                </div>
+                {% endif %}
+                <span>&euro;{{ orderinformation.pricing.topay.getDutchFormat() }}</span>
+              </div>
+          </div>
+        </li>
+      </ul>
+      {% if orderinformation.pricing.activeElements == 0 %}
+      <div class="mt-3" >
+        <div class="alert alert-success" >
+          Je hebt geen nieuwe licenties in je bestelling. Selecteer vakken of schooljaren waarvoor je nog geen licentie hebt en probeer het opnieuw.
+        </div>
+      </div>
+      {% else %}
+        {# the submit button #}
+        {{ form_open({ request: 'onOrder', 'class' : 'text-center' }) }}
+          {% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+          <button class="btn shadow-none btn-rounded mt-5 align-self-center" style="background-color: #28a745; color: #fff;" onclick="return customAjaxClick($(this));" >Bevestigen</button>
+          <div class="invalid-feedback" ></div>
+        {{ form_close() }}
+      {% endif %}
+    </div>
+
+</div>

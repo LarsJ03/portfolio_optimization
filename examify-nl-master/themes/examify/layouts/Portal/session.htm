@@ -1,0 +1,116 @@
+[ExamifyCharts]
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\Exams as Exams;
+  use Examify\Exams\Models\Courses as Courses;
+  use Examify\Exams\Models\Classes as Classes;
+  use Examify\Exams\Models\PracticeSessions as PS;
+
+  function onStart()
+  { 
+
+    $user = $this['user'] = Users::getUser();
+
+    if(!$user){ 
+      return redirect('/login')->with('redirect-to', url()->current());
+    }
+
+    // validate the practice session
+    $ps = PS::find($this->param('sessionid'));
+
+    if(!$ps || !$ps->finished){
+      return redirect('/portal/classes');
+    }
+
+    if(!$ps->isVisibleForUser($user)){
+      return redirect('/portal/classes');
+    }
+
+    $this->page->meta_title = $ps->user->name . ' ' . $ps->user->surname;
+
+    $this['ps'] = $ps;
+
+    // get the list of questions
+    $this['listofquestions'] = PS::getListOfQuestions(collect([$ps]));
+
+    $this['usersessions'] = $ps->user->getPracticeSessionsForClass($ps->homework->class);
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+<div class="container">
+  <div class="dashboard-container pt-4">
+    {% partial 'examifyHelpers/portal/navbar-session' %}
+    <div class="content-column">
+      <div class="content-inside border p-1 p-sm-3" >
+        <div class="d-flex flex-column" >
+          <div class="d-flex flex-column" >
+            <h4><strong>{{ ps.user.name }} {{ ps.user.surname }}</strong></h4>
+            {#<a href="/portal/homework/{{ ps.homework.id }}" class="text-gray" ><h5 >{{ ps.homework.name }}</h5></a>#}
+            {% partial 'examifyHelpers/practiceSessionCard' mySession=ps portallink=true %}
+            <div class="mb-5" >
+              <a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-add-homework" aria-expanded="false" aria-controls="collapse-add-homework">
+                <div class="d-flex flex-row align-items-center p-3 grey lighten-5 " >
+                  <div>Andere huiswerkopdrachten van {{ ps.user.name }} voor {{ ps.homework.class.name }} ({{ ps.homework.class.course.name }})</div>
+                  <div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+                </div>
+              </a>
+              <div class="collapse grey lighten-5 p-3 px-lg-5 pb-lg-4" id="collapse-add-homework">
+                {% for us in usersessions %}
+                  {% partial 'examifyHelpers/practiceSessionCard' mySession=us portallink=true %}
+                {% endfor %}
+              </div>
+            </div>
+            <div >
+              <h4>Tijdsverloop van gegegeven antwoorden</h4>
+              <hr />
+            </div>
+            <div class="mb-5" >
+              <div class="chart-container" >
+              <canvas id="timeline-container-graph-{{ ps.id }}"></canvas>
+              <div id="placeholder-chart-question-types" class="text-center d-none" >
+                Geen data om weer te geven
+              </div>
+            </div>
+            {{ form_open({ request: 'onGetPracticeSessionTimeline' }) }}
+              <input type="hidden" name="psid" value="{{ ps.id }}" />
+              <input type="hidden" name="chart_form" value="#timeline-container-graph-{{ ps.id }}" />
+            {{ form_close() }}
+              {#{{ ps.getLogData() }}#}
+            </div>
+            <div >
+              <h4>Score (punten) per vraagtype</h4>
+              <hr />
+            </div>
+            <div class="mb-5" >
+              <div class="chart-container" >
+              <canvas id="question-types-container-graph-{{ ps.id }}"></canvas>
+              <div id="placeholder-chart-question-types" class="text-center d-none" >
+                Geen data om weer te geven
+              </div>
+            </div>
+            {{ form_open({ request: 'onGetPracticeSessionDataQuestionTypes' }) }}
+              <input type="hidden" name="psid" value="{{ ps.id }}" />
+              <input type="hidden" name="chart_form" value="#question-types-container-graph-{{ ps.id }}" />
+            {{ form_close() }}
+              {#{{ ps.getLogData() }}#}
+            </div>
+            <div>
+              <h4>Score per tekst en vraag</h4>
+              <hr />
+            </div>
+            {% partial 'examifyHelpers/portal/listOfHomeworkQuestions' listofquestions=listofquestions %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+{% partial 'page-end' %}

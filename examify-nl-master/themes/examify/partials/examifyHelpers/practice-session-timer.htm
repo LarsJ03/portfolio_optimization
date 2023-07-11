@@ -1,0 +1,29 @@
+<div style="position: fixed; bottom: 0; right: 0; border: 2px solid #ddd; background-color: #eee; text-align: center; font-size: 1.5em;" class="d-flex align-items-center justify-content-center flex-row px-4 py-2" >
+    <img width="32" height="32" src="{{ 'assets/img/icons/stopwatch.png' | theme }}" /><span id="practice-session-timer" class="ml-2" ></span>
+</div>
+<script>
+  if(typeof(EventSource) !== "undefined") {
+  var source = new EventSource('/stream/{{ psid }}', { withCredentials: true });
+  source.onmessage = function(event) {
+    console.log(event);
+    console.log(event.data);
+    console.log(event.data < 0);
+
+    // if the event data is smaller than 0, refresh the page
+    if(event.data < 0){
+      location.reload();
+      return;
+    }
+    else if(event.data < 4){ 
+      document.getElementById("practice-session-timer").style.color = 'red'; 
+    }
+    else if(event.data < 11){
+      document.getElementById("practice-session-timer").style.color = 'orange';
+    }
+
+    document.getElementById("practice-session-timer").innerHTML = event.data + " min.";
+  };
+} else {
+  document.getElementById("practice-session-timer").innerHTML = "Sorry, your browser does not support server-sent events...";
+}
+</script>

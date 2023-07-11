@@ -1,0 +1,83 @@
+title = "AdminExportLicences"
+url = "/portal/export/:schoolid/:type/:year"
+description = "Admin klassen"
+is_hidden = 0
+==
+<?php
+	
+	// include models
+	use \Examify\Exams\Models\Schools as Schools;
+	use \Examify\Exams\Models\Users as Users;
+	use \Examify\Exams\Models\Licenses as Licences;
+
+	function array_to_csv_download($array, $filename = "export.csv", $delimiter=";") {
+      header('Content-Type: application/csv');
+      header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+      // open the "output" stream
+      // see http://www.php.net/manual/en/wrappers.php.php#refsect2-wrappers.php-unknown-unknown-unknown-descriptioq
+      $f = fopen('php://output', 'w');
+
+      foreach ($array as $line) {
+          fputcsv($f, $line, $delimiter);
+      }
+  } 
+
+	function onStart()
+	{
+		// get the school_id
+      $schoolid = $this->param('schoolid');
+      $type 		= $this->param('type');
+      $year 		= $this->param('year');
+
+      // validate that the user is admin of this school
+      $user = Users::getUser();
+
+      if(!$user || !$user->isAdminForSchool($schoolid)){
+          return [
+              'valid' => false,
+              'message' => 'Je bent niet meer ingelogd of hebt geen rechten meer voor deze school.',
+          ];
+      }
+
+      // get the current school
+      $school = Schools::find($schoolid);
+
+      if(!$school){
+          return redirect('/');
+      }
+
+      // also find the unactivated licences belonging to this school
+      switch ($type) {
+      	case 'students':
+      		$inactiveLics = $school->getInactiveStudentLicences($year);
+      		$lictype = 'Leerling';
+      		$csvtitle = 'leerlingen';
+      		break;
+
+      	case 'teachers':
+      		$inactiveLics = $school->getInactiveLicences($year);
+      		$lictype = 'Docent';
+      		$csvtitle = 'docenten';
+      		break;
+      	
+      	default:
+      		return;
+      		break;
+      }
+
+      // construct the array to write
+      $myInput[0] = array('Nr', 'Type', 'School', 'Jaar', 'Licentiecode');
+
+      $ii = 0;
+
+      foreach($inactiveLics as $lic)
+      {
+          $ii = $ii + 1;
+          $myInput[$ii] = array($ii, $lictype, $school->name, $lic->schoolyear-1 . '-' . $lic->schoolyear, $lic->key);
+      }
+
+      return $this->array_to_csv_download($myInput, 'export_licentiecodes_' . $csvtitle . '_' . $school->name . '.csv', ',');
+	}
+?>
+==

@@ -1,0 +1,10 @@
+{{ form_open({ request: 'onDeleteHomework', class: 'text-center form-validation-js' }) }}
+	<input type="hidden" name="homework_id" value="{{ homework.id }}" >
+	<input type="hidden" name="is_confirmed" value="-1" >
+	<button class="btn btn-outline-success shadow-none px-3 py-2" onclick="return customAjaxClick($(this));" >Annuleer</button>
+{{ form_close() }}
+{{ form_open({ request: 'onDeleteHomework', class: 'text-center form-validation-js' }) }}
+	<input type="hidden" name="homework_id" value="{{ homework.id }}" >
+	<input type="hidden" name="is_confirmed" value="1" >
+	<button class="btn btn-outline-danger shadow-none px-3 py-2" onclick="return customAjaxClick($(this));" >Bevestig</button>
+{{ form_close() }}

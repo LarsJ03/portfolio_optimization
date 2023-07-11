@@ -1,0 +1,18 @@
+fields:
+    for_sale:
+        label: 'Te koop'
+        span: auto
+        type: switch
+    name:
+        label: 'examify.exams::lang.exams.courses.name'
+        span: left
+        type: text
+    level:
+        label: 'examify.exams::lang.exams.courses.level'
+        options:
+            vwo: vwo
+            havo: havo
+            mavo: mavo
+        showSearch: true
+        span: left
+        type: dropdown

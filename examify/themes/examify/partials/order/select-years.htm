@@ -1,0 +1,28 @@
+<div class="d-flex flex-column align-items-center mt-5" >
+    <div class="w-100 flex-grow-1" style="background-color: #efefef; height: 4px;" ></div>
+    <i class="fas fa-caret-down text-center fa-5x" style="color: #efefef;" ></i>
+    <div class="d-flex flex-row mb-3" >
+        {% for tempcourse in orderinformation.courses %}
+        <img style="max-height: 2em;" class="mx-1" src="{{ ('assets/img/flags/' ~ tempcourse.getFlagUrl())|theme}}" />
+        {% endfor %}
+    </div>
+    <h3 class="text-uppercase text-center mt-1" >Welk schooljaar?</h3>
+    <p style="max-width: 640px;" class="text-center" >
+        Een goede voorbereiding begint vaak al in het voorexamenjaar. Daarom ontvang je <strong class="text-nowrap" >{{ orderinformation.discountForTwoYears }}% korting</strong> op het tweede schooljaar.
+    </p>
+
+     {{ form_open({ request: 'onSelectYears' }) }}
+        {% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+        <div class="d-flex flex-column mt-3" >
+            {% for year, message in orderinformation.years %}
+            <!-- Material unchecked -->
+            <div class="form-check">
+              <input type="checkbox" name="yearsToOrder[]" class="form-check-input" id="selectYear{{ year }}" value="{{ year }}">
+              <label class="form-check-label" for="selectYear{{ year }}"><span>Schooljaar {{ year - 1}} - {{ year }}</span><br /><span class="small font-italic" >{{ message }}</span></label>
+            </div>
+            {% endfor %}
+            <div class="invalid-feedback text-center" ></div>
+            <button class="btn shadow-none btn-rounded btn-primary mt-4" onclick="return customAjaxClick($(this));" >Bevestig</button>
+        </div>
+    {{ form_close() }}
+</div>

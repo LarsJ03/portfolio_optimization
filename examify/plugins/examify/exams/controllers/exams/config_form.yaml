@@ -1,0 +1,10 @@
+name: Exams
+form: $/examify/exams/models/exams/fields.yaml
+modelClass: Examify\Exams\Models\Exams
+defaultRedirect: examify/exams/exams
+create:
+    redirect: 'examify/exams/exams/update/:id'
+    redirectClose: examify/exams/exams
+update:
+    redirect: examify/exams/exams
+    redirectClose: examify/exams/exams

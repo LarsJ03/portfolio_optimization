@@ -1,0 +1,58 @@
+<!-- Form -->
+{% if orderinformation.phase %}
+    <div class="d-flex flex-column align-items-center mt-5" >
+    	<div class="col-sm-8" style="max-width: 400px;" >
+{% endif %}
+
+		{{ form_open({ request: requestFunction, 'class': 'text-center form-validation-js' }) }}
+				{% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+
+				{% if redirect_to %}
+		    <input type="hidden" name="redirect-to" value="{{ redirect_to }}" />
+		    {% endif %}
+
+		    <!-- E-mail -->
+		    <div class="md-form">
+		        <input autocomplete="off" type="email" id="materialRegisterFormEmail" class="form-control on-change-submit" name="email">
+		        <label for="materialRegisterFormEmail">E-mail</label>
+		        <div class="invalid-feedback text-left">
+		        </div>
+		    </div>
+
+		    <!-- Password -->
+		    <div class="md-form">
+		        <input autocomplete="off" type="password" id="materialRegisterFormPassword" class="form-control on-change-submit" name="password" aria-describedby="materialRegisterFormPasswordHelpBlock">
+		        <label for="materialRegisterFormPassword">Wachtwoord</label>
+		        <div class="invalid-feedback text-left" ></div>
+		        <div class="valid-feedback text-left" ></div>
+
+		    </div>
+
+		    <!-- Sign up button -->
+		    <button class="btn btn-outline-primary btn-rounded mt-2 mb-4 waves-effect z-depth-0" type="submit">Login</button>
+
+		{{ form_close() }}
+
+		{% if not hideRegister %}
+    <hr>
+    <div class="text-center">
+      <p>Heb je nog geen account?</p>
+      <a href="/register" >
+        <button class="btn btn-dark-green btn-rounded mb-4 waves-effect z-depth-0" >Account aanmaken</button>
+      </a>
+    </div>
+    {% endif %}
+
+    <hr>
+    <div class="text-center">
+      <p>Wachtwoord vergeten?</p>
+      <a href="/wachtwoord-vergeten" target="_blank" >
+        <button class="btn btn-outline-dark btn-rounded mb-4 waves-effect z-depth-0" >Help</button>
+      </a>
+    </div>
+<!-- Form -->
+
+{% if orderinformation.phase %}
+		</div>
+	</div>
+{% endif %}

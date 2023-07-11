@@ -1,0 +1,64 @@
+<section class="pricing py-0">
+  <div class="container">
+    <div class="row">
+      <!-- Free Tier -->
+      <div class="col-md-4">
+        <div class="card mb-3 mb-lg-0 shadow-none most-picked">
+        	{{ form_open({ request: 'onSelectPackage' }) }}
+        	<input type="hidden" name="packageid" value="1" />
+          <div class="card-body">
+            <h5 class="card-title text-uppercase text-center">Meest gekozen</h5>
+            <h6 class="card-price text-center d-flex flex-row justify-content-center"><span>&euro;{{ packageprices[1].getBase() }}</span><span class="period pt-2">{{ packageprices[1].getDecimals() }}</span></h6>
+            <hr>
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Nederlands &amp; Engels</li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Extra taal naar keuze</li>
+            </ul>
+            <button class="btn shadow-none btn-block" type="submit" onclick="return customAjaxClick($(this));" >Bestel</button>
+          </div>
+          {{ form_close() }}
+        </div>
+      </div>
+      <!-- Plus Tier -->
+      <div class="col-md-4">
+        <div class="card mb-3 mb-lg-0 border shadow-none" style="background-color: #fafafa;">
+        	{{ form_open({ request: 'onSelectPackage' }) }}
+        	<input type="hidden" name="packageid" value="2" />
+          <div class="card-body" style="margin-top: 3px; margin-bottom: 3px;">
+            <h5 class="card-title text-muted text-uppercase text-center">Basis</h5>
+            <h6 class="card-price text-center d-flex flex-row justify-content-center"><span>&euro;{{ packageprices[2].getBase() }}</span><span class="period pt-2">{{ packageprices[2].getDecimals() }}</span></h6>
+            <hr>
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Nederlands & Engels</li>
+              <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Extra taal naar keuze</li>
+            </ul>
+            <button class="btn shadow-none btn-block btn-primary" type="submit" onclick="return customAjaxClick($(this));" >Bestel</button>
+          </div>
+          {{ form_close() }}
+        </div>
+      </div>
+      <!-- Pro Tier -->
+      <div class="col-md-4">
+        <div class="card border shadow-none">
+        	{{ form_open({ request: 'onSelectPackage' }) }}
+        	<input type="hidden" name="packageid" value="3" />
+          <div class="card-body" style="margin-top: 3px; margin-bottom: 3px;">
+            <h5 class="card-title text-muted text-uppercase text-center">Stel zelf samen</h5>
+            <h6 class="card-price text-center d-flex flex-row justify-content-center"><span class="period align-self-center mr-1" >v.a.</span><span>&euro;{{ packageprices[3].getBase() }}</span><span class="period pt-2">{{ packageprices[3].getDecimals() }}</span></h6>
+            <hr>
+            <ul class="fa-ul">
+              <li><span class="fa-li"><i class="fas fa-check"></i></span><strong>Een persoonlijk pakket</strong></li>
+              <li><span class="fa-li"><i class="fas fa-check"></i></span>Keuze uit vier talen</li>
+            </ul>
+            <button class="btn shadow-none btn-block btn-primary" type="submit" onclick="return customAjaxClick($(this));" >Bestel</button>
+          </div>
+          {{ form_close() }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container" >
+	<div class="collapse" id="order-phase-1" ></div>
+</div>

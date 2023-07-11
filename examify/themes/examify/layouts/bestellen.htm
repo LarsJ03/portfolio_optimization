@@ -1,0 +1,48 @@
+[ExamifyOrder]
+
+[ExamifyAccount]
+redirect = "home"
+paramCode = "code"
+
+[staticPage]
+useContent = 1
+default = 0
+==
+<?php
+
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Components\Order as Order;
+
+  function onStart()
+  {
+
+    // check if the user is logged in
+    $this['user'] = Users::getUser();
+    $this->addJs('assets/js/form-validation.js');
+
+  }
+
+  function onValidate(){
+    $h = input('_handler');
+    if($h == 'onOrderLogin'){
+      return Users::validateLogin();
+    }
+
+    if($h == 'onOrderRegister'){
+      return Users::validateRegistration();
+    }
+
+    if($h == 'onConfirmPersonalInformation')
+    {
+      return Order::validatePersonalInformation();
+    }
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = false %}
+
+{% component 'ExamifyOrder' %}
+
+{% partial 'page-end' %}

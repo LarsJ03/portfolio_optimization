@@ -1,0 +1,55 @@
+columns:
+    question_nr:
+        label: Q
+        type: number
+    course:
+        label: vaknaam
+        type: text
+        sortable: false
+    year:
+        label: jaar
+        type: number
+        sortable: false
+        searchable: false
+    tijdvak:
+        label: tijdvak
+        type: number
+        sortable: false
+    name:
+        label: 'examify.exams::lang.exams.questions.name'
+        type: text
+        searchable: true
+    points:
+        label: 'examify.exams::lang.exams.questions.points'
+        type: number
+    type_id:
+        label: 'examify.exams::lang.exams.questiontypes.type'
+        type: number
+        relation: type
+        valueFrom: name
+    text_id:
+        label: text_id
+        type: number
+    text_title:
+        label: text
+        type: number
+        relation: text
+        valueFrom: name
+        searchable: true
+    created_at:
+        label: created_at
+        type: datetime
+    updated_at:
+        label: updated_at
+        type: datetime
+    answer_type:
+        label: 'examify.exams::lang.exams.questions.answertype'
+        type: text
+    explanation:
+        label: 'Uitleg'
+        type: text
+        searchable: true
+    open_answer_correction:
+        label: 'Correctie'
+        type: text
+        searchable: true

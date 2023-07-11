@@ -1,0 +1,35 @@
+{% for course in courses_for_trials %}
+	<a class="collapseme collapsed d-flex flex-column mt-1" type="button" data-toggle="collapse" data-target="#collapse-course-trial-{{ course.id }}" aria-expanded="false" aria-controls="collapse-course-trial-{{ course.id }}">
+    <div class="d-flex flex-row align-items-center p-3 grey lighten-4 " >
+    	{% set flagpath = 'assets/img/flags/' ~ course.getFlagUrl() %}
+    	<img class="mr-3 align-self-center d-flex" src="{{ flagpath | theme}}" height="18px" />
+    	<span>{{ course.name }} [{{ course.level }}]</span>
+			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+		</div>
+  </a>
+  <div class="collapse grey lighten-4" id="collapse-course-trial-{{ course.id }}">
+  	<div class="p-3" >
+  	
+			{% set alltrials = course.getQuestionTypesTrialsGroupedByType() %}
+			{% for qtype_id, trials in alltrials %}
+				{% set qtype = course.getQuestionTypeById(qtype_id) %}
+				<div class="d-flex flex-column" >
+					<span>{{ qtype.name }}</span>
+					{% for trial in trials %}
+						<div class="p-2 border" >{{ trial.name }}</div>
+					{% endfor %}
+					</div>
+			{%  else  %}
+				<div class="row">
+					<div class="col-12 d-flex">
+				  	<!-- geen oefensessies gevonden -->
+				    <div class="practice_session_entry alert-secondary alert flex-grow-1" >
+				      Er zijn helaas nog geen sets van oefenvragen beschikbaar voor dit vak.
+				    </div>
+				  </div>
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+{% endfor %}

@@ -1,0 +1,85 @@
+title = "test"
+layout = "default"
+url = "/test"
+==
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MathJax Example</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  <style>
+    #inputField {
+      height: 100px;
+      width: 300px;
+      resize: none;
+    }
+    #submitButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #outputField {
+      margin-top: 20px;
+      border: 2px solid #ddd;
+      padding: 10px;
+    }
+    .symbolButton {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #eee;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <form id="mathForm">
+    <textarea id="inputField" name="inputField"></textarea><br>
+    <div>
+      <button type="button" class="symbolButton" onclick="insertSymbol('\\int')">∫</button>
+      <button type="button" class="symbolButton" onclick="insertSymbol('\\sum')">Σ</button>
+      <button type="button" class="symbolButton" onclick="insertSymbol('\\infty')">∞</button>
+      <button type="button" class="symbolButton" onclick="insertSymbol('\\sqrt{}')">√</button>
+      <button type="button" class="symbolButton" onclick="insertSymbol('\\frac{}{}')">/</button>
+    </div>
+    <button type="submit" id="submitButton">Submit</button>
+  </form>
+  <div id="outputField"></div>
+
+  <script>
+    function insertSymbol(symbol) {
+      var inputField = document.getElementById("inputField");
+      var startPos = inputField.selectionStart;
+      var endPos = inputField.selectionEnd;
+      inputField.value = inputField.value.substring(0, startPos) + symbol + inputField.value.substring(endPos, inputField.value.length);
+      inputField.setSelectionRange(startPos + symbol.length, startPos + symbol.length);
+      inputField.focus();
+    }
+    document.getElementById("mathForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submit action
+      var input = document.getElementById("inputField").value;
+      var output = eval(input);
+      document.getElementById("outputField").innerHTML = "$$" + output + "$$";
+      MathJax.typeset();
+
+      function updateInput(element, symbol) {
+  var start = element.prop("selectionStart");
+  var end = element.prop("selectionEnd");
+  var value = element.val();
+  element.val(value.substring(0, start) + symbol + value.substring(end));
+  element.focus();
+  element.prop("selectionStart", start + symbol.length);
+  element.prop("selectionEnd", start + symbol.length);
+  MathJax.typesetPromise();
+}
+    });
+  </script>
+</body>
+</html>

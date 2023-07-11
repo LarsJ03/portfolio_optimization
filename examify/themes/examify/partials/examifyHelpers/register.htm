@@ -1,0 +1,86 @@
+<!-- Form -->
+{% if orderinformation.phase %}
+<div class="d-flex flex-column align-items-center mt-5" >
+{% endif %}
+
+		<!-- Form -->
+    {{ form_open({ request: requestFunction, 'class': 'text-center form-validation-js' }) }}
+
+    		{% partial 'order/orderinformation-elements' orderinformation=orderinformation %}
+
+        <!-- First name -->
+        <div class="md-form">
+            <input autocomplete="off" type="text" id="materialRegisterFormFirstName" class="form-control on-change-submit" name="firstname">
+            <label for="materialRegisterFormFirstName">Voornaam</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+    
+        <!-- Last name -->
+        <div class="md-form mt-0">
+            <input autocomplete="off" type="text" id="materialRegisterFormLastName" class="form-control on-change-submit" name="surname">
+            <label for="materialRegisterFormLastName">Achternaam</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+            
+
+        <!-- E-mail -->
+        <div class="md-form mt-0">
+            <input autocomplete="off" type="email" id="materialRegisterFormEmail" class="form-control on-change-submit" name="email">
+            <label for="materialRegisterFormEmail">E-mail</label>
+            <div class="invalid-feedback text-left">
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="md-form">
+            <input autocomplete="off" type="password" id="materialRegisterFormPassword" class="form-control on-change-submit" name="password" aria-describedby="materialRegisterFormPasswordHelpBlock">
+            <label for="materialRegisterFormPassword">Wachtwoord</label>
+            <small id="materialRegisterFormPasswordHelpBlock" class="form-text text-muted text-left">
+                Minimaal 6 karakters lang
+            </small>
+            <div class="invalid-feedback text-left" >
+            </div>
+
+        </div>
+
+        <div class="md-form">
+          <select class="mdb-select on-change-submit" name="level" >
+            <option value="" disabled selected>Opleidingsniveau</option>
+            <option value="vwo">vwo</option>
+            <option value="havo">havo</option>
+            <option value="mavo">mavo</option>
+          </select>
+          <div class="invalid-feedback text-left" ></div>
+        </div>
+
+        
+        {#
+        <div class="form-check">
+            <input autocomplete="off" type="checkbox" class="form-check-input" id="materialRegisterFormNewsletter">
+            <label class="form-check-label" for="materialRegisterFormNewsletter">Subscribe to our newsletter</label>
+        </div>
+        #}
+
+        <!-- Sign up button -->
+        <button class="btn btn-outline-primary btn-rounded my-4 waves-effect z-depth-0" type="submit">Maak account aan!</button>
+
+        <hr>
+
+        <!-- Terms of service -->
+        <p>Door op 
+            <em>Maak account aan!</em> te klikken ga je akkoord met <br />
+            <a href="/voorwaarden" target="_blank">onze algemene voorwaarden</a>
+
+        {% if not hideLogin %}
+        <hr>
+        <p>Heb je al een account? <a href="/login" >Inloggen</a>
+        {% endif %}
+
+    {{ form_close() }}
+<!-- Form -->
+
+{% if orderinformation.phase %}
+</div>
+{% endif %}

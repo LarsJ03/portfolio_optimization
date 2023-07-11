@@ -1,0 +1,10 @@
+fields:
+    course:
+        label: Klas
+        showSearch: true
+        span: auto
+        type: dropdown
+    nlicensestogenerate:
+        label: 'Aantal licenties'
+        span: auto
+        type: number

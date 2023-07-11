@@ -1,0 +1,46 @@
+[ExamifyQuestion]
+==
+<?php
+    use \Examify\Exams\Models\Questions as Questions;
+
+    function onStart()
+    {
+
+        // get the question
+        $q = Questions::find($this->param('qid'));
+
+        if(empty($q))
+        {
+            return redirect('/');
+        }
+
+        $this['question'] = $q;
+    }
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' hide_dummy = false %}
+
+<div class="container exam-questions main-line pt-5 pb-2">
+
+
+    <!--Section: Content-->
+    <section class="dark-grey-text">
+
+      <!-- Section heading -->
+      <h2 class="text-center font-weight-bold mb-4 pb-2">Vraag</h2>
+      <!-- Section description -->
+
+      {variable name="uitleg_introduction" label="Uitleg intro" tab="Uitleg" type="textarea" }{/variable}
+      <p class="text-center mx-auto w-responsive mb-5">{{ uitleg_introduction }}</p>
+
+      <div style="max-width: 800px;" >
+        <div class="examify-questions-container" >
+          {% component 'ExamifyQuestion' question_id=question.id practice_session_id=0 %}
+        </div>
+      </div>
+  </section>
+</div>
+
+
+{% partial 'page-end' %}

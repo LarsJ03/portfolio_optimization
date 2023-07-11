@@ -1,0 +1,51 @@
+url = "/register"
+layout = "default"
+title = "Register"
+
+[session]
+security = "guest"
+redirect = "my-account"
+
+[account]
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+==
+<style>
+form {
+    height: 300px;
+}
+</style>
+{% if not user %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card">
+      
+        <div class="card-body">
+        <h3>Sign in</h3>
+          {% partial account ~ '::signin' %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          {% partial account ~ '::register' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% else %}
+
+    {% partial account ~ '::activation_check' %}
+
+    
+
+    {% partial account ~ '::deactivate_link' %}
+
+{% endif %}

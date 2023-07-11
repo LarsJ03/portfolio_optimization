@@ -1,0 +1,57 @@
+{% if user %}
+<div class="row" >
+	<div class="col-12" >
+		<div class="grey lighten-5 p-3 mb-3" >
+			<div class="row" >
+				<div class="col-12"><h2>{{ school.name }}</h2></div>
+			</div>
+			<div class="row">
+				<div class="col-12 mt-3">
+					<h3 class="small" >Koppel licenties voor leerlingen</h3>
+					<div class="grey lighten-4 p-3" >
+					{{ form_open({ request: 'onSelectClass', 'class' : 'text-center form-validation-js' }) }}
+						{# set the school id #}
+						<input type="hidden" name="school_id" value="{{ school.id }}" />
+						<div class="row">
+							<div class="col-md-4 align-self-center">
+								<div class="md-form">
+									<select class="mdb-select md-form" searchable="Zoeken..." name="classids[]" multiple >
+									  <option value="" disabled selected>Selecteer klas</option>
+				            {# loop over the courses #}
+										{% for course in courses %}
+										{% set classes = course.getClassesForSchool(school, schoolyear) %}
+										{% if classes is not empty %}
+										<optgroup label="{{ course.name }} ({{ course.level }})">
+											{% for class in classes %}
+												<option value="{{ class.id }}" >{{ class.name }}</option>
+											{% endfor %}
+										</optgroup>
+										{% endif %}
+										{% endfor %}
+									</select>
+				        </div>
+							</div>
+							<div class="col-md-4 align-self-center">
+								<button class="btn btn-primary shadow-none text-md-right" type="submit" onclick="return customAjaxClick($(this));"  >Bevestig</button>
+							</div>
+						</div>
+						<div class="row" >
+							<div class="col-12">
+								<div class="invalid-feedback text-left">
+			            </div>
+							</div>
+						</div>
+						{{ form_close() }}
+						<div id="licence-students-{{ school.id }}" class="">
+								
+						</div>
+						<div id="licence-students-confirmation-{{ school.id }}" class="">
+								
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}

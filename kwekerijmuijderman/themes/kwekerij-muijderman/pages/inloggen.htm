@@ -1,0 +1,54 @@
+url = "/inloggen"
+layout = "default"
+title = "Inloggen"
+
+[account]
+paramCode = "code"
+forceSecure = 0
+requirePassword = 0
+
+[session]
+security = "guest"
+redirect = "mijn-account"
+==
+{% component 'session' %}
+<main>
+		<div class="bg-wrapper pagetitle">
+			<div class="container-wrapper">
+				<div class="row">
+					<div class="col-xs-12">
+						<h1>Inloggen</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- kruiwagen -->
+		<div class="bg-wrapper white">
+		    <div class="container-wrapper">
+		    	<div class="row form-row">
+		    		<div class="col-xs-12">
+		    			
+    <div class="row">
+        
+        <div class="col-sm-6 col-md-5">
+            <h1>Inloggen</h1>
+            {% partial account ~ '::signin' %}
+            
+
+<a class="wachtwoord-vergeten-link" href="https://www.kwekerijmuijderman.nl/wachtwoord-vergeten">Wachtwoord vergeten?</a>        </div>
+
+        <div class="stripe" ></div>
+        <div class="col-sm-6 col-md-5 col-md-push-2 register">
+            <h1>Account aanmaken</h1>
+            {% partial account ~ '::register' %}
+                  </div>
+
+    </div>
+
+	
+		    		</div>
+		    	</div>
+		    </div>
+		</div>
+	</main>

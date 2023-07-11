@@ -1,0 +1,19 @@
+<a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-add-voucher" aria-expanded="false" aria-controls="collapse-add-voucher">
+    <div class="d-flex flex-row align-items-center p-3 grey lighten-5 " >
+    	<div>Voeg voucher toe</div>
+			<div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+		</div>
+  </a>
+  <div class="collapse grey lighten-5" id="collapse-add-voucher">
+  	<div class="p-3" >
+  		<p class="p-3 rounded border font-italic grey lighten-4" >
+  			Vouchers kunnen gebruikt worden voor individuele sales. Voor elke set van vouchers die je genereert moet een start en einddatum gekoppeld worden, en een limiet gesteld worden voor hoe vaak deze voucher gebruikt kan worden.
+  		</p>
+
+  	{% partial 'examifyHelpers/portal/formVoucher' MyRequest='onAddVoucher' myvoucher=myvoucher %}
+
+	</div>
+</div>
+<div id="list-of-vouchers" >
+	{% partial 'examifyHelpers/portal/listOfVouchers' list_of_vouchers=list_of_vouchers %}
+</div>

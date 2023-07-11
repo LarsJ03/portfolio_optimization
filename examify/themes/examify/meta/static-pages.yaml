@@ -1,0 +1,11 @@
+static-pages:
+    home: {  }
+    privacyverklaring: {  }
+    voorwaarden: {  }
+    uitleg:
+        uitleg-duits-signaalwoorden: {  }
+        uitleg-frans-signaalwoorden: {  }
+        uitleg-spaans-signaalwoorden: {  }
+        uitleg-engels-signaalwoorden: {  }
+        uitleg-nederlands-signaalwoorden: {  }
+    over-ons: {  }

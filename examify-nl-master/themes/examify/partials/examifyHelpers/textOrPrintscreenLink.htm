@@ -1,0 +1,23 @@
+{% set pdf_link = myText.exam.pdf_texts %}
+<div class="text-indication mb-3" >
+	{% if myText.printscreen %}
+		<a class="collapseme {% if hw_mode %} collapsed {% endif %}" type="button" data-toggle="collapse" data-target="#collapseme-text-print-{{ myText.id }}"
+aria-expanded="false" aria-controls="collapseme-text-print-{{ myText.id }}" >
+	{% elseif pdf_link %}
+		<a class="external_link" href="{{ pdf_link }}" target="_blank" >
+	{% endif %}
+		Tekst {{ myText.myorder }} in {{ myText.exam.course.level }} / {{ myText.exam.course.name }} / {{ myText.exam.year }} / Tijdvak {{ myText.exam.tijdvak }} 
+	{% if myText.printscreen %}
+		<i class="fa fa-angle-up rotate-icon ml-3"></i>
+	{% elseif pdf_link %} 
+		<i class="ml-2 fas fa-external-link-alt"></i>
+	{% endif %}
+	{% if myText.printscreen or pdf_link %}
+		</a>
+	{% endif %}
+</div>
+{% if myText.printscreen %}
+<div class="collapse {% if not hw_mode %} show {% endif %}" id="collapseme-text-print-{{ myText.id }}" >
+	<img {% if myText.printscreen_width > 0 %} style="max-width: {{ myText.printscreen_width }}px" {% else %} style="max-width: 100%;" {% endif %} class="mb-5" src="{{ myText.printscreen | media }}" />
+</div>
+{% endif %}

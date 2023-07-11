@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Mollie Webhook Controller
+
+# Model Form Field configuration
+form: $/examify/exams/models/molliewebhookcontroller/fields.yaml
+
+# Model Class name
+modelClass: Examify\Exams\Models\MollieWebhookController
+
+# Default redirect location
+defaultRedirect: examify/exams/molliewebhookcontroller
+
+# Create page
+create:
+    title: Create Mollie Webhook Controller
+    redirect: examify/exams/molliewebhookcontroller/update/:id
+    redirectClose: examify/exams/molliewebhookcontroller
+
+# Update page
+update:
+    title: Edit Mollie Webhook Controller
+    redirect: examify/exams/molliewebhookcontroller
+    redirectClose: examify/exams/molliewebhookcontroller
+
+# Preview page
+preview:
+    title: Preview Mollie Webhook Controller

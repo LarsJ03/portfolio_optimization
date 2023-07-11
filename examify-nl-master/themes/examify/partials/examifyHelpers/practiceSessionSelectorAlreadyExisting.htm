@@ -1,0 +1,10 @@
+<input type="hidden" name="forceNew" value="1" />
+We hebben een zelfde oefensessie gevonden die je nog niet hebt afgerond. Ik wil: 
+<div class="step-actions d-flex flex-row flex-wrap mt-3" >
+	<a class="shadow-none waves-effect waves-dark btn btn-sm btn-primary next-step" href="/oefenen/mijn-oefensessie-{{ practiceSessionID }}" >
+		De meest recente sessie hervatten
+	</a>
+	<button class="shadow-none waves-effect waves-dark btn btn-sm btn-primary previous-step" onclick="return selectExam($(this));">
+		Een nieuwe starten
+	</button>
+</div>

@@ -1,0 +1,113 @@
+title = "Custom query for admin"
+url = "/generate_demo_school"
+is_hidden = 1
+==
+<?php
+	use \Examify\Exams\Models\Users as Users;
+	use \Examify\Exams\Models\Questions as Questions;
+	use \Examify\Exams\Models\QuestionsAnswersLogs as QAL;
+	use \Examify\Exams\Models\PracticeSessions as PS;
+	use \Examify\Exams\Models\PracticeSessionsResultsLogs as PSRL;
+	use \Examify\Exams\Models\Homework as HW;
+	use \Examify\Exams\Models\Schools as Schools;
+	use \Examify\Exams\Models\Classes as Classes;
+	use \Examify\Exams\Models\Courses as Courses;
+	use \Examify\Exams\Models\Licenses as Licences;
+
+	// loop over the practice sessions that are finished
+	public function onStart()
+	{
+		$this->addTeachers();
+		$this->addStudents();
+	}
+
+	public function addTeachers()
+	{
+	 	$teachers = Users::where('email', 'like', 'docent%@examify.nl')->get();
+	 	$school = Schools::where('name', 'DemoSchool')->first();
+
+	 	$year = Classes::getCurrentYear();
+
+	 	foreach($teachers as $u)
+	 	{
+	 		$u->makeTeacherForSchool($school->id, $year);
+	 	}
+	}
+
+	public function addStudents()
+	{
+		// get all the 'leerling001 till leerling015' users
+		$students = Users::where('email', 'like', 'leerling%@examify.nl')->get();
+		$school = Schools::where('name', 'DemoSchool')->first();
+
+		// license all the havo and vwo courses
+		$courses = Courses::where('level', 'vwo')->orWhere('level', 'havo')->get();
+		$year = Classes::getCurrentYear();
+
+		// create the classnames
+		$classnames = ['V6A', 'V6B', 'V6C'];
+
+		foreach($students as $u)
+		{
+			$u->makeStudentForSchool($school->id, $year);
+
+			foreach($courses as $course)
+			{
+				// check if a similar license is already there
+                    $checkLic = Licences::where('user_id', $u->id)
+                                        ->where('activated', true)
+                                        ->where('schoolyear', $year)
+                                        ->where('course_id', $course->id)
+                                        ->get();
+
+				// skip
+	            if($checkLic->count() > 0)
+	            {
+	                continue;
+	            }
+
+	            $courseLic = new Licences();
+	            $courseLic->generateKey();
+	            $courseLic->course_id = $course->id;
+	            $courseLic->user_id = $u->id;
+	            $courseLic->activated = true;
+	            $courseLic->school_id = $school->id;
+	            $courseLic->schoolyear = $year;
+	            $courseLic->save();
+	       }
+
+		}
+
+		// loop over all the vwo courses and add a class for it
+		$courses = Courses::where('level', 'vwo')->get();
+
+		foreach($classnames as $classname)
+		{
+			foreach($courses as $course)
+			{
+
+				$thisclass = Classes::where('course_id', $course->id)
+									->where('school_id', $school->id)
+									->where('schoolyear', $year)
+									->where('name', $classname)
+									->first();
+
+				if(!$thisclass){
+					$thisclass = new Classes();
+					$thisclass->school_id = $school->id;
+					$thisclass->course_id = $course->id;
+					$thisclass->name = $classname;
+					$thisclass->schoolyear = $year;
+					$thisclass->save();
+				}
+
+				foreach($students as $u)
+				{
+					$thisclass->students()->syncWithoutDetaching([$u->id => ['is_teacher' => false]]);
+				}
+			}
+		}
+
+	}
+?>
+==

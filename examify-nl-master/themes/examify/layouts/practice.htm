@@ -1,0 +1,60 @@
+[ExamifyPracticeSessionSelector]
+[ExamifyQuestionTypesTrials]
+==
+<?php
+  
+  use Examify\Exams\Models\Users as Users;
+  use Examify\Exams\Models\Exams as Exams;
+  use Examify\Exams\Models\Courses as Courses;
+
+  function onStart()
+  {
+
+  }
+
+?>
+==
+{% partial 'page-start' %}
+{% partial 'navbar' %}
+
+<div class="container exam-questions large">
+  <div class="row" >
+    <div class="col-12" >
+      <h1>Oefenen</h1>
+      <p>Het is mogelijk om zelfstandig aan de slag te gaan met de opdrachten binnen ons platform. We hebben een speciale oefenmethode ontwikkeld om jezelf te verbeteren in specifieke vraagtypen, maar het is ook mogelijk om een volledig examen te simuleren.</p>
+    </div>
+  </div> 
+  {% component 'ExamifyPracticeSessionSelector' %}
+
+  {#
+  <a class="collapseme collapsed d-flex flex-column" type="button" data-toggle="collapse" data-target="#collapse-trials-selector" aria-expanded="false" aria-controls="collapse-trials-selector">
+    <div class="d-flex flex-row align-items-center p-3 grey lighten-5 " >
+      <div>Vraagtypen oefenen</div>
+      <div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+    </div>
+  </a>
+  <div class="collapse grey lighten-5" id="collapse-trials-selector"> 
+    <div class="px-3" >
+      <div class="p-2 pb-3" >
+        {% component 'ExamifyQuestionTypesTrials' %}
+      </div>
+    </div>
+  </div>
+  <a class="collapseme collapsed d-flex flex-column mt-3" type="button" data-toggle="collapse" data-target="#collapse-ps-selector" aria-expanded="false" aria-controls="collapse-ps-selector">
+    <div class="d-flex flex-row align-items-center p-3 grey lighten-5 " >
+      <div>Volledige examens oefenen</div>
+      <div class="ml-auto"><i class="fa fa-angle-up rotate-icon"></i></div>
+    </div>
+  </a>
+  <div class="collapse grey lighten-5" id="collapse-ps-selector"> 
+    <div class="px-3" >
+      <div class="p-2 pb-3">
+        {% component 'ExamifyPracticeSessionSelector' %}
+      </div>
+    </div>
+  </div>
+  #}
+  
+</div>
+
+{% partial 'page-end' %}

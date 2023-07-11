@@ -1,0 +1,24 @@
+items:
+    -
+        title: 'Mijn account'
+        nesting: ''
+        type: url
+        url: /mijn-account
+        code: ''
+        reference: ''
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: Uitloggen
+        type: url
+        url: /logout
+        code: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+name: AccountMenu

@@ -1,0 +1,13 @@
+{% for ps in practicesessions %}
+	<a href="/portal/session/{{ ps.id }}" target="_blank" class="d-flex flex-column mb-3 ps-row" >
+		<div class="d-flex flex-row align-items-center justify-content-between  " >
+			<div>{{ ps.studentname }} ({{ ps.timespent }}) {{ ps.test }}</div>
+			<div class="ml-2">{{ ps.pointsAchieved }}/{{ ps.totalpointsavailable }}</div>
+		</div>
+		<div class="score-bar d-flex flex-row" >
+				<div style="width:{{ ps.pointsAchieved / ps.totalpointsavailable * 100}}%; height:0.5em;" class="green-bar" ></div>
+				<div style="width:{{ ps.pointsWrongAnswered / ps.totalpointsavailable * 100 }}%; height:0.5em; background-color: red;" ></div>
+				<div style="width:{{ ps.pointsUnanswered / ps.totalpointsavailable * 100 }}%; height:0.5em; background-color: #aaa;" ></div>
+		</div>
+	</a>
+{% endfor %}

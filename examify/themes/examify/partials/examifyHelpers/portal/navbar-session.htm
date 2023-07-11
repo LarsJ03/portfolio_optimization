@@ -1,0 +1,68 @@
+==
+<?php
+	use \Examify\Exams\Models\Users as Users;
+	use \Examify\Exams\Models\Classes as Classes;
+	use \Examify\Exams\Models\PracticeSessions as PS;
+	use \Carbon\Carbon as Carbon;
+
+	function onStart()
+	{
+
+		// get the year
+		$this['schoolyear'] = $schoolyear = $this->param('year', \Examify\Exams\Models\Classes::getCurrentYear());
+
+		$ps = PS::find($this->param('sessionid'));
+
+		if(!$ps){ return; }
+
+		$tempdate = new Carbon($ps->homework->due_date);
+
+		$MI = [
+			[
+				'url' => '/portal/homework/' . $ps->homework->id,
+				'name' => 'Terug naar huiswerkopdracht',
+				'show' => true
+			]
+		];
+
+		// get all the other students for this homework exercise
+		$sessions = $ps->homework->getPracticeSessions();
+
+		foreach($sessions as $s)
+		{
+			if(!$s->finished){ continue; }
+			if(!empty($s->user)){ $display = $s->user->name . ' ' . $s->user->surname; }
+			else { $display = 'Onbekend'; }
+			$MI[] = [
+				'url' => '/portal/session/' . $s->id,
+				'name' => $display,
+				'show' => true
+			];
+		}
+
+
+
+
+
+		$this['menuItems'] = $MI;
+
+		$this['currenturl'] = url()->current();
+	}
+?>
+==
+<div class="navbar-column pr-lg-3 mb-3">
+      <div class="list-group w-100">
+      	{% for item in menuItems %}
+      		{% if item.show %}
+	        <a type="button" class="list-group-item list-group-item-action {% if (item.url | app) == currenturl %} active {% endif %}" href="{{ item.url }}" >
+	        	{{ item.name }}
+	        </a>
+	        {% endif %}
+        {% endfor %}
+      </div>
+      {% if classid %}
+      <div class="mt-3" >
+				<a href="{{ backurl }}" >Terug naar klassen</a>
+			</div>
+			{% endif %}
+    </div>
